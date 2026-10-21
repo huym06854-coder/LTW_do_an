@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết đơn hàng | TechDemo</title>
+    <link rel="stylesheet" th:href="@{/store/css/style.css}">
+    <link rel="stylesheet" th:href="@{/store/css/site.css}">
+    <link rel="stylesheet" th:href="@{/store/css/commerce-pages.css}">
+</head>
+<body class="commerce-page">
+    <div th:replace="~{fragments/store-layout :: siteHeader}"></div>
+    <main class="container wrap">
+        <div class="breadcrumb"><a th:href="@{/orders}" href="/orders">Đơn hàng của tôi</a>　›　Chi tiết đơn hàng</div>
+        <section class="page-intro order-detail-heading">
+            <div><small class="eyebrow-dark">ORDER #TD-1042</small><h1>Chi tiết đơn hàng</h1><p>Đặt ngày 21/10/2026 · Thanh toán khi nhận hàng</p></div>
+            <span class="commerce-status">Đang xử lý</span>
+        </section>
+        <div class="commerce-notice">Chi tiết đơn hàng hiển thị là dữ liệu minh họa.</div>
+        <section class="commerce-columns order-detail-columns">
+            <div class="commerce-panel">
+                <h2>Sản phẩm đã đặt</h2>
+                <div class="order-card-product order-detail-product"><span class="commerce-item-mark">▱</span><div><b>Laptop Tech Demo Office 14</b><small>Đơn giá: 16.990.000₫ · Số lượng: 1</small></div><strong>16.990.000₫</strong></div>
+                <div class="commerce-summary-line"><span>Tạm tính</span><b>16.990.000₫</b></div>
+                <div class="commerce-summary-line"><span>Phí giao hàng</span><b>Miễn phí</b></div>
+                <div class="commerce-summary-line commerce-total"><span>Tổng cộng</span><b>16.990.000₫</b></div>
+            </div>
+            <aside class="commerce-panel">
+                <h2>Thông tin nhận hàng</h2>
+                <dl class="account-details">
+                    <div><dt>Người nhận</dt><dd>Khách hàng TechDemo</dd></div>
+                    <div><dt>Số điện thoại</dt><dd>Chưa cập nhật</dd></div>
+                    <div><dt>Địa chỉ</dt><dd>Thông tin địa chỉ chưa được cung cấp</dd></div>
+                    <div><dt>Phương thức</dt><dd>Giao hàng tận nơi · COD</dd></div>
+                </dl>
+            </aside>
+        </section>
+        <section class="commerce-panel order-timeline">
+            <h2>Trạng thái đơn hàng</h2>
+            <ol><li class="timeline-current"><b>Đơn hàng đã được tiếp nhận</b><small>21/10/2026 · 09:00</small></li><li><b>Đang chuẩn bị hàng</b><small>Đang chờ xác nhận</small></li><li><b>Đang giao hàng</b><small>Chưa cập nhật</small></li><li><b>Đã giao thành công</b><small>Chưa cập nhật</small></li></ol>
+        </section>
+        <a class="commerce-text-link back-to-orders" th:href="@{/orders}" href="/orders">← Quay lại danh sách đơn hàng</a>
+    </main>
+    <div th:replace="~{fragments/store-layout :: siteFooter}"></div>
+</body>
+</html>

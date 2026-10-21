@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý đơn hàng | TechDemo</title>
+    <link rel="stylesheet" th:href="@{/store/css/style.css}">
+    <link rel="stylesheet" th:href="@{/store/css/site.css}">
+    <link rel="stylesheet" th:href="@{/store/css/commerce-pages.css}">
+</head>
+<body class="commerce-page">
+    <div th:replace="~{fragments/store-layout :: siteHeader}"></div>
+    <main class="container wrap">
+        <div class="breadcrumb"><a th:href="@{/}" href="/">Trang chủ</a>　›　Khu vực nhân viên　›　Đơn hàng</div>
+        <section class="page-intro">
+            <small class="eyebrow-dark">STAFF WORKSPACE</small>
+            <h1>Quản lý đơn hàng</h1>
+            <p>Danh sách minh họa cho quy trình xử lý đơn tại cửa hàng.</p>
+        </section>
+        <div class="commerce-notice">Khu vực nhân viên chưa có đăng nhập phân quyền hoặc kết nối dữ liệu.</div>
+        <section class="commerce-panel">
+            <div class="staff-summary">
+                <div><small>Chờ xử lý</small><b>04</b></div><div><small>Đang giao</small><b>08</b></div><div><small>Đã hoàn tất hôm nay</small><b>12</b></div>
+            </div>
+            <div class="staff-table-wrap">
+                <table class="staff-table">
+                    <thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Ngày đặt</th><th>Hình thức nhận</th><th>Tổng tiền</th><th>Trạng thái</th><th></th></tr></thead>
+                    <tbody>
+                        <tr><td><b>#TD-1042</b></td><td>Khách hàng TechDemo</td><td>21/10/2026</td><td>Giao tận nơi</td><td>16.990.000₫</td><td><span class="commerce-status">Đang xử lý</span></td><td><a th:href="@{/staff/orders/TD-1042}" href="/staff/orders/TD-1042">Chi tiết →</a></td></tr>
+                        <tr><td><b>#TD-1038</b></td><td>Nguyễn Minh Anh</td><td>20/10/2026</td><td>Nhận tại cửa hàng</td><td>3.490.000₫</td><td><span class="commerce-status status-shipping">Đang giao</span></td><td><a th:href="@{/staff/orders/TD-1038}" href="/staff/orders/TD-1038">Chi tiết →</a></td></tr>
+                        <tr><td><b>#TD-1028</b></td><td>Trần Gia Bảo</td><td>12/10/2026</td><td>Giao tận nơi</td><td>3.490.000₫</td><td><span class="commerce-status status-complete">Đã giao</span></td><td><a th:href="@{/staff/orders/TD-1028}" href="/staff/orders/TD-1028">Chi tiết →</a></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <div th:replace="~{fragments/store-layout :: siteFooter}"></div>
+</body>
+</html>

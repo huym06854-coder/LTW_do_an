@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản trị hệ thống | TechDemo</title>
+  <link rel="stylesheet" th:href="@{/admin/css/admin.css}" href="/admin/css/admin.css">
+</head>
+
+<body class="admin-body">
+  <aside class="sidebar" id="sidebar">
+    <a class="admin-brand" th:href="@{/}" href="/"><span class="brand-mark">TD</span><span>Tech<span
+          class="brand-red">Demo</span><small>ADMIN CONSOLE</small></span></a>
+    <div class="admin-profile">
+      <div class="avatar avatar-admin">AD</div>
+      <div><b>Quản trị viên</b><small>admin@techdemo.vn</small></div><span class="online-dot"></span>
+    </div>
+    <div class="sidebar-label">MENU CHÍNH</div>
+    <nav class="side-nav" aria-label="Điều hướng quản trị">
+      <button class="nav-item active" data-page="overview"><span>▦</span>Tổng quan</button>
+      <button class="nav-item" data-page="branches"><span>⌖</span>Quản lý chi nhánh <i
+          id="branchNavCount">4</i></button>
+      <button class="nav-item" data-page="employees"><span>♙</span>Quản lý nhân viên <i
+          id="employeeNavCount">8</i></button>
+      <button class="nav-item" data-page="analytics"><span>▥</span>Thống kê & sơ đồ</button>
+      <button class="nav-item" data-page="activity"><span>◷</span>Nhật ký hoạt động</button>
+    </nav>
+    <div class="sidebar-label">HỆ THỐNG</div>
+    <nav class="side-nav"><button class="nav-item" data-page="settings"><span>⚙</span>Cài đặt</button><a
+        class="nav-item" th:href="@{/}" href="/"><span>↗</span>Về website</a></nav>
+    <div class="sidebar-bottom">
+      <div class="support-icon">?</div><b>Cần hỗ trợ?</b>
+      <p>Xem hướng dẫn sử dụng trang quản trị.</p><button id="helpButton">Trung tâm trợ giúp →</button>
+    </div>
+    <div class="sidebar-foot">TechDemo Admin · v1.0.0</div>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div class="top-left"><button id="sidebarToggle" class="icon-button mobile-only" aria-label="Mở menu">☰</button>
+        <div class="crumb"><span>TechDemo</span><b>/</b><strong id="breadcrumbTitle">Tổng quan</strong></div>
+      </div>
+      <div class="top-actions">
+        <div class="today-label"><span class="calendar-icon">▦</span><span id="todayText">21/10/2026</span></div><button
+          class="icon-button notification" id="notificationButton" aria-label="Thông báo">♧<i></i></button><button
+          class="user-menu" id="userMenu"><span class="avatar avatar-small">AD</span><span><b>Admin</b><small>Quản trị
+              viên</small></span><span>⌄</span></button>
+      </div>
+    </header>
+
+    <div class="page-wrap">
+      <section class="page-section active" id="page-overview">
+        <div class="page-title-row">
+          <div>
+            <div class="overline">WORKSPACE / DASHBOARD</div>
+            <h1>Tổng quan hệ thống <span class="hello-wave">✦</span></h1>
+            <p>Theo dõi tình hình hoạt động của hệ thống cửa hàng TechDemo.</p>
+          </div>
+          <div class="title-actions"><button class="btn btn-outline" id="exportOverview">⇩ Xuất báo cáo</button><button
+              class="btn btn-primary" data-go="branches">＋ Quản lý chi nhánh</button></div>
+        </div>
+        <div class="stat-grid">
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-icon red-icon">₫</span><span class="trend up">↗ 12,8%</span></div>
+            <div class="stat-label">Tổng doanh thu <span class="info-tip" title="Số liệu minh họa">i</span></div>
+            <div class="stat-value" id="totalRevenue">2.480.500.000₫</div>
+            <div class="stat-foot">So với kỳ trước <b class="positive">+12,8%</b></div>
+            <div class="mini-bars red-bars"><i style="height:32%"></i><i style="height:48%"></i><i
+                style="height:40%"></i><i style="height:67%"></i><i style="height:54%"></i><i style="height:80%"></i><i
+                style="height:70%"></i><i style="height:100%"></i></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-icon blue-icon">▤</span><span class="trend up">↗ 8,4%</span></div>
+            <div class="stat-label">Đơn hàng</div>
+            <div class="stat-value">1.286</div>
+            <div class="stat-foot">Trong tháng này <b class="positive">+8,4%</b></div>
+            <div class="mini-bars blue-bars"><i style="height:45%"></i><i style="height:60%"></i><i
+                style="height:52%"></i><i style="height:70%"></i><i style="height:58%"></i><i style="height:90%"></i><i
+                style="height:76%"></i><i style="height:100%"></i></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-icon violet-icon">⌖</span><span class="trend neutral">Đang hoạt
+                động</span></div>
+            <div class="stat-label">Chi nhánh</div>
+            <div class="stat-value" id="totalBranches">04 <small>/ 04</small></div>
+            <div class="stat-foot">Tất cả chi nhánh đều <b class="positive">đang mở</b></div>
+            <div class="progress-line"><span style="width:100%"></span></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-icon green-icon">♙</span><span class="trend up">↗ 2 người</span>
+            </div>
+            <div class="stat-label">Nhân viên</div>
+            <div class="stat-value" id="totalEmployees">08 <small>người</small></div>
+            <div class="stat-foot">Đang làm việc <b class="positive" id="activeEmployees">07 nhân viên</b></div>
+            <div class="progress-line green-progress"><span style="width:87.5%"></span></div>
+          </article>
+        </div>
+
+        <div class="dashboard-grid primary-grid">
+          <article class="panel revenue-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Doanh thu hệ thống</h2>
+                <p>Biến động doanh thu theo thời gian</p>
+              </div><select id="overviewPeriod" class="select-control">
+                <option value="week">7 ngày qua</option>
+                <option value="month" selected>6 tháng qua</option>
+                <option value="year">Theo năm</option>
+              </select>
+            </div>
+            <div class="chart-legend"><span><i class="legend-dot red-dot"></i>Doanh thu</span><span><i
+                  class="legend-dot pale-dot"></i>Kỳ trước</span></div>
+            <div class="chart-holder" id="overviewChart" aria-label="Biểu đồ doanh thu"></div>
+            <div class="chart-summary">
+              <div><small>Doanh thu trung bình</small><b id="averageRevenue">413,4 triệu ₫</b></div>
+              <div><small>Tháng cao nhất</small><b id="peakRevenue">Tháng 10</b></div>
+              <div><small>Tăng trưởng</small><b class="positive">+12,8%</b></div>
+            </div>
+          </article>
+          <article class="panel branch-mix-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Doanh thu theo chi nhánh</h2>
+                <p>Tỷ trọng đóng góp trong tháng</p>
+              </div><button class="text-button" data-go="analytics">Chi tiết ↗</button>
+            </div>
+            <div class="donut-area">
+              <div class="donut" id="branchDonut">
+                <div class="donut-center"><b>2,48 tỷ</b><small>Tổng doanh thu</small></div>
+              </div>
+            </div>
+            <div id="branchLegend" class="branch-legend"></div>
+          </article>
+        </div>
+        <div class="dashboard-grid secondary-grid">
+          <article class="panel branch-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Chi nhánh nổi bật</h2>
+                <p>Tình trạng và doanh thu gần nhất</p>
+              </div><button class="text-button" data-go="branches">Tất cả chi nhánh →</button>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>CHI NHÁNH</th>
+                    <th>QUẢN LÝ</th>
+                    <th>DOANH THU</th>
+                    <th>TRẠNG THÁI</th>
+                  </tr>
+                </thead>
+                <tbody id="overviewBranchTable"></tbody>
+              </table>
+            </div>
+          </article>
+          <article class="panel activity-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Hoạt động gần đây</h2>
+                <p>Cập nhật mới nhất trong hệ thống</p>
+              </div><button class="text-button" data-go="activity">Xem tất cả →</button>
+            </div>
+            <div class="activity-list" id="overviewActivity"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="page-section" id="page-branches">
+        <div class="page-title-row">
+          <div>
+            <div class="overline">ORGANIZATION / LOCATIONS</div>
+            <h1>Quản lý chi nhánh</h1>
+            <p>Tạo, cập nhật thông tin và theo dõi hoạt động của từng cửa hàng.</p>
+          </div>
+          <div class="title-actions"><button class="btn btn-outline" id="exportBranches">⇩ Xuất
+              Excel/CSV</button><button class="btn btn-primary" id="addBranchButton">＋ Thêm chi nhánh</button></div>
+        </div>
+        <div class="stat-grid compact-stats">
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-icon violet-icon">⌖</span><span class="tiny-caption">Toàn hệ
+                thống</span></div>
+            <div class="stat-label">Tổng chi nhánh</div>
+            <div class="stat-value" id="branchStatTotal">04</div>
+            <div class="stat-foot">Các địa điểm trong hệ thống</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-icon green-icon">✓</span><span class="trend up">Ổn định</span></div>
+            <div class="stat-label">Đang hoạt động</div>
+            <div class="stat-value" id="branchStatOpen">04</div>
+            <div class="stat-foot">Có thể tiếp nhận khách hàng</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-icon orange-icon">♙</span></div>
+            <div class="stat-label">Tổng nhân sự</div>
+            <div class="stat-value" id="branchStatStaff">08</div>
+            <div class="stat-foot">Phân bổ tại các chi nhánh</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-icon red-icon">₫</span></div>
+            <div class="stat-label">Doanh thu bình quân</div>
+            <div class="stat-value" id="branchStatAvg">620,1tr</div>
+            <div class="stat-foot">Trên mỗi chi nhánh / tháng</div>
+          </article>
+        </div>
+        <article class="panel location-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Sơ đồ mạng lưới chi nhánh</h2>
+              <p>Minh họa phân bố địa điểm và trạng thái theo khu vực</p>
+            </div><span class="map-caption"><i class="map-pulse"></i> Cập nhật theo dữ liệu mẫu</span>
+          </div>
+          <div class="branch-map" id="branchMap">
+            <div class="map-water"></div>
+            <div class="map-road road-one"></div>
+            <div class="map-road road-two"></div>
+            <div class="map-road road-three"></div>
+            <div class="map-block block-a"></div>
+            <div class="map-block block-b"></div>
+            <div class="map-block block-c"></div>
+            <div class="map-block block-d"></div>
+            <div class="map-label label-north">MIỀN BẮC</div>
+            <div class="map-label label-central">MIỀN TRUNG</div>
+            <div class="map-label label-south">MIỀN NAM</div>
+            <div class="map-nodes" id="mapNodes"></div>
+            <div class="map-legend"><span><i class="map-dot open-dot"></i>Đang hoạt động</span><span><i
+                  class="map-dot pause-dot"></i>Tạm ngưng</span></div>
+          </div>
+        </article>
+        <article class="panel table-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Danh sách chi nhánh</h2>
+              <p id="branchTableSub">Danh sách tất cả chi nhánh đang quản lý</p>
+            </div>
+            <div class="table-tools"><label class="search-box">⌕ <input id="branchSearch"
+                  placeholder="Tìm tên, mã, khu vực..."></label><select id="branchStatusFilter" class="select-control">
+                <option value="all">Tất cả trạng thái</option>
+                <option value="Đang hoạt động">Đang hoạt động</option>
+                <option value="Tạm ngưng">Tạm ngưng</option>
+              </select></div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th><input type="checkbox" aria-label="Chọn tất cả" id="selectAllBranches"></th>
+                  <th>MÃ / TÊN CHI NHÁNH</th>
+                  <th>KHU VỰC</th>
+                  <th>QUẢN LÝ</th>
+                  <th>NHÂN VIÊN</th>
+                  <th>DOANH THU THÁNG</th>
+                  <th>TRẠNG THÁI</th>
+                  <th>THAO TÁC</th>
+                </tr>
+              </thead>
+              <tbody id="branchTableBody"></tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="branchResultsCount">Hiển thị 4 chi nhánh</span>
+            <div class="table-pagination"><button disabled>‹</button><button class="current">1</button><button
+                disabled>›</button></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="page-section" id="page-employees">
+        <div class="page-title-row">
+          <div>
+            <div class="overline">PEOPLE / TEAM DIRECTORY</div>
+            <h1>Quản lý nhân viên</h1>
+            <p>Quản lý hồ sơ nhân viên, vị trí, chi nhánh làm việc và trạng thái tài khoản.</p>
+          </div>
+          <div class="title-actions"><button class="btn btn-outline" id="exportEmployees">⇩ Xuất
+              Excel/CSV</button><button class="btn btn-primary" id="addEmployeeButton">＋ Thêm nhân viên</button></div>
+        </div>
+        <div class="stat-grid compact-stats">
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-icon blue-icon">♙</span></div>
+            <div class="stat-label">Tổng nhân viên</div>
+            <div class="stat-value" id="employeeStatTotal">08</div>
+            <div class="stat-foot">Tất cả hồ sơ nhân viên</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-icon green-icon">✓</span></div>
+            <div class="stat-label">Đang làm việc</div>
+            <div class="stat-value" id="employeeStatActive">07</div>
+            <div class="stat-foot">Tài khoản đang hoạt động</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-icon orange-icon">♙</span></div>
+            <div class="stat-label">Quản lý chi nhánh</div>
+            <div class="stat-value" id="employeeStatManagers">04</div>
+            <div class="stat-foot">Phụ trách các cửa hàng</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-icon violet-icon">✦</span></div>
+            <div class="stat-label">Vai trò hệ thống</div>
+            <div class="stat-value">04 <small>nhóm</small></div>
+            <div class="stat-foot">Admin, quản lý, bán hàng, kho</div>
+          </article>
+        </div>
+        <article class="panel staff-overview">
+          <div class="panel-head">
+            <div>
+              <h2>Cơ cấu nhân sự theo chi nhánh</h2>
+              <p>So sánh số lượng thành viên tại mỗi địa điểm</p>
+            </div><button class="text-button" data-go="analytics">Xem phân tích ↗</button>
+          </div>
+          <div class="staff-bars" id="staffBars"></div>
+        </article>
+        <article class="panel table-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Danh sách nhân viên</h2>
+              <p>Thông tin hồ sơ và quyền truy cập hệ thống</p>
+            </div>
+            <div class="table-tools"><label class="search-box">⌕ <input id="employeeSearch"
+                  placeholder="Tên, email, mã nhân viên..."></label><select id="employeeBranchFilter"
+                class="select-control">
+                <option value="all">Tất cả chi nhánh</option>
+              </select><select id="employeeStatusFilter" class="select-control">
+                <option value="all">Tất cả trạng thái</option>
+                <option value="Đang làm việc">Đang làm việc</option>
+                <option value="Tạm khóa">Tạm khóa</option>
+              </select></div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="selectAllEmployees" aria-label="Chọn tất cả"></th>
+                  <th>NHÂN VIÊN</th>
+                  <th>VỊ TRÍ</th>
+                  <th>CHI NHÁNH</th>
+                  <th>NGÀY VÀO LÀM</th>
+                  <th>TRẠNG THÁI</th>
+                  <th>THAO TÁC</th>
+                </tr>
+              </thead>
+              <tbody id="employeeTableBody"></tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="employeeResultsCount">Hiển thị 8 nhân viên</span>
+            <div class="table-pagination"><button disabled>‹</button><button class="current">1</button><button
+                disabled>›</button></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="page-section" id="page-analytics">
+        <div class="page-title-row">
+          <div>
+            <div class="overline">INSIGHTS / REPORTS</div>
+            <h1>Thống kê & sơ đồ</h1>
+            <p>Đánh giá doanh thu, hiệu suất chi nhánh và cơ cấu nhân sự.</p>
+          </div>
+          <div class="title-actions"><select id="analyticsPeriod" class="select-control">
+              <option value="week">7 ngày qua</option>
+              <option value="month" selected>6 tháng qua</option>
+              <option value="year">Theo năm</option>
+            </select><button class="btn btn-primary" id="exportAnalytics">⇩ Tải báo cáo</button></div>
+        </div>
+        <div class="dashboard-grid analytics-grid">
+          <article class="panel wide-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Biểu đồ doanh thu</h2>
+                <p>So sánh kết quả theo từng khoảng thời gian</p>
+              </div>
+            </div>
+            <div id="analyticsRevenueChart" class="chart-holder large-chart"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Tỷ trọng doanh thu</h2>
+                <p>Phân bổ theo chi nhánh</p>
+              </div>
+            </div>
+            <div class="donut-area">
+              <div class="donut" id="analyticsDonut">
+                <div class="donut-center"><b>2,48 tỷ</b><small>Tổng doanh thu</small></div>
+              </div>
+            </div>
+            <div id="analyticsBranchLegend" class="branch-legend"></div>
+          </article>
+        </div>
+        <div class="dashboard-grid analytics-grid">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Nhân sự theo chi nhánh</h2>
+                <p>Số nhân viên theo địa điểm</p>
+              </div>
+            </div>
+            <div class="staff-bars vertical-bars" id="analyticsStaffBars"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Phân bố địa điểm</h2>
+                <p>Sơ đồ khu vực hoạt động</p>
+              </div>
+            </div>
+            <div class="region-grid" id="regionGrid"></div>
+          </article>
+        </div>
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Chỉ số vận hành chi nhánh</h2>
+              <p>Doanh thu và số lượng nhân sự</p>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>CHI NHÁNH</th>
+                  <th>KHU VỰC</th>
+                  <th>NHÂN SỰ</th>
+                  <th>DOANH THU</th>
+                  <th>TỶ TRỌNG</th>
+                  <th>TRẠNG THÁI</th>
+                </tr>
+              </thead>
+              <tbody id="analyticsTable"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="page-section" id="page-activity">
+        <div class="page-title-row">
+          <div>
+            <div class="overline">SYSTEM / AUDIT LOG</div>
+            <h1>Nhật ký hoạt động</h1>
+            <p>Theo dõi các thao tác quản trị trong phiên làm việc demo.</p>
+          </div>
+          <div class="title-actions"><button class="btn btn-outline" id="clearActivity">Xóa nhật ký demo</button></div>
+        </div>
+        <article class="panel table-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Lịch sử thao tác</h2>
+              <p>Các sự kiện gần đây được ghi nhận ở trình duyệt này</p>
+            </div><label class="search-box">⌕ <input id="activitySearch" placeholder="Tìm hoạt động..."></label>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>THỜI GIAN</th>
+                  <th>NGƯỜI THỰC HIỆN</th>
+                  <th>HOẠT ĐỘNG</th>
+                  <th>ĐỐI TƯỢNG</th>
+                  <th>KẾT QUẢ</th>
+                </tr>
+              </thead>
+              <tbody id="activityTableBody"></tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="activityResultsCount">Lịch sử hoạt động</span></div>
+        </article>
+      </section>
+
+      <section class="page-section" id="page-settings">
+        <div class="page-title-row">
+          <div>
+            <div class="overline">SYSTEM / PREFERENCES</div>
+            <h1>Cài đặt hệ thống</h1>
+            <p>Tùy chỉnh thông tin hiển thị của trang quản trị mẫu.</p>
+          </div>
+        </div>
+        <div class="settings-layout">
+          <article class="panel settings-card">
+            <h2>Thông tin cửa hàng</h2>
+            <p>Các thông tin này chỉ lưu trong trình duyệt của bạn.</p>
+            <form id="settingsForm" class="settings-form"><label>Tên hệ thống<input name="storeName"
+                  value="TechDemo Technology Store" required></label><label>Email quản trị<input name="adminEmail"
+                  type="email" value="admin@techdemo.vn" required></label><label>Đơn vị tiền tệ<select name="currency">
+                  <option>VND (₫)</option>
+                </select></label><label>Ghi chú<textarea name="notes" rows="3"
+                  placeholder="Nhập ghi chú nội bộ..."></textarea></label><button class="btn btn-primary"
+                type="submit">Lưu cài đặt</button></form>
+          </article>
+          <article class="panel settings-card">
+            <h2>Thông tin bản demo</h2>
+            <div class="notice-box"><b>⚠ Đây là giao diện minh họa</b>
+              <p>Dữ liệu chi nhánh, nhân viên và doanh thu là dữ liệu mẫu lưu ở localStorage. Đây chưa phải hệ thống
+                quản trị có xác thực, máy chủ hoặc phân quyền an toàn.</p>
+            </div>
+            <div class="setting-row"><span>Trình duyệt</span><b>Local storage</b></div>
+            <div class="setting-row"><span>Biểu đồ</span><b>SVG / HTML</b></div>
+            <div class="setting-row"><span>Xuất báo cáo</span><b>CSV</b></div><button class="btn btn-danger-outline"
+              id="resetDemo">Khôi phục dữ liệu mẫu</button>
+          </article>
+        </div>
+      </section>
+
+      <footer class="admin-footer"><span>© 2026 TechDemo Admin Console</span><span>Dữ liệu minh họa · <a
+            th:href="@{/}" href="/">Quay lại cửa hàng ↗</a></span></footer>
+    </div>
+  </main>
+
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <div><span class="modal-kicker">TECHDEMO MANAGEMENT</span>
+          <h2 id="modalTitle">Thêm dữ liệu</h2>
+        </div><button class="icon-button" id="closeModal" aria-label="Đóng">×</button>
+      </div>
+      <form id="entityForm">
+        <div id="modalFields" class="modal-fields"></div>
+        <div class="modal-actions"><button type="button" class="btn btn-outline" id="cancelModal">Hủy</button><button
+            type="submit" class="btn btn-primary" id="saveEntityButton">Lưu thông tin</button></div>
+      </form>
+    </div>
+  </div>
+  <div class="toast" id="adminToast" role="status"></div>
+  <script th:src="@{/admin/js/admin.js}" src="/admin/js/admin.js"></script>
+</body>
+
+</html>

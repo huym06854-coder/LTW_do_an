@@ -1,0 +1,57 @@
+{"properties": [
+  {
+    "name": "spring.flyway.locations",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.flyway.locations'"
+  },
+  {
+    "name": "spring.flyway.baseline-on-migrate",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.flyway.baseline-on-migrate'"
+  },
+  {
+    "name": "spring.flyway.baseline-version",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.flyway.baseline-version'"
+  },
+  {
+    "name": "spring.thymeleaf.encoding",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.thymeleaf.encoding'"
+  },
+  {
+    "name": "spring.thymeleaf.cache",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.thymeleaf.cache'"
+  },
+  {
+    "name": "management.endpoints.web.exposure.include",
+    "type": "java.lang.String",
+    "description": "A description for 'management.endpoints.web.exposure.include'"
+  },
+  {
+    "name": "management.endpoint.health.show-details",
+    "type": "java.lang.String",
+    "description": "A description for 'management.endpoint.health.show-details'"
+  },
+  {
+    "name": "management.endpoint.health.probes.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'management.endpoint.health.probes.enabled'"
+  },
+  {
+    "name": "cloudinary.cloud-name",
+    "type": "java.lang.String",
+    "description": "A description for 'cloudinary.cloud-name'"
+  },
+  {
+    "name": "cloudinary.api-key",
+    "type": "java.lang.String",
+    "description": "A description for 'cloudinary.api-key'"
+  },
+  {
+    "name": "cloudinary.api-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'cloudinary.api-secret'"
+  }
+]}

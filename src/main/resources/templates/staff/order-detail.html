@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xử lý đơn hàng | TechDemo</title>
+    <link rel="stylesheet" th:href="@{/store/css/style.css}">
+    <link rel="stylesheet" th:href="@{/store/css/site.css}">
+    <link rel="stylesheet" th:href="@{/store/css/commerce-pages.css}">
+</head>
+<body class="commerce-page">
+    <div th:replace="~{fragments/store-layout :: siteHeader}"></div>
+    <main class="container wrap">
+        <div class="breadcrumb"><a th:href="@{/staff/orders}" href="/staff/orders">Quản lý đơn hàng</a>　›　#TD-1042</div>
+        <section class="page-intro order-detail-heading">
+            <div><small class="eyebrow-dark">STAFF ORDER WORKSPACE</small><h1>Đơn hàng #TD-1042</h1><p>Đặt ngày 21/10/2026 · Nhân viên phụ trách: Demo</p></div>
+            <span class="commerce-status">Đang xử lý</span>
+        </section>
+        <div class="commerce-notice">Các thao tác bên dưới chỉ minh họa giao diện, không cập nhật trạng thái thực tế.</div>
+        <section class="commerce-columns">
+            <div class="commerce-panel">
+                <h2>Sản phẩm trong đơn</h2>
+                <div class="order-card-product order-detail-product"><span class="commerce-item-mark">▱</span><div><b>Laptop Tech Demo Office 14</b><small>16.990.000₫ × 1</small></div><strong>16.990.000₫</strong></div>
+                <div class="commerce-summary-line commerce-total"><span>Tổng thanh toán</span><b>16.990.000₫</b></div>
+            </div>
+            <aside class="commerce-panel">
+                <h2>Khách hàng & giao nhận</h2>
+                <dl class="account-details">
+                    <div><dt>Khách hàng</dt><dd>Khách hàng TechDemo</dd></div>
+                    <div><dt>Điện thoại</dt><dd>Chưa cập nhật</dd></div>
+                    <div><dt>Địa chỉ</dt><dd>Chưa có thông tin nhận hàng</dd></div>
+                    <div><dt>Thanh toán</dt><dd>COD</dd></div>
+                </dl>
+                <label class="commerce-label" for="staffStatus">Cập nhật trạng thái</label>
+                <select id="staffStatus"><option>Đang xử lý</option><option>Đang giao</option><option>Đã giao</option><option>Đã hủy</option></select>
+                <button class="red-btn staff-save" type="button" data-demo-action="Cập nhật trạng thái chưa được kết nối backend.">Lưu trạng thái</button>
+            </aside>
+        </section>
+        <a class="commerce-text-link back-to-orders" th:href="@{/staff/orders}" href="/staff/orders">← Quay lại danh sách đơn</a>
+    </main>
+    <div th:replace="~{fragments/store-layout :: siteFooter}"></div>
+</body>
+</html>

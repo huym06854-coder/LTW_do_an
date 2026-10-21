@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Giỏ hàng | TechDemo</title>
+    <link rel="stylesheet" th:href="@{/store/css/style.css}">
+    <link rel="stylesheet" th:href="@{/store/css/site.css}">
+</head>
+
+<body class="cart-page">
+    <div th:replace="~{fragments/store-layout :: siteHeader}"></div>
+    <main class="container wrap">
+        <div class="breadcrumb"><a th:href="@{/}" href="/">Trang chủ</a>　›　Giỏ hàng</div>
+        <section class="page-intro"><small class="eyebrow-dark">YOUR SHOPPING CART</small>
+            <h1>Giỏ hàng của bạn</h1>
+            <p>Kiểm tra sản phẩm trước khi tiếp tục.</p>
+        </section>
+        <section class="cart-layout">
+            <div class="cart-table-wrap">
+                <div class="cart-table-head"><span>Sản phẩm</span><span>Đơn giá</span><span>Số lượng</span><span>Thành
+                        tiền</span></div>
+                <div id="cartItems"></div>
+                <div class="cart-empty" id="cartEmpty">
+                    <div>🛒</div>
+                    <h3>Giỏ hàng đang trống</h3>
+                    <p>Hãy khám phá và thêm sản phẩm bạn yêu thích.</p><a class="red-btn" th:href="@{/products}" href="/products">Tiếp tục
+                        mua sắm →</a>
+                </div>
+            </div>
+            <aside class="cart-summary">
+                <h2>Tóm tắt đơn hàng</h2>
+                <div><span>Tạm tính</span><b id="subtotal">0₫</b></div>
+                <div><span>Phí giao hàng</span><b>Miễn phí (demo)</b></div>
+                <hr>
+                <div class="total"><span>Tổng cộng</span><b id="total">0₫</b></div><button class="red-btn"
+                    id="checkoutBtn" data-checkout-url="/checkout" th:attr="data-checkout-url=@{/checkout}">Tiến hành đặt hàng →</button>
+                <p>Đây là bản demo giao diện, chưa kết nối thanh toán.</p>
+            </aside>
+        </section>
+    </main>
+    <div th:replace="~{fragments/store-layout :: siteFooter}"></div>
+</body>
+
+</html>

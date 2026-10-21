@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài khoản của tôi | TechDemo</title>
+    <link rel="stylesheet" th:href="@{/store/css/style.css}">
+    <link rel="stylesheet" th:href="@{/store/css/site.css}">
+    <link rel="stylesheet" th:href="@{/store/css/commerce-pages.css}">
+</head>
+<body class="commerce-page">
+    <div th:replace="~{fragments/store-layout :: siteHeader}"></div>
+    <main class="container wrap">
+        <div class="breadcrumb"><a th:href="@{/}" href="/">Trang chủ</a>　›　Tài khoản của tôi</div>
+        <section class="page-intro">
+            <small class="eyebrow-dark">CUSTOMER ACCOUNT</small>
+            <h1>Tài khoản của tôi</h1>
+            <p>Quản lý thông tin và theo dõi các đơn hàng.</p>
+        </section>
+        <section class="account-layout">
+            <aside class="commerce-panel account-sidebar">
+                <div class="account-avatar">A</div>
+                <h2>Khách hàng TechDemo</h2>
+                <p class="commerce-muted">Tài khoản demo</p>
+                <nav aria-label="Điều hướng tài khoản">
+                    <a class="account-nav-active" href="#profile-info">▣　Thông tin cá nhân</a>
+                    <a th:href="@{/orders}" href="/orders">▤　Đơn hàng của tôi</a>
+                    <a th:href="@{/cart}" href="/cart">🛒　Giỏ hàng</a>
+                </nav>
+            </aside>
+            <div class="account-content">
+                <section class="commerce-panel" id="profile-info">
+                    <div class="commerce-section-heading"><div><span class="commerce-kicker">PROFILE</span><h2>Thông tin cá nhân</h2></div><button type="button" class="commerce-secondary-button" data-demo-action="Chỉnh sửa hồ sơ chưa được kết nối.">Chỉnh sửa</button></div>
+                    <dl class="account-details">
+                        <div><dt>Họ và tên</dt><dd>Khách hàng TechDemo</dd></div>
+                        <div><dt>Email</dt><dd>customer@example.com</dd></div>
+                        <div><dt>Số điện thoại</dt><dd>Chưa cập nhật</dd></div>
+                        <div><dt>Địa chỉ mặc định</dt><dd>Chưa cập nhật</dd></div>
+                    </dl>
+                </section>
+                <section class="commerce-panel account-orders">
+                    <div class="commerce-section-heading"><div><span class="commerce-kicker">RECENT ACTIVITY</span><h2>Đơn hàng gần đây</h2></div><a class="commerce-text-link" th:href="@{/orders}" href="/orders">Xem tất cả →</a></div>
+                    <article class="account-order-row">
+                        <div><a th:href="@{/orders/TD-1042}" href="/orders/TD-1042"><b>Đơn hàng #TD-1042</b></a><small>21/10/2026 · 1 sản phẩm</small></div>
+                        <span class="commerce-status">Đang xử lý</span><strong>16.990.000₫</strong>
+                    </article>
+                    <p class="commerce-demo-note">Thông tin tài khoản và đơn hàng trên trang này chỉ là dữ liệu minh họa.</p>
+                </section>
+            </div>
+        </section>
+    </main>
+    <div th:replace="~{fragments/store-layout :: siteFooter}"></div>
+</body>
+</html>

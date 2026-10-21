@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Giới thiệu | TechDemo</title>
+    <link rel="stylesheet" th:href="@{/store/css/style.css}">
+    <link rel="stylesheet" th:href="@{/store/css/site.css}">
+</head>
+
+<body class="about-page">
+    <div th:replace="~{fragments/store-layout :: siteHeader}"></div>
+    <main class="container wrap">
+        <div class="breadcrumb"><a th:href="@{/}" href="/">Trang chủ</a>　›　Giới thiệu</div>
+        <section class="page-intro"><small class="eyebrow-dark">ABOUT TECH DEMO</small>
+            <h1>Công nghệ tốt. Trải nghiệm khác biệt.</h1>
+            <p>TechDemo là giao diện cửa hàng công nghệ mẫu được xây dựng nhằm mô phỏng trải nghiệm mua sắm trực tuyến
+                hiện đại.</p>
+        </section>
+        <section class="about-hero">
+            <div class="about-mark">TD</div>
+            <div>
+                <h2>Khám phá công nghệ theo cách đơn giản hơn</h2>
+                <p>Chúng tôi đặt trải nghiệm tìm kiếm, so sánh và khám phá sản phẩm ở vị trí trung tâm. Danh mục rõ
+                    ràng, bộ lọc trực quan và thông tin sản phẩm được tổ chức thành từng phần dễ theo dõi.</p><a
+                    class="red-btn" th:href="@{/products}" href="/products">Xem danh mục sản phẩm →</a>
+            </div>
+        </section>
+        <section class="about-values">
+            <article><span>▱</span>
+                <h3>Sản phẩm đa dạng</h3>
+                <p>Laptop, PC, màn hình, thiết bị mạng và phụ kiện.</p>
+            </article>
+            <article><span>♧</span>
+                <h3>Tư vấn công nghệ</h3>
+                <p>Thông tin giúp người dùng so sánh theo nhu cầu.</p>
+            </article>
+            <article><span>◇</span>
+                <h3>Trải nghiệm tiện lợi</h3>
+                <p>Giao diện linh hoạt trên máy tính và điện thoại.</p>
+            </article>
+        </section>
+    </main>
+    <div th:replace="~{fragments/store-layout :: siteFooter}"></div>
+</body>
+
+</html>

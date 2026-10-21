@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<body>
+  <th:block th:fragment="siteHeader">
+    <div class="announcement">♧ &nbsp; Tech Demo - Khám phá công nghệ, mua sắm tiện lợi!</div>
+    <div class="topline">
+        <div class="container wrap top-inner"><span>🚚 Giao hàng toàn quốc</span><span>▣ Thiết bị công nghệ</span><span>✦ Ưu đãi
+                đơn hàng</span><span>☎ Hỗ trợ khách hàng</span></div>
+    </div>
+    <header class="header">
+        <div class="container wrap header-main">
+            <a class="logo" th:href="@{/}" href="/">Tech<span>Demo</span><small>TECHNOLOGY STORE</small></a>
+            <button class="category-btn" id="categoryBtn">☰ <span>Danh mục</span></button>
+            <form class="search" id="searchForm"><input id="searchInput" placeholder="Bạn muốn mua gì hôm nay?"
+                    aria-label="Tìm kiếm sản phẩm"><button>Tìm kiếm</button></form>
+            <a class="header-action" th:href="@{/cart}" href="/cart">🛒 <span>Giỏ hàng <b class="cart-count">0</b></span></a>
+            <a class="header-action login" th:href="@{/login}" href="/login">♙ <span>Đăng nhập</span></a>
+            <button class="mobile-menu" id="mobileMenu" aria-label="Mở menu">☰</button>
+        </div>
+        <div class="mega-wrap">
+            <div class="container wrap mega-menu" id="megaMenu">
+                <div class="mega-list"><a th:href="@{/products?category=Laptop}" href="/products?category=Laptop">▱ Laptop <span>›</span></a><a
+                        th:href="@{/products?category=Camera}" href="/products?category=Camera">◎ Camera quan sát <span>›</span></a><a
+                        th:href="@{/products?category=Mạng}" href="/products?category=Mạng">♧ Mạng máy tính <span>›</span></a><a
+                        th:href="@{/products?category=Màn hình}" href="/products?category=Màn hình">▣ Màn hình <span>›</span></a><a
+                        th:href="@{/products?category=Phụ kiện}" href="/products?category=Phụ kiện">⌘ Phụ kiện máy tính <span>›</span></a><a
+                        th:href="@{/products?category=PC}" href="/products?category=PC">▤ PC / Máy tính bàn <span>›</span></a><a
+                        th:href="@{/products?category=Máy in}" href="/products?category=Máy in">▧ Máy in <span>›</span></a></div>
+                <div class="mega-sub"><b>LAPTOP</b>
+                    <div><a th:href="@{/products?brand=ASUS}" href="/products?brand=ASUS">ASUS</a><a th:href="@{/products?brand=Dell}" href="/products?brand=Dell">Dell</a><a
+                            th:href="@{/products?brand=Lenovo}" href="/products?brand=Lenovo">Lenovo</a><a th:href="@{/products?brand=HP}" href="/products?brand=HP">HP</a><a
+                            th:href="@{/products?brand=Acer}" href="/products?brand=Acer">Acer</a><a th:href="@{/products}" href="/products">Xem tất cả →</a></div>
+                </div>
+                <div class="mega-feature"><small>TECH DEMO COLLECTION</small>
+                    <h3>Khám phá thiết bị công nghệ</h3>
+                    <p>Lựa chọn sản phẩm phù hợp với nhu cầu của bạn.</p><a class="red-btn" th:href="@{/products}" href="/products">Khám
+                        phá ngay →</a>
+                </div>
+            </div>
+        </div>
+        <nav class="container wrap nav" id="mainNav"><a th:href="@{/}" href="/">Trang chủ</a><a th:href="@{/products}" href="/products">Sản phẩm</a><a
+                th:href="@{/about}" href="/about">Giới thiệu</a><a th:href="@{/news}" href="/news">Tin tức</a><a th:href="@{/offers}" href="/offers">Dự án & ưu
+                đãi</a><a th:href="@{/contact}" href="/contact">Liên hệ</a></nav>
+    </header>
+  </th:block>
+  <th:block th:fragment="siteFooter">
+    <footer id="contact">
+        <div class="container wrap footer-grid">
+            <div><a class="logo" th:href="@{/}" href="/">Tech<span>Demo</span><small>TECHNOLOGY STORE</small></a>
+                <p>Cùng bạn khám phá thế giới công nghệ.</p>
+                <p>☎ 1900 6868 &nbsp; ✉ hello@techdemo.vn</p>
+            </div>
+            <div><b>Về TechDemo</b><a th:href="@{/about}" href="/about">Giới thiệu</a><a th:href="@{/news}" href="/news">Tin tức công nghệ</a><a
+                    th:href="@{/offers}" href="/offers">Ưu đãi & dự án</a></div>
+            <div><b>Hỗ trợ khách hàng</b><a th:href="@{/contact}" href="/contact">Liên hệ</a><a th:href="@{/contact#shipping}" href="/contact#shipping">Chính sách
+                    giao hàng</a><a th:href="@{/contact#warranty}" href="/contact#warranty">Chính sách bảo hành</a><a th:href="@{/profile}" href="/profile">Tài khoản của tôi</a><a th:href="@{/orders}" href="/orders">Đơn hàng của tôi</a></div>
+            <div><b>Đăng ký nhận tin</b>
+                <p>Nhận thông tin sản phẩm và ưu đãi mới.</p>
+                <form id="subscribeForm"><input placeholder="Email của bạn" type="email" required><button>Đăng
+                        ký</button></form>
+            </div>
+        </div>
+        <div class="copyright">© 2026 TechDemo Store. Giao diện demo học tập. <a th:href="@{/admin}" href="/admin">Quản trị hệ thống</a></div>
+    </footer>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script th:src="@{/store/js/site.js}"></script>
+  </th:block>
+</body>
+</html>

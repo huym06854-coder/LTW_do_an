@@ -1,0 +1,727 @@
+.commerce-page .page-intro {
+    margin-bottom: 24px
+}
+
+.commerce-page .page-intro h1 {
+    margin-bottom: 8px
+}
+
+.commerce-panel {
+    background: #fff;
+    border: 1px solid #e7e9ee;
+    border-radius: 16px;
+    padding: 26px;
+    box-shadow: 0 8px 28px rgba(23, 32, 51, .04)
+}
+
+.commerce-panel h2 {
+    font-size: 20px;
+    margin: 0 0 18px;
+    color: #172033
+}
+
+.commerce-kicker {
+    display: block;
+    color: #d92d39;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    margin-bottom: 8px
+}
+
+.commerce-muted,
+.commerce-demo-note {
+    color: #778092;
+    font-size: 13px
+}
+
+.commerce-demo-note {
+    display: block;
+    margin: 14px 0 0
+}
+
+.commerce-text-link {
+    color: #c92332;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none
+}
+
+.commerce-notice {
+    background: #fff8e8;
+    border: 1px solid #f1dfb5;
+    border-radius: 10px;
+    color: #76591c;
+    font-size: 13px;
+    margin: 0 0 20px;
+    padding: 12px 16px
+}
+
+.commerce-auth {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(340px, .85fr);
+    gap: 24px;
+    margin: 24px 0 48px
+}
+
+.commerce-auth-intro {
+    background: linear-gradient(145deg, #172033, #263b5a);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 500px;
+    padding: 48px
+}
+
+.commerce-auth-intro .commerce-kicker {
+    color: #ffb7bd
+}
+
+.commerce-auth-intro h1 {
+    font-size: 38px;
+    line-height: 1.25;
+    margin: 10px 0
+}
+
+.commerce-auth-intro h1 span {
+    color: #ffb7bd
+}
+
+.commerce-auth-intro p {
+    color: #d4dbe6;
+    line-height: 1.7;
+    max-width: 390px;
+    margin: 8px 0 24px
+}
+
+.commerce-auth-intro .commerce-text-link {
+    color: #fff
+}
+
+.commerce-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px
+}
+
+.commerce-form h2 {
+    margin: 0
+}
+
+.commerce-form>p {
+    margin: 0
+}
+
+.commerce-form label,
+.commerce-label {
+    color: #394154;
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    font-weight: 700;
+    gap: 7px
+}
+
+.commerce-form input,
+.commerce-form textarea,
+.commerce-form select,
+.commerce-panel select {
+    background: #fff;
+    border: 1px solid #d9dde5;
+    border-radius: 8px;
+    color: #172033;
+    font: inherit;
+    font-size: 14px;
+    min-height: 42px;
+    padding: 10px 12px;
+    width: 100%
+}
+
+.commerce-form textarea {
+    resize: vertical
+}
+
+.commerce-form .red-btn {
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    min-height: 46px
+}
+
+.commerce-form-foot {
+    text-align: center
+}
+
+.commerce-form-foot a,
+.commerce-form a {
+    color: #c92332;
+    font-weight: 700
+}
+
+.commerce-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(280px, .75fr);
+    align-items: start;
+    gap: 22px;
+    margin-bottom: 46px
+}
+
+.commerce-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px
+}
+
+.commerce-field-wide {
+    grid-column: 1/-1
+}
+
+.commerce-payment {
+    border: 1px solid #e7e9ee;
+    border-radius: 10px;
+    display: grid;
+    gap: 12px;
+    margin: 4px 0 0;
+    padding: 16px
+}
+
+.commerce-payment legend {
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0 6px
+}
+
+.commerce-payment label {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    font-weight: 500
+}
+
+.commerce-payment input {
+    accent-color: #c92332;
+    min-height: auto;
+    width: auto
+}
+
+.commerce-summary {
+    position: sticky;
+    top: 20px
+}
+
+.commerce-summary-item,
+.order-card-product {
+    align-items: center;
+    border-bottom: 1px solid #edf0f3;
+    display: flex;
+    gap: 12px;
+    padding: 0 0 18px
+}
+
+.commerce-item-mark {
+    align-items: center;
+    background: #f2f4f7;
+    border-radius: 10px;
+    color: #c92332;
+    display: flex;
+    font-size: 24px;
+    height: 52px;
+    justify-content: center;
+    width: 52px;
+    flex: 0 0 52px
+}
+
+.commerce-summary-item div,
+.order-card-product div {
+    display: grid;
+    flex: 1;
+    gap: 5px
+}
+
+.commerce-summary-item b,
+.order-card-product b {
+    font-size: 13px
+}
+
+.commerce-summary-item small,
+.order-card-product small {
+    color: #778092;
+    font-size: 12px
+}
+
+.commerce-summary-item strong,
+.order-card-product>strong {
+    font-size: 13px;
+    white-space: nowrap
+}
+
+.commerce-summary-line {
+    align-items: center;
+    color: #616a7b;
+    display: flex;
+    font-size: 14px;
+    justify-content: space-between;
+    padding: 12px 0
+}
+
+.commerce-summary-line b {
+    color: #172033
+}
+
+.commerce-total {
+    border-top: 1px solid #e7e9ee;
+    color: #172033;
+    font-size: 16px;
+    margin-top: 6px;
+    padding-top: 18px
+}
+
+.commerce-total b {
+    color: #c92332;
+    font-size: 18px
+}
+
+.commerce-summary>.commerce-text-link {
+    display: inline-block;
+    margin-top: 12px
+}
+
+.account-layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 22px;
+    margin-bottom: 46px
+}
+
+.account-sidebar {
+    text-align: center
+}
+
+.account-avatar {
+    align-items: center;
+    background: #fff0f1;
+    border-radius: 50%;
+    color: #c92332;
+    display: flex;
+    font-size: 28px;
+    font-weight: 800;
+    height: 72px;
+    justify-content: center;
+    margin: 0 auto 12px;
+    width: 72px
+}
+
+.account-sidebar h2 {
+    font-size: 17px;
+    margin: 0 0 4px
+}
+
+.account-sidebar>p {
+    margin: 0 0 20px
+}
+
+.account-sidebar nav {
+    border-top: 1px solid #edf0f3;
+    display: grid;
+    padding-top: 10px;
+    text-align: left
+}
+
+.account-sidebar nav a {
+    border-radius: 8px;
+    color: #525b6c;
+    font-size: 14px;
+    padding: 12px;
+    text-decoration: none
+}
+
+.account-sidebar nav a:hover,
+.account-sidebar nav .account-nav-active {
+    background: #fff0f1;
+    color: #c92332
+}
+
+.account-content {
+    display: grid;
+    gap: 20px
+}
+
+.commerce-section-heading {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px
+}
+
+.commerce-section-heading h2 {
+    margin: 0
+}
+
+.commerce-secondary-button {
+    background: #fff;
+    border: 1px solid #d9dde5;
+    border-radius: 8px;
+    color: #273044;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 10px 14px;
+    text-decoration: none
+}
+
+.account-details {
+    display: grid;
+    gap: 0;
+    margin: 0
+}
+
+.account-details>div {
+    border-bottom: 1px solid #edf0f3;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 160px 1fr;
+    padding: 14px 0
+}
+
+.account-details>div:last-child {
+    border-bottom: 0
+}
+
+.account-details dt {
+    color: #778092;
+    font-size: 13px
+}
+
+.account-details dd {
+    color: #273044;
+    font-size: 14px;
+    margin: 0
+}
+
+.account-order-row {
+    align-items: center;
+    border-top: 1px solid #edf0f3;
+    display: flex;
+    gap: 18px;
+    justify-content: space-between;
+    margin-top: 18px;
+    padding-top: 18px
+}
+
+.account-order-row>div {
+    display: grid;
+    gap: 6px
+}
+
+.account-order-row a {
+    color: #172033;
+    text-decoration: none
+}
+
+.account-order-row small,
+.order-card-heading small {
+    color: #778092;
+    font-size: 12px
+}
+
+.commerce-status {
+    background: #fff4df;
+    border-radius: 99px;
+    color: #8a5a00;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 7px 11px;
+    white-space: nowrap
+}
+
+.status-shipping {
+    background: #eaf3ff;
+    color: #245c9b
+}
+
+.status-complete {
+    background: #eaf7ef;
+    color: #237442
+}
+
+.order-filter-row {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px
+}
+
+.order-filter-row label {
+    color: #525b6c;
+    font-size: 13px;
+    font-weight: 700
+}
+
+.order-filter-row select {
+    max-width: 220px
+}
+
+.order-filter-row .commerce-text-link {
+    margin-left: auto
+}
+
+.order-list {
+    display: grid;
+    gap: 14px
+}
+
+.order-card {
+    border: 1px solid #e7e9ee;
+    border-radius: 12px;
+    padding: 18px
+}
+
+.order-card-heading {
+    align-items: center;
+    display: flex;
+    justify-content: space-between
+}
+
+.order-card-heading>div {
+    display: grid;
+    gap: 5px
+}
+
+.order-card-product {
+    margin-top: 16px
+}
+
+.order-card-footer {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 14px
+}
+
+.order-card-footer>span {
+    color: #778092;
+    font-size: 13px
+}
+
+.order-card-footer>span b {
+    color: #172033;
+    margin-left: 8px
+}
+
+.order-detail-heading {
+    align-items: center;
+    display: flex;
+    justify-content: space-between
+}
+
+.order-detail-columns {
+    margin-top: 18px
+}
+
+.order-detail-product {
+    margin: 0 0 10px;
+    padding-top: 4px
+}
+
+.order-timeline {
+    margin: 0 0 24px
+}
+
+.order-timeline ol {
+    border-left: 2px solid #e7e9ee;
+    display: grid;
+    gap: 22px;
+    list-style: none;
+    margin: 20px 0 0 8px;
+    padding: 0 0 0 22px
+}
+
+.order-timeline li {
+    display: grid;
+    gap: 5px;
+    position: relative
+}
+
+.order-timeline li:before {
+    background: #d8dde6;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    content: "";
+    height: 12px;
+    left: -30px;
+    position: absolute;
+    top: 2px;
+    width: 12px
+}
+
+.order-timeline .timeline-current:before {
+    background: #c92332
+}
+
+.order-timeline small {
+    color: #778092
+}
+
+.back-to-orders {
+    display: inline-block;
+    margin-bottom: 42px
+}
+
+.staff-summary {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 22px
+}
+
+.staff-summary>div {
+    background: #f7f8fa;
+    border-radius: 10px;
+    display: grid;
+    gap: 6px;
+    padding: 16px
+}
+
+.staff-summary small {
+    color: #778092;
+    font-size: 12px
+}
+
+.staff-summary b {
+    color: #172033;
+    font-size: 23px
+}
+
+.staff-table-wrap {
+    overflow-x: auto
+}
+
+.staff-table {
+    border-collapse: collapse;
+    min-width: 760px;
+    width: 100%
+}
+
+.staff-table th,
+.staff-table td {
+    border-bottom: 1px solid #edf0f3;
+    padding: 14px 10px;
+    text-align: left
+}
+
+.staff-table th {
+    color: #778092;
+    font-size: 12px;
+    font-weight: 700
+}
+
+.staff-table td {
+    color: #394154;
+    font-size: 13px
+}
+
+.staff-table a {
+    color: #c92332;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap
+}
+
+.staff-save {
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    margin-top: 14px;
+    padding: 12px;
+    width: 100%
+}
+
+@media(max-width:800px) {
+
+    .commerce-auth,
+    .commerce-columns,
+    .account-layout {
+        grid-template-columns: 1fr
+    }
+
+    .commerce-auth-intro {
+        min-height: 300px;
+        padding: 32px
+    }
+
+    .commerce-summary {
+        position: static
+    }
+
+    .account-sidebar nav {
+        grid-template-columns: repeat(3, 1fr)
+    }
+}
+
+@media(max-width:560px) {
+    .commerce-panel {
+        padding: 18px
+    }
+
+    .commerce-form-grid {
+        grid-template-columns: 1fr
+    }
+
+    .commerce-field-wide {
+        grid-column: auto
+    }
+
+    .order-filter-row {
+        align-items: stretch;
+        flex-direction: column
+    }
+
+    .order-filter-row select {
+        max-width: none
+    }
+
+    .order-filter-row .commerce-text-link {
+        margin-left: 0
+    }
+
+    .account-details>div {
+        gap: 5px;
+        grid-template-columns: 1fr
+    }
+
+    .account-order-row {
+        align-items: flex-start;
+        flex-wrap: wrap
+    }
+
+    .order-card-footer {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px
+    }
+
+    .order-detail-heading {
+        align-items: flex-start;
+        gap: 12px
+    }
+
+    .staff-summary {
+        grid-template-columns: 1fr
+    }
+
+    .commerce-summary-item,
+    .order-card-product {
+        align-items: flex-start;
+        flex-wrap: wrap
+    }
+
+    .commerce-summary-item strong,
+    .order-card-product>strong {
+        margin-left: 64px
+    }
+}
