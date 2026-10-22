@@ -1,5 +1,13 @@
 package vn.iotstar.repository;
 
-public class ProductImageRepository {
-    
+import java.util.*;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
+import jakarta.persistence.LockModeType;
+import vn.iotstar.domain.entity.ProductImage;
+import vn.iotstar.domain.enums.*;
+
+public interface ProductImageRepository extends JpaRepository<ProductImage, Long> {
+    List<ProductImage> findByProductIdOrderBySortOrderAsc(Long productId);
 }

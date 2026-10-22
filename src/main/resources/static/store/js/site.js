@@ -1,28 +1,131 @@
-const catalog = [
- {id:1,name:'Laptop Tech Demo Office 14 - Thiết bị văn phòng',brand:'Tech Demo',category:'Laptop',price:16990000,old:18990000,icon:'▱',tag:'-11%',rating:4.8,need:['Văn phòng','Học tập'],cpu:'Intel Core i5',ram:'8GB',ssd:'256GB'},
- {id:2,name:'Laptop Tech Demo Gaming 15 - Hiệu năng cao',brand:'ASUS',category:'Laptop',price:25990000,old:28990000,icon:'▱',tag:'-10%',rating:4.9,need:['Gaming','Đồ họa'],cpu:'Intel Core i7',ram:'16GB',ssd:'512GB'},
- {id:3,name:'Laptop Tech Demo Air 13 - Thiết kế mỏng nhẹ',brand:'Lenovo',category:'Laptop',price:18990000,old:21990000,icon:'▱',tag:'-13%',rating:4.8,need:['Văn phòng','Sinh viên'],cpu:'AMD Ryzen 5',ram:'16GB',ssd:'512GB'},
- {id:4,name:'Laptop Tech Demo Student 14 - Học tập',brand:'Dell',category:'Laptop',price:11990000,old:13990000,icon:'▱',tag:'-14%',rating:4.7,need:['Học tập','Sinh viên'],cpu:'Intel Core i5',ram:'8GB',ssd:'256GB'},
- {id:5,name:'Màn hình Tech Demo 24 inch Full HD',brand:'LG',category:'Màn hình',price:2990000,old:3490000,icon:'▣',tag:'-14%',rating:4.8,need:['Gaming','Văn phòng'],cpu:'',ram:'',ssd:''},
- {id:6,name:'Bộ lưu điện Tech Demo - Nguồn dự phòng',brand:'Tech Demo',category:'PC',price:2250000,old:2690000,icon:'ϟ',tag:'-16%',rating:4.7,need:['Văn phòng'],cpu:'',ram:'',ssd:'',stock:false},
- {id:7,name:'Camera Tech Demo ngoài trời - Giám sát an ninh',brand:'Tech Demo',category:'Camera',price:1290000,old:1590000,icon:'◎',tag:'-19%',rating:4.8,need:['Văn phòng'],cpu:'',ram:'',ssd:''},
- {id:8,name:'Router Tech Demo Wi-Fi - Bộ phát mạng',brand:'TP-Link',category:'Mạng',price:890000,old:1090000,icon:'♧',tag:'-18%',rating:4.7,need:['Văn phòng'],cpu:'',ram:'',ssd:''},
- {id:9,name:'Bàn phím cơ Tech Demo - Phụ kiện máy tính',brand:'Tech Demo',category:'Phụ kiện',price:690000,old:790000,icon:'⌨',tag:'-13%',rating:4.6,need:['Gaming','Văn phòng'],cpu:'',ram:'',ssd:''},
- {id:10,name:'Laptop Tech Demo Creator 16 - Đồ họa chuyên nghiệp',brand:'MSI',category:'Laptop',price:32990000,old:36990000,icon:'▱',tag:'-10%',rating:4.9,need:['Đồ họa','Gaming'],cpu:'AMD Ryzen 7',ram:'32GB',ssd:'1TB'}
-];
-const money = n => Number(n).toLocaleString('vi-VN')+'₫';
-function toast(msg){const el=document.getElementById('toast');if(!el)return;el.textContent=msg;el.classList.add('show');clearTimeout(window._toastTimer);window._toastTimer=setTimeout(()=>el.classList.remove('show'),2600)}
-function readCart(){try{return JSON.parse(localStorage.getItem('techdemoCart')||'[]')}catch(e){return []}}
-function saveCart(cart){localStorage.setItem('techdemoCart',JSON.stringify(cart));updateCartCount()}
-function updateCartCount(){const count=readCart().reduce((s,p)=>s+p.qty,0);document.querySelectorAll('.cart-count').forEach(e=>e.textContent=count)}
-function addCart(id,qty=1){const cart=readCart();const row=cart.find(p=>p.id===Number(id));if(row)row.qty+=qty;else{const p=catalog.find(p=>p.id===Number(id));if(p)cart.push({id:p.id,qty:qty})}saveCart(cart);toast('Đã thêm sản phẩm vào giỏ hàng!')}
-function productCard(p, opts={}){return `<article class="product"><div class="product-art"><span class="tag">${p.tag}</span><button class="heart" data-heart="${p.id}" aria-label="Yêu thích">♡</button><span>${p.icon}</span></div><h3>${p.name}</h3><div><span class="price">${money(p.price)}</span><span class="old-price">${money(p.old)}</span></div><div class="rating">⭐ ${p.rating}　·　${p.category}</div>${opts.actions===false?'':`<button class="add-btn" data-add="${p.id}">＋ Thêm vào giỏ</button><a class="detail-link" href="/product-detail?id=${p.id}">Xem chi tiết ↗</a>`}</article>`}
-function flashCard(p){return `<article class="flash-card"><span class="discount">${p.tag}</span><button class="heart" data-heart="${p.id}" aria-label="Yêu thích">♡</button><a class="flash-art" href="/product-detail?id=${p.id}">${p.icon}</a><div class="flash-name">${p.name}</div><div><span class="flash-price">${money(p.price)}</span><span class="flash-old">${money(p.old)}</span></div><div class="rating">⭐ ${p.rating} · Thông tin giao hàng</div><a href="/product-detail?id=${p.id}">Xem chi tiết ↗</a></article>`}
-function renderProducts(elId,list,fn=productCard){const el=document.getElementById(elId);if(el)el.innerHTML=list.map(p=>fn(p)).join('')}
-function initShared(){updateCartCount();const catBtn=document.getElementById('categoryBtn'),menu=document.getElementById('megaMenu');if(catBtn&&menu)catBtn.addEventListener('click',()=>menu.classList.toggle('open'));document.addEventListener('click',e=>{if(menu&&!e.target.closest('.mega-wrap')&&!e.target.closest('#categoryBtn'))menu.classList.remove('open')});const mob=document.getElementById('mobileMenu'),nav=document.getElementById('mainNav');if(mob&&nav)mob.addEventListener('click',()=>nav.classList.toggle('open'));const sf=document.getElementById('searchForm');if(sf)sf.addEventListener('submit',e=>{e.preventDefault();const q=document.getElementById('searchInput').value.trim();location.href='/products?q='+encodeURIComponent(q)});const sub=document.getElementById('subscribeForm');if(sub)sub.addEventListener('submit',e=>{e.preventDefault();toast('Cảm ơn bạn đã đăng ký nhận tin!');sub.reset()});document.body.addEventListener('click',e=>{const add=e.target.closest('[data-add]');if(add){addCart(add.dataset.add);return}const heart=e.target.closest('[data-heart]');if(heart){heart.classList.toggle('liked');heart.textContent=heart.classList.contains('liked')?'♥':'♡';toast(heart.classList.contains('liked')?'Đã thêm vào danh sách yêu thích.':'Đã bỏ khỏi danh sách yêu thích.')}})}
-function initHome(){renderProducts('flashProducts',catalog.slice(0,5),flashCard);renderProducts('homeProducts',catalog.slice(0,5));renderProducts('offerProducts',catalog.filter(p=>p.tag).slice(0,5));document.querySelectorAll('[data-collection]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-collection]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');let list=btn.dataset.collection==='trending'?[...catalog].sort((a,b)=>b.rating-a.rating).slice(0,5):btn.dataset.collection==='new'?[...catalog].reverse().slice(0,5):catalog.slice(0,5);renderProducts('homeProducts',list)}))}
-function initCatalog(){const ids=['filterCategory','filterBrand','filterNeed','filterCpu','filterRam','filterSsd','filterPrice','inStock'];const els=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]).filter(([id,e])=>e));let sort='popular';const params=new URLSearchParams(location.search);if(els.filterCategory&&params.get('category'))els.filterCategory.value=params.get('category');if(els.filterBrand&&params.get('brand'))els.filterBrand.value=params.get('brand');const q=params.get('q');const input=document.getElementById('searchInput');if(input&&q)input.value=q;const need=params.get('need');if(els.filterNeed&&need)els.filterNeed.value=need;const render=()=>{const value=id=>els[id]?.value||'';let list=catalog.filter(p=>(!value('filterCategory')||p.category.toLowerCase().includes(value('filterCategory').toLowerCase()))&&(!value('filterBrand')||p.brand===value('filterBrand'))&&(!value('filterNeed')||p.need.includes(value('filterNeed')))&&(!value('filterCpu')||p.cpu===value('filterCpu'))&&(!value('filterRam')||p.ram===value('filterRam'))&&(!value('filterSsd')||p.ssd===value('filterSsd'))&&(!value('filterPrice')||(value('filterPrice')==='under10'&&p.price<10000000)||(value('filterPrice')==='10to20'&&p.price>=10000000&&p.price<=20000000)||(value('filterPrice')==='over20'&&p.price>20000000))&&(!els.inStock?.checked||p.stock!==false)&&(!q||p.name.toLocaleLowerCase('vi').includes(q.toLocaleLowerCase('vi'))));if(sort==='discount')list.sort((a,b)=>(b.old-b.price)-(a.old-a.price));if(sort==='price-asc')list.sort((a,b)=>a.price-b.price);if(sort==='price-desc')list.sort((a,b)=>b.price-a.price);if(sort==='popular')list.sort((a,b)=>b.rating-a.rating);const target=document.getElementById('catalogProducts');if(target)target.innerHTML=list.map(p=>productCard(p)).join('');document.getElementById('resultCount').textContent=`Hiển thị ${list.length}/${catalog.length} sản phẩm`;document.getElementById('emptyState').hidden=!!list.length};ids.forEach(id=>els[id]?.addEventListener('change',render));document.getElementById('clearFilters')?.addEventListener('click',()=>{ids.forEach(id=>{if(els[id])els[id].type==='checkbox'?els[id].checked=false:els[id].value='' });if(input)input.value='';history.replaceState({},'', '/products');render()});document.querySelectorAll('[data-sort]').forEach(b=>b.addEventListener('click',()=>{sort=b.dataset.sort;document.querySelectorAll('[data-sort]').forEach(x=>x.classList.toggle('active',x===b));render()}));render()}
-function initDetail(){const params=new URLSearchParams(location.search),p=catalog.find(p=>p.id===Number(params.get('id'))) || catalog[0];const name=document.getElementById('detailName'),price=document.getElementById('detailPrice'),old=document.getElementById('detailOld'),art=document.getElementById('detailArt');if(name)name.textContent=p.name;if(price)price.textContent=money(p.price);if(old)old.textContent=money(p.old);if(art)art.textContent=p.icon;let qty=1;const q=document.getElementById('quantity');document.getElementById('qtyMinus')?.addEventListener('click',()=>{qty=Math.max(1,qty-1);q.textContent=qty});document.getElementById('qtyPlus')?.addEventListener('click',()=>{qty=Math.min(99,qty+1);q.textContent=qty});document.querySelectorAll('.option-buttons button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.option-buttons button').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');price.textContent=money(Number(btn.dataset.price));}));document.getElementById('addCartDetail')?.addEventListener('click',()=>addCart(p.id,qty));document.getElementById('buyNow')?.addEventListener('click',()=>{addCart(p.id,qty);location.href='/cart'})}
-function initCart(){const draw=()=>{let cart=readCart();const rows=cart.map(row=>({...catalog.find(p=>p.id===row.id),qty:row.qty})).filter(p=>p.id);const wrap=document.getElementById('cartItems');document.getElementById('cartEmpty').style.display=rows.length?'none':'block';wrap.innerHTML=rows.map(p=>`<div class="cart-row"><div class="cart-product"><span>${p.icon}</span><div><b>${p.name}</b><small>TechDemo · Hàng minh họa</small></div></div><span>${money(p.price)}</span><div class="cart-qty"><button data-qty="${p.id}" data-delta="-1">−</button>${p.qty}<button data-qty="${p.id}" data-delta="1">+</button></div><div><b>${money(p.price*p.qty)}</b><button class="cart-remove" data-remove="${p.id}">×</button></div></div>`).join('');const total=rows.reduce((s,p)=>s+p.price*p.qty,0);document.getElementById('subtotal').textContent=money(total);document.getElementById('total').textContent=money(total);};draw();document.getElementById('cartItems')?.addEventListener('click',e=>{const rm=e.target.closest('[data-remove]'),q=e.target.closest('[data-qty]');let c=readCart();if(rm)c=c.filter(x=>x.id!==Number(rm.dataset.remove));if(q){let r=c.find(x=>x.id===Number(q.dataset.qty));if(r){r.qty+=Number(q.dataset.delta);if(r.qty<1)c=c.filter(x=>x.id!==r.id)}}saveCart(c);draw()});document.getElementById('checkoutBtn')?.addEventListener('click',event=>{if(!readCart().length){toast('Giỏ hàng đang trống.');return}location.href=event.currentTarget.dataset.checkoutUrl})}
-function initMisc(){document.getElementById('contactForm')?.addEventListener('submit',e=>{e.preventDefault();toast('Đã ghi nhận yêu cầu (demo).');e.target.reset()});document.getElementById('loginForm')?.addEventListener('submit',e=>{e.preventDefault();toast('Đăng nhập chỉ là mô phỏng giao diện.');});document.getElementById('registerForm')?.addEventListener('submit',e=>{e.preventDefault();toast('Đăng ký chỉ là mô phỏng giao diện.');});document.getElementById('checkoutForm')?.addEventListener('submit',e=>{e.preventDefault();toast('Đặt hàng chưa được kết nối trong bản demo.');});document.querySelectorAll('[data-demo-action]').forEach(button=>button.addEventListener('click',()=>toast(button.dataset.demoAction)));document.getElementById('googleDemo')?.addEventListener('click',()=>toast('Đăng nhập Google chưa được kết nối.'));document.getElementById('forgotLink')?.addEventListener('click',e=>{e.preventDefault();toast('Vui lòng liên hệ quản trị viên trong bản demo.')})}
-document.addEventListener('DOMContentLoaded',()=>{initShared();if(document.getElementById('flashProducts'))initHome();if(document.getElementById('catalogProducts'))initCatalog();if(document.getElementById('detailName'))initDetail();if(document.getElementById('cartItems'))initCart();initMisc()});
+let catalogRequest = 0;
+const money = value => Number(value).toLocaleString('vi-VN') + '₫';
+const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
+
+function toast(message) {
+  const element = document.getElementById('toast');
+  if (!element) return;
+  element.textContent = message;
+  element.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => element.classList.remove('show'), 2600);
+}
+
+async function updateCartCount() {
+  try {
+    const response = await fetch('/cart/count');
+    if (response.ok && !response.redirected) {
+      const count = await response.json();
+      document.querySelectorAll('.cart-count').forEach(element => element.textContent = count);
+    }
+  } catch (error) { /* Keep the existing count visible while offline. */ }
+}
+
+async function addCart(id, quantity = 1) {
+  const token = document.getElementById('csrfToken')?.dataset.token;
+  if (!token) { location.href = '/login'; return; }
+  try {
+    const response = await fetch('/cart/add', {
+      method: 'POST', credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-CSRF-TOKEN': token },
+      body: new URLSearchParams({ productId: id, quantity: String(quantity) })
+    });
+    if (response.redirected) { location.href = new URL(response.url).pathname; return; }
+    if (!response.ok) throw new Error('Không thêm được vào giỏ hàng');
+    await updateCartCount();
+    toast('Đã thêm vào giỏ hàng!');
+  } catch (error) { toast('Không thêm được vào giỏ hàng. Kiểm tra số lượng và tồn kho.'); }
+}
+
+function productImage(product) {
+  return product.imageUrl
+    ? `<img src="${escapeHtml(product.imageUrl)}" alt="${escapeHtml(product.name)}" loading="lazy" style="max-width:95%;max-height:140px;object-fit:contain">`
+    : '<span aria-label="Chưa có ảnh sản phẩm">▱</span>';
+}
+
+function productCard(product) {
+  const url = `/product-detail?id=${encodeURIComponent(product.id)}`;
+  return `<article class="product"><div class="product-art"><a class="product-art-link" href="${url}">${productImage(product)}</a></div><h3>${escapeHtml(product.name)}</h3><div><span class="price">${money(product.price)}</span></div><div class="rating">${escapeHtml(product.brand || 'TechStore')} · ${escapeHtml(product.category)}</div><button class="add-btn" data-add="${escapeHtml(product.id)}">＋ Thêm vào giỏ</button><a class="detail-link" href="${url}">Xem chi tiết ↗</a></article>`;
+}
+
+function flashCard(product) {
+  const url = `/product-detail?id=${encodeURIComponent(product.id)}`;
+  return `<article class="flash-card"><a class="flash-art" href="${url}">${productImage(product)}</a><div class="flash-name">${escapeHtml(product.name)}</div><div><span class="flash-price">${money(product.price)}</span></div><div class="rating">${escapeHtml(product.brand || 'TechStore')} · ${escapeHtml(product.category)}</div><a href="${url}">Xem chi tiết ↗</a></article>`;
+}
+
+async function loadProducts(targetId, sort = 'newest', renderCard = productCard) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+  const requestId = ++catalogRequest;
+  target.dataset.requestId = String(requestId);
+  target.setAttribute('aria-busy', 'true');
+  target.innerHTML = '<p class="catalog-load-message" role="status">Đang tải sản phẩm…</p>';
+  try {
+    const response = await fetch(`/api/products?size=5&sort=${encodeURIComponent(sort)}`, { headers: { Accept: 'application/json' } });
+    if (!response.ok) throw new Error('Danh sách sản phẩm không khả dụng');
+    const payload = await response.json();
+    if (!Array.isArray(payload.content)) throw new Error('Dữ liệu sản phẩm không hợp lệ');
+    if (target.dataset.requestId !== String(requestId)) return;
+    target.innerHTML = payload.content.length
+      ? payload.content.map(renderCard).join('')
+      : '<p class="catalog-load-message" role="status">Chưa có sản phẩm đang kinh doanh.</p>';
+  } catch (error) {
+    if (target.dataset.requestId !== String(requestId)) return;
+    target.innerHTML = '<div class="catalog-load-message" role="alert"><p>Chưa tải được sản phẩm. Vui lòng thử lại.</p><button type="button" class="outline-btn" data-retry-products>Tải lại</button></div>';
+    target.querySelector('[data-retry-products]')?.addEventListener('click', () => loadProducts(targetId, sort, renderCard));
+  } finally {
+    if (target.dataset.requestId === String(requestId)) target.removeAttribute('aria-busy');
+  }
+}
+
+function initShared() {
+  updateCartCount();
+  const categoryButton = document.getElementById('categoryBtn');
+  const menu = document.getElementById('megaMenu');
+  categoryButton?.addEventListener('click', () => menu?.classList.toggle('open'));
+  document.addEventListener('click', event => {
+    if (menu && !event.target.closest('.mega-wrap') && !event.target.closest('#categoryBtn')) menu.classList.remove('open');
+  });
+  const navigation = document.getElementById('mainNav');
+  document.getElementById('mobileMenu')?.addEventListener('click', () => navigation?.classList.toggle('open'));
+  document.getElementById('searchForm')?.addEventListener('submit', event => {
+    event.preventDefault();
+    const query = document.getElementById('searchInput')?.value.trim() || '';
+    location.href = '/products?q=' + encodeURIComponent(query);
+  });
+  document.getElementById('subscribeForm')?.addEventListener('submit', event => {
+    event.preventDefault();
+    toast('Đăng ký nhận tin sẽ sớm ra mắt.');
+  });
+  document.body.addEventListener('click', async event => {
+    const button = event.target.closest('[data-add]');
+    if (!button || button.disabled) return;
+    button.disabled = true;
+    try { await addCart(button.dataset.add); }
+    finally { button.disabled = false; }
+  });
+}
+
+function initHome() {
+  loadProducts('flashProducts', 'newest', flashCard);
+  loadProducts('homeProducts', 'newest');
+  document.querySelectorAll('[data-collection]').forEach(button => button.addEventListener('click', () => {
+    document.querySelectorAll('[data-collection]').forEach(item => item.classList.toggle('active', item === button));
+    loadProducts('homeProducts', button.dataset.collection);
+  }));
+}
+
+function initMisc() {
+  document.getElementById('contactForm')?.addEventListener('submit', event => {
+    event.preventDefault();
+    toast('Gửi lời nhắn trực tuyến sẽ sớm ra mắt. Vui lòng liên hệ cửa hàng để được hỗ trợ.');
+  });
+  document.querySelectorAll('[data-demo-action]').forEach(button => button.addEventListener('click', () => toast('Tính năng này sẽ sớm ra mắt.')));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initShared();
+  if (document.getElementById('homeProducts')) initHome();
+  if (document.getElementById('offerProducts')) loadProducts('offerProducts', 'newest');
+  initMisc();
+});

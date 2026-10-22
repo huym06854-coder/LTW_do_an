@@ -1,6 +1,8 @@
 package vn.iotstar.domain.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import jakarta.persistence.Version;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,9 @@ public class Order extends BaseEntity {
 
 	@Column(name = "order_number", nullable = false, length = 40)
 	private String orderNumber;
+
+    @Column(name = "checkout_token", length = 64)
+    private String checkoutToken;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
@@ -74,6 +79,12 @@ public class Order extends BaseEntity {
 
 	@Column(length = 1000)
 	private String note;
+
+	@Column(name = "completed_at")
+	private LocalDateTime completedAt;
+
+	@Version
+	private long version;
 
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OrderItem> items = new ArrayList<>();

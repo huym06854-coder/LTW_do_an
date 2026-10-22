@@ -24,6 +24,9 @@ public class ProductImage extends BaseEntity {
 	@Column(name = "image_url", nullable = false, length = 1000)
 	private String imageUrl;
 
+	@Column(name = "cloudinary_public_id", length = 255)
+	private String cloudinaryPublicId;
+
 	@Column(name = "is_primary", nullable = false)
 	private boolean isPrimary;
 

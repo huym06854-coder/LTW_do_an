@@ -17,10 +17,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "branch_stocks",
-		uniqueConstraints = @UniqueConstraint(name = "uk_branch_stock_branch_product", columnNames = {
-				"branch_id", "product_id" }),
-		check = @CheckConstraint(name = "ck_branch_stock_quantity", constraint = "quantity >= 0"))
+@Table(name = "branch_stocks", uniqueConstraints = @UniqueConstraint(name = "uk_branch_stock_branch_product", columnNames = {
+		"branch_id",
+		"product_id" }), check = @CheckConstraint(name = "ck_branch_stock_quantity", constraint = "quantity >= 0"))
 public class BranchStock extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)

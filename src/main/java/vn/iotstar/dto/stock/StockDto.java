@@ -1,5 +1,4 @@
 package vn.iotstar.dto.stock;
 
-public class StockDto {
-    
+public record StockDto(Long branchId, Long productId, int quantity) {
 }

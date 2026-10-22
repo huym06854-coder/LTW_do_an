@@ -44,4 +44,11 @@ public class Payment extends BaseEntity {
 
 	@Column(name = "paid_at")
 	private LocalDateTime paidAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "confirmed_by")
+    private User confirmedBy;
+
+    @Column(name = "refunded_at")
+    private LocalDateTime refundedAt;
 }

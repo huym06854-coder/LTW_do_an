@@ -1,0 +1,201 @@
+@import url('/admin/css/admin.css');
+
+body.admin-body {
+    min-width: 320px;
+    background: var(--admin-bg, #f6f7fb);
+}
+
+.page-wrap {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding-top: 28px;
+}
+
+.admin-wrap {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+.admin-wrap > header {
+    display: block;
+    margin: 0 0 22px !important;
+    padding: 0;
+    border: 0;
+}
+
+.admin-wrap > header h1,
+.page-wrap > h1 {
+    margin: 0;
+    color: #282a37;
+    font-size: clamp(22px, 2.4vw, 29px);
+    font-weight: 800;
+    letter-spacing: -.7px;
+}
+
+.admin-wrap > header .admin-nav,
+.admin-wrap > header form {
+    display: none !important;
+}
+
+.admin-wrap > header::after {
+    display: block;
+    margin-top: 7px;
+    color: #9296a4;
+    content: "Quản lý dữ liệu và hoạt động của hệ thống TechStore.";
+    font-size: 11px;
+}
+
+.admin-wrap .card,
+.admin-wrap .list-group,
+.admin-wrap > table,
+.admin-wrap > .table {
+    overflow: hidden;
+    border: 1px solid #eceef4;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 5px 18px rgba(31, 36, 52, .035);
+}
+
+.admin-wrap .card {
+    margin-bottom: 16px;
+}
+
+.admin-wrap .card h5,
+.admin-wrap .card h2 {
+    color: #292b39;
+    font-weight: 700;
+}
+
+.admin-wrap .form-label,
+.admin-wrap label {
+    color: #626678;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.admin-wrap input.form-control,
+.admin-wrap select.form-control,
+.admin-wrap select,
+.admin-wrap textarea.form-control {
+    min-height: 39px;
+    border: 1px solid #e4e6ed;
+    border-radius: 7px;
+    color: #343644;
+    font-size: 12px;
+    box-shadow: none;
+}
+
+.admin-wrap input.form-control:focus,
+.admin-wrap select:focus,
+.admin-wrap textarea.form-control:focus {
+    border-color: #e89aa8;
+    box-shadow: 0 0 0 3px rgba(231, 46, 77, .09);
+}
+
+.admin-wrap .btn-primary {
+    border-color: var(--admin-red, #e72e4d);
+    background: var(--admin-red, #e72e4d);
+    font-weight: 600;
+}
+
+.admin-wrap .btn-primary:hover {
+    border-color: var(--admin-red-dark, #c91d3d);
+    background: var(--admin-red-dark, #c91d3d);
+}
+
+.admin-wrap .btn-outline-primary {
+    border-color: #f0c2ca;
+    color: #c92142;
+}
+
+.admin-wrap .btn-outline-primary:hover {
+    border-color: #e72e4d;
+    background: #fff0f2;
+    color: #c92142;
+}
+
+.admin-wrap table {
+    margin: 0;
+    color: #626678;
+    font-size: 12px;
+}
+
+.admin-wrap .table > :not(caption) > * > * {
+    padding: 12px 14px;
+    border-color: #eff0f5;
+    vertical-align: middle;
+}
+
+.admin-wrap .table thead th,
+.admin-wrap > table th {
+    background: #fafbfc;
+    color: #898d9c;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .35px;
+    text-transform: uppercase;
+}
+
+.admin-wrap .table tbody tr:hover > *,
+.admin-wrap > table tr:hover > * {
+    background: #fdfdff;
+}
+
+.admin-wrap .list-group-item {
+    padding: 13px 16px;
+    border-color: #eff0f5;
+    color: #555969;
+    font-size: 12px;
+}
+
+.admin-wrap .row.g-3 > [class*="col-"] .card {
+    min-height: 118px;
+    justify-content: center;
+}
+
+.admin-wrap .row.g-3 > [class*="col-"] .card small {
+    color: #858999;
+    font-size: 11px;
+}
+
+.admin-wrap .row.g-3 > [class*="col-"] .card h2 {
+    margin: 9px 0 0;
+    font-size: 27px;
+}
+
+.admin-wrap > p {
+    color: #9699a6;
+    font-size: 11px;
+}
+
+.admin-wrap form:not(.card) {
+    margin-bottom: 10px;
+}
+
+.admin-main .table-responsive {
+    border: 1px solid #eceef4;
+    border-radius: 10px;
+    background: #fff;
+}
+
+@media (max-width: 650px) {
+    .page-wrap {
+        padding: 20px 12px 0;
+    }
+
+    .admin-wrap > header {
+        margin-bottom: 16px !important;
+    }
+
+    .admin-wrap .card {
+        padding: 14px !important;
+    }
+
+    .admin-wrap .row.g-3 > [class*="col-"] .card {
+        min-height: 100px;
+    }
+}

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chi tiết đơn hàng | TechStore Admin</title>
+    <link rel="stylesheet" th:href="@{/admin/css/admin-pages.css}">
+    <link rel="stylesheet" th:href="@{/store/css/order-pages.css}">
+</head>
+<body class="admin-body">
+    <div th:replace="~{admin/fragments/admin-layout :: sidebar('orders')}"></div>
+    <main class="admin-main">
+        <div th:replace="~{admin/fragments/admin-layout :: topbar}"></div>
+        <div class="page-wrap">
+            <div class="order-alert" id="orderLiveNotice" role="status" aria-live="polite" hidden></div>
+            <div th:replace="~{orders/fragments :: detail}"></div>
+        </div>
+    </main>
+    <script th:src="@{/store/js/order-notifications.js}" defer></script>
+</body>
+</html>

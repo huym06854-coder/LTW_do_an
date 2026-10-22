@@ -1,5 +1,4 @@
 package vn.iotstar.dto.auth;
 
-public class LoginResponseDto {
-    
+public record LoginResponseDto(String accessToken, String tokenType) {
 }

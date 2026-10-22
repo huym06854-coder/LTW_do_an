@@ -91,6 +91,48 @@ body {
     background: #f2ae31
 }
 
+.catalog-load-message { grid-column: 1 / -1; padding: 24px; font-size: 15px; }
+#orderLiveNotice:not([hidden]) { margin-bottom: 16px; padding: 14px; background: #eaf5ee; border: 1px solid #cce6d5; border-radius: 8px; font-size: 14px; }
+
+.account-action > span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.account-action strong {
+    max-width: 130px;
+    overflow: hidden;
+    color: #302832;
+    font-size: 11px;
+    text-overflow: ellipsis;
+}
+
+.account-action small {
+    color: #817780;
+    font-size: 9px;
+}
+
+.header-logout {
+    margin: 0;
+}
+
+.header-logout button {
+    border: 1px solid #ead6dc;
+    border-radius: 7px;
+    background: #fff;
+    color: #7b3345;
+    padding: 8px 10px;
+    font: inherit;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.header-logout button:hover {
+    border-color: #d67b8e;
+    background: #fff7f8;
+}
+
 .nav {
     height: 39px
 }
@@ -2234,4 +2276,183 @@ body {
 .sort-buttons button:focus,
 .option-buttons button:focus {
     outline: 1px solid #c9103b
+}
+
+/* Shared layout helpers for store, account, cart, and order pages. */
+.tech-main {
+    min-height: 60vh;
+    padding: 40px 0
+}
+
+.product-thumb {
+    height: 100px;
+    display: grid;
+    place-items: center;
+    background: #f2f6fb;
+    font-size: 40px
+}
+
+.table td {
+    vertical-align: middle
+}
+
+.form-label {
+    font-weight: 600
+}
+
+.product-image {
+    max-width: 100%;
+    object-fit: contain
+}
+
+.product-image--thumbnail {
+    max-height: 100px
+}
+
+.product-image--detail {
+    max-height: 300px
+}
+
+.cart-quantity {
+    max-width: 85px
+}
+
+/* Backend-backed storefront elements, aligned with the original TechDemo layout. */
+.product-art-link {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    color: inherit;
+    text-decoration: none
+}
+
+.product-art-link img,
+.detail-art img {
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain
+}
+
+.detail-cart-form .quantity-row {
+    display: flex;
+    align-items: center;
+    gap: 14px
+}
+
+.detail-quantity {
+    width: 78px;
+    height: 35px;
+    border: 1px solid #e5e1e8;
+    border-radius: 6px;
+    padding: 5px 8px
+}
+
+.cart-update-form {
+    display: flex;
+    align-items: center;
+    gap: 6px
+}
+
+.cart-save-btn,
+.filter-title a {
+    border: 1px solid #e8c1ca;
+    border-radius: 5px;
+    background: #fff;
+    color: #b9143b;
+    padding: 6px 8px;
+    text-decoration: none;
+    font-size: 10px
+}
+
+.cart-quantity {
+    height: 32px;
+    border: 1px solid #e5e1e8;
+    border-radius: 5px;
+    padding: 4px 6px
+}
+
+.cart-branch-form {
+    display: grid;
+    gap: 9px;
+    margin: 18px 0
+}
+
+.cart-branch-form label,
+.review-form label {
+    display: grid;
+    gap: 7px;
+    font-size: 11px;
+    font-weight: 700
+}
+
+.cart-branch-form select,
+.review-form select,
+.review-form textarea,
+.catalog-search input,
+.filter-grid select {
+    min-height: 36px;
+    width: 100%;
+    border: 1px solid #e5e1e8;
+    border-radius: 6px;
+    background: #fff;
+    padding: 7px 9px;
+    color: #393742;
+    font: inherit
+}
+
+.cart-branch-form .outline-btn {
+    min-height: 36px;
+    border: 1px solid #e8c1ca;
+    border-radius: 6px;
+    background: #fff;
+    color: #b9143b;
+    font-size: 10px
+}
+
+.catalog-search {
+    display: grid;
+    gap: 7px
+}
+
+.filter-submit {
+    align-self: end;
+    border: 0;
+    justify-content: center
+}
+
+.review-section {
+    margin-bottom: 38px
+}
+
+.review-form {
+    display: grid;
+    gap: 14px;
+    max-width: 620px
+}
+
+.review-form .red-btn {
+    justify-self: start;
+    border: 0
+}
+
+.cart-message,
+.auth-message {
+    color: #196c48;
+    background: #edf8f1;
+    border: 1px solid #ccebd9;
+    border-radius: 7px;
+    padding: 10px 13px
+}
+
+.auth-message--error {
+    color: #9b2037;
+    background: #fff1f3;
+    border-color: #f0cbd2
+}
+
+@media(max-width:620px) {
+    .cart-update-form {
+        flex-wrap: wrap
+    }
 }

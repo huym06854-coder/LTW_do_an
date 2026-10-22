@@ -1,5 +1,13 @@
 package vn.iotstar.repository;
 
-public class OrderStatusHistoryRepository {
-    
+import java.util.*;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
+import jakarta.persistence.LockModeType;
+import vn.iotstar.domain.entity.OrderStatusHistory;
+import vn.iotstar.domain.enums.*;
+
+public interface OrderStatusHistoryRepository extends JpaRepository<OrderStatusHistory, Long> {
+    List<OrderStatusHistory> findByOrderIdOrderByCreatedAtAsc(Long orderId);
 }

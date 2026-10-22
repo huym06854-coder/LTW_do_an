@@ -27,7 +27,7 @@ CREATE TABLE categories (
     created_at DATETIME2(6) NOT NULL CONSTRAINT df_categories_created_at DEFAULT SYSUTCDATETIME(),
     updated_at DATETIME2(6) NOT NULL CONSTRAINT df_categories_updated_at DEFAULT SYSUTCDATETIME(),
     CONSTRAINT uk_categories_name UNIQUE (name),
-    CONSTRAINT fk_categories_parent FOREIGN KEY (parent_id) REFERENCES categories (id) ON DELETE SET NULL
+    CONSTRAINT fk_categories_parent FOREIGN KEY (parent_id) REFERENCES categories (id) ON DELETE NO ACTION
 );
 
 CREATE TABLE brands (

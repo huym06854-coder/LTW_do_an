@@ -1,44 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đơn hàng của tôi | TechDemo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lịch sử đơn hàng | TechStore</title>
     <link rel="stylesheet" th:href="@{/store/css/style.css}">
     <link rel="stylesheet" th:href="@{/store/css/site.css}">
-    <link rel="stylesheet" th:href="@{/store/css/commerce-pages.css}">
+    <link rel="stylesheet" th:href="@{/store/css/order-pages.css}">
 </head>
-<body class="commerce-page">
+<body>
     <div th:replace="~{fragments/store-layout :: siteHeader}"></div>
-    <main class="container wrap">
-        <div class="breadcrumb"><a th:href="@{/}" href="/">Trang chủ</a>　›　<a th:href="@{/profile}" href="/profile">Tài khoản</a>　›　Đơn hàng</div>
-        <section class="page-intro">
-            <small class="eyebrow-dark">ORDER HISTORY</small>
-            <h1>Đơn hàng của tôi</h1>
-            <p>Theo dõi trạng thái và xem lại thông tin các đơn hàng.</p>
-        </section>
-        <div class="commerce-notice">Lịch sử đơn hàng hiện là dữ liệu minh họa, chưa kết nối backend.</div>
-        <section class="commerce-panel">
-            <div class="order-filter-row">
-                <label for="orderStatus">Trạng thái</label>
-                <select id="orderStatus">
-                    <option>Tất cả đơn hàng</option><option>Đang xử lý</option><option>Đang giao</option><option>Đã giao</option><option>Đã hủy</option>
-                </select>
-                <a class="commerce-text-link" th:href="@{/products}" href="/products">Tiếp tục mua sắm →</a>
-            </div>
-            <div class="order-list">
-                <article class="order-card">
-                    <div class="order-card-heading"><div><span class="commerce-kicker">ĐƠN HÀNG #TD-1042</span><small>21/10/2026 · Giao hàng tận nơi</small></div><span class="commerce-status">Đang xử lý</span></div>
-                    <div class="order-card-product"><span class="commerce-item-mark">▱</span><div><b>Laptop Tech Demo Office 14</b><small>1 sản phẩm</small></div><strong>16.990.000₫</strong></div>
-                    <div class="order-card-footer"><span>Tổng thanh toán <b>16.990.000₫</b></span><a class="commerce-secondary-button" th:href="@{/orders/TD-1042}" href="/orders/TD-1042">Xem chi tiết</a></div>
-                </article>
-                <article class="order-card">
-                    <div class="order-card-heading"><div><span class="commerce-kicker">ĐƠN HÀNG #TD-1028</span><small>12/10/2026 · Nhận tại cửa hàng</small></div><span class="commerce-status status-complete">Đã giao</span></div>
-                    <div class="order-card-product"><span class="commerce-item-mark">▣</span><div><b>Màn hình Tech Demo View 24</b><small>1 sản phẩm</small></div><strong>3.490.000₫</strong></div>
-                    <div class="order-card-footer"><span>Tổng thanh toán <b>3.490.000₫</b></span><a class="commerce-secondary-button" th:href="@{/orders/TD-1028}" href="/orders/TD-1028">Xem chi tiết</a></div>
-                </article>
-            </div>
-        </section>
+    <main class="wrap">
+        <div th:replace="~{orders/fragments :: list}"></div>
     </main>
     <div th:replace="~{fragments/store-layout :: siteFooter}"></div>
 </body>

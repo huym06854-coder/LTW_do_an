@@ -4,44 +4,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Giỏ hàng | TechDemo</title>
+    <title>Giỏ hàng | TechStore</title>
     <link rel="stylesheet" th:href="@{/store/css/style.css}">
     <link rel="stylesheet" th:href="@{/store/css/site.css}">
+    <link rel="stylesheet" th:href="@{/store/css/cart-pages.css}">
 </head>
 
 <body class="cart-page">
     <div th:replace="~{fragments/store-layout :: siteHeader}"></div>
-    <main class="container wrap">
+    <main class="wrap" id="cartPage" th:attr="data-csrf-token=${_csrf.token},data-csrf-header=${_csrf.headerName},data-checkout-allowed=${cart.checkoutAllowed}">
         <div class="breadcrumb"><a th:href="@{/}" href="/">Trang chủ</a>　›　Giỏ hàng</div>
         <section class="page-intro"><small class="eyebrow-dark">YOUR SHOPPING CART</small>
             <h1>Giỏ hàng của bạn</h1>
-            <p>Kiểm tra sản phẩm trước khi tiếp tục.</p>
+            <p>Kiểm tra sản phẩm và chọn chi nhánh trước khi tiếp tục.</p>
         </section>
+        <p class="cart-message" role="status" th:if="${message}" th:text="${message}"></p>
+        <p class="cart-message cart-error" role="alert" th:if="${cartError}" th:text="${cartError}"></p>
+        <p id="cartLiveMessage" class="cart-message" role="status" aria-live="polite" hidden></p>
         <section class="cart-layout">
             <div class="cart-table-wrap">
-                <div class="cart-table-head"><span>Sản phẩm</span><span>Đơn giá</span><span>Số lượng</span><span>Thành
-                        tiền</span></div>
-                <div id="cartItems"></div>
-                <div class="cart-empty" id="cartEmpty">
+                <div class="cart-table-head"><span>Sản phẩm</span><span>Đơn giá</span><span>Số lượng</span><span>Thành tiền</span></div>
+                <div class="cart-row" th:each="item : ${cart.items}" th:attr="data-product-id=${item.productId}">
+                    <div class="cart-product">
+                        <a class="cart-product-picture" th:href="@{/product-detail(id=${item.productId})}">
+                            <img th:if="${not #strings.isEmpty(item.imageUrl)}" th:src="${item.imageUrl}" th:alt="${item.name}">
+                            <span th:if="${#strings.isEmpty(item.imageUrl)}" aria-label="Chưa có ảnh sản phẩm">▱</span>
+                        </a>
+                        <div><a class="cart-product-name" th:href="@{/product-detail(id=${item.productId})}" th:text="${item.name}">Tên sản phẩm</a>
+                            <small class="cart-stock-note" th:classappend="${item.availableStock != null and item.availableStock < item.quantity} ? 'stock-shortage'"
+                                th:text="${item.availableStock == null ? 'Chọn chi nhánh để kiểm tra tồn kho' : 'Còn ' + item.availableStock + ' sản phẩm tại chi nhánh'}"></small>
+                        </div>
+                    </div>
+                    <span class="cart-unit-price" th:text="|${#numbers.formatDecimal(item.price,1,'POINT',0,'COMMA')}₫|">Giá</span>
+                    <form class="cart-update-form" method="post" th:action="@{/cart/update}">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <input type="hidden" name="productId" th:value="${item.productId}">
+                        <input class="cart-quantity" type="number" name="quantity" min="1" max="99" th:value="${item.quantity}" aria-label="Số lượng" required>
+                        <button type="submit" class="cart-save-btn">Cập nhật</button>
+                    </form>
+                    <div class="cart-line-actions">
+                        <b class="cart-line-total" th:text="|${#numbers.formatDecimal(item.subtotal,1,'POINT',0,'COMMA')}₫|">Thành tiền</b>
+                        <form class="cart-remove-form" method="post" th:action="@{/cart/update}">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                            <input type="hidden" name="productId" th:value="${item.productId}">
+                            <input type="hidden" name="quantity" value="0">
+                            <button class="cart-remove" type="submit" th:attr="aria-label=|Xóa ${item.name} khỏi giỏ|">Xóa</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="cart-empty" th:if="${#lists.isEmpty(cart.items)}">
                     <div>🛒</div>
                     <h3>Giỏ hàng đang trống</h3>
-                    <p>Hãy khám phá và thêm sản phẩm bạn yêu thích.</p><a class="red-btn" th:href="@{/products}" href="/products">Tiếp tục
-                        mua sắm →</a>
+                    <p>Hãy khám phá và thêm sản phẩm bạn yêu thích.</p>
+                    <a class="red-btn" th:href="@{/products}" href="/products">Tiếp tục mua sắm →</a>
                 </div>
             </div>
             <aside class="cart-summary">
                 <h2>Tóm tắt đơn hàng</h2>
-                <div><span>Tạm tính</span><b id="subtotal">0₫</b></div>
-                <div><span>Phí giao hàng</span><b>Miễn phí (demo)</b></div>
+                <div><span>Tạm tính</span><b data-cart-subtotal th:text="|${#numbers.formatDecimal(cart.subtotal,1,'POINT',0,'COMMA')}₫|">0₫</b></div>
+                <div><span>Phí giao hàng</span><b>Hiển thị khi đặt hàng</b></div>
+                <form class="cart-branch-form" method="post" th:action="@{/cart/branch}"
+                    th:if="${not #lists.isEmpty(cart.items)}">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <label>Chọn chi nhánh
+                        <select name="branchId" required>
+                            <option value="">Chọn cửa hàng</option>
+                            <option th:each="b : ${branches}" th:value="${b.id}" th:text="${b.name}"
+                                th:selected="${b.id == cart.branchId}"></option>
+                        </select>
+                    </label>
+                    <button class="outline-btn" type="submit">Kiểm tra kho và chọn chi nhánh</button>
+                </form>
+                <p class="selected-branch" th:if="${cart.branchId != null}">Nhận hàng từ <b th:text="${cart.branchName}">Chi nhánh</b>
+                    <span th:text="${cart.branchAddress}">Địa chỉ chi nhánh</span>
+                </p>
                 <hr>
-                <div class="total"><span>Tổng cộng</span><b id="total">0₫</b></div><button class="red-btn"
-                    id="checkoutBtn" data-checkout-url="/checkout" th:attr="data-checkout-url=@{/checkout}">Tiến hành đặt hàng →</button>
-                <p>Đây là bản demo giao diện, chưa kết nối thanh toán.</p>
+                <div class="total"><span>Tiền sản phẩm</span><b data-cart-subtotal th:text="|${#numbers.formatDecimal(cart.subtotal,1,'POINT',0,'COMMA')}₫|">0₫</b></div>
+                <a id="cartCheckout" class="red-btn checkout-link" th:href="${cart.checkoutAllowed ? '/checkout' : null}"
+                    th:attr="aria-disabled=${not cart.checkoutAllowed}" th:classappend="${not cart.checkoutAllowed} ? 'is-disabled'"
+                    th:unless="${#lists.isEmpty(cart.items)}">Tiến hành đặt hàng →</a>
+                <p id="cartCheckoutHint" th:if="${not #lists.isEmpty(cart.items)}"
+                    th:text="${cart.branchId == null ? 'Hãy chọn chi nhánh để kiểm tra tồn kho trước khi đặt hàng.' : (not cart.checkoutAllowed ? 'Vui lòng giảm số lượng sản phẩm thiếu hàng trước khi đặt hàng.' : 'Tồn kho sẽ được kiểm tra lại khi bạn xác nhận đặt hàng.')}"></p>
+                <p>Phí giao hàng và phương thức thanh toán được xác nhận ở bước tiếp theo.</p>
             </aside>
         </section>
     </main>
     <div th:replace="~{fragments/store-layout :: siteFooter}"></div>
+    <script defer th:src="@{/store/js/cart.js}"></script>
 </body>
 
 </html>

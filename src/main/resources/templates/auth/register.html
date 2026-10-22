@@ -1,38 +1,56 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng ký | TechDemo</title>
+    <title>Đăng ký | TechStore</title>
     <link rel="stylesheet" th:href="@{/store/css/style.css}">
     <link rel="stylesheet" th:href="@{/store/css/site.css}">
     <link rel="stylesheet" th:href="@{/store/css/commerce-pages.css}">
 </head>
+
 <body class="commerce-page">
     <div th:replace="~{fragments/store-layout :: siteHeader}"></div>
-    <main class="container wrap">
+    <main class="wrap">
         <div class="breadcrumb"><a th:href="@{/}" href="/">Trang chủ</a>　›　Đăng ký</div>
         <section class="commerce-auth">
             <div class="commerce-panel commerce-auth-intro">
-                <span class="commerce-kicker">TECH DEMO MEMBERSHIP</span>
+                <span class="commerce-kicker">TECHSTORE MEMBERSHIP</span>
                 <h1>Tạo tài khoản<br><span>mua sắm thuận tiện hơn.</span></h1>
                 <p>Lưu thông tin nhận hàng và theo dõi đơn hàng của bạn tại một nơi.</p>
                 <a class="commerce-text-link" th:href="@{/products}" href="/products">Khám phá sản phẩm →</a>
             </div>
-            <form class="commerce-panel commerce-form" id="registerForm">
-                <span class="commerce-kicker">THÀNH VIÊN TECHDEMO</span>
+            <form class="commerce-panel commerce-form" method="post" th:action="@{/register}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <span class="commerce-kicker">THÀNH VIÊN TECHSTORE</span>
                 <h2>Đăng ký tài khoản</h2>
-                <p class="commerce-muted">Thông tin chỉ dùng để minh họa giao diện.</p>
-                <label>Họ và tên<input name="fullName" autocomplete="name" required placeholder="Nguyễn Văn An"></label>
-                <label>Email<input name="email" type="email" autocomplete="email" required placeholder="name@example.com"></label>
-                <label>Số điện thoại<input name="phone" type="tel" autocomplete="tel" placeholder="0901 234 567"></label>
-                <label>Mật khẩu<input name="password" type="password" autocomplete="new-password" minlength="8" required placeholder="Tối thiểu 8 ký tự"></label>
+                <p class="commerce-muted">Nhập thông tin để tạo tài khoản mua sắm.</p>
+                <div class="auth-message auth-message--error" role="alert" th:if="${registrationError}">
+                    <span th:text="${registrationError}">Thông tin đăng ký chưa hợp lệ.</span>
+                </div>
+                <label>Họ và tên
+                    <input name="fullName" autocomplete="name" maxlength="160" required placeholder="Nguyễn Văn An">
+                </label>
+                <label>Tên đăng nhập
+                    <input name="username" autocomplete="username" maxlength="80" pattern="[^@]+" required
+                        title="Tên đăng nhập không được chứa ký tự @" placeholder="nguyenvana">
+                </label>
+                <label>Email
+                    <input name="email" type="email" autocomplete="email" maxlength="254" required placeholder="name@example.com">
+                </label>
+                <label>Số điện thoại
+                    <input name="phone" type="tel" autocomplete="tel" maxlength="30" placeholder="0901 234 567">
+                </label>
+                <label>Mật khẩu
+                    <input name="password" type="password" autocomplete="new-password" minlength="8" required placeholder="Tối thiểu 8 ký tự">
+                </label>
                 <button class="red-btn" type="submit">Tạo tài khoản →</button>
                 <p class="commerce-form-foot">Đã có tài khoản? <a th:href="@{/login}" href="/login">Đăng nhập</a></p>
-                <small class="commerce-demo-note">Bản demo chưa lưu tài khoản hoặc xác thực thông tin.</small>
             </form>
         </section>
     </main>
     <div th:replace="~{fragments/store-layout :: siteFooter}"></div>
 </body>
+
 </html>

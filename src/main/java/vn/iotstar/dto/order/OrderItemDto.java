@@ -1,5 +1,5 @@
 package vn.iotstar.dto.order;
 
-public class OrderItemDto {
-    
+public record OrderItemDto(Long productId, String productName, int quantity, java.math.BigDecimal unitPrice,
+        java.math.BigDecimal subtotal) {
 }

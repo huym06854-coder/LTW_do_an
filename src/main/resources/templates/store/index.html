@@ -4,36 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Trang chủ | TechDemo</title>
+    <title>Trang chủ | TechStore</title>
     <link rel="stylesheet" th:href="@{/store/css/style.css}">
     <link rel="stylesheet" th:href="@{/store/css/site.css}">
 </head>
 
 <body class="home-page">
     <div th:replace="~{fragments/store-layout :: siteHeader}"></div>
-    <main class="container wrap">
+<main class="wrap">
         <div class="breadcrumb">Trang chủ&nbsp; › &nbsp;Thiết bị công nghệ</div>
-        <div class="quick-cats"><a th:href="@{/products?category=Laptop}" href="/products?category=Laptop">▱ <span>Laptop</span></a><a
-                th:href="@{/products?category=PC}" href="/products?category=PC">▣ <span>PC</span></a><a th:href="@{/products?category=Màn hình}" href="/products?category=Màn hình">▱
-                <span>Màn hình</span></a><a th:href="@{/products?category=Mạng}" href="/products?category=Mạng">♧ <span>Thiết bị mạng</span></a><a
-                th:href="@{/products?category=Máy in}" href="/products?category=Máy in">▤ <span>Máy in</span></a><a th:href="@{/products?category=Camera}" href="/products?category=Camera">◎
+        <div class="quick-cats"><a th:href="@{/products(category='Laptop')}" href="/products?category=Laptop">▱ <span>Laptop</span></a><a
+                th:href="@{/products(category='PC')}" href="/products?category=PC">▣ <span>PC</span></a><a th:href="@{/products(category='Màn hình')}" href="/products?category=Màn hình">▱
+                <span>Màn hình</span></a><a th:href="@{/products(category='Mạng')}" href="/products?category=Mạng">♧ <span>Thiết bị mạng</span></a><a
+                th:href="@{/products(category='Máy in')}" href="/products?category=Máy in">▤ <span>Máy in</span></a><a th:href="@{/products(category='Camera')}" href="/products?category=Camera">◎
                 <span>Camera</span></a></div>
         <section class="hero">
             <div class="hero-main">
-                <div class="eyebrow">TECH DEMO • TECHNOLOGY STORE</div>
+                <div class="eyebrow">TECHSTORE • TECHNOLOGY STORE</div>
                 <h1>Công nghệ tốt.<br><span>Trải nghiệm khác biệt.</span></h1>
-                <p>Khám phá laptop, PC, camera, thiết bị mạng và các giải pháp công nghệ tại Tech Demo.</p><a
+                <p>Khám phá laptop, PC, camera, thiết bị mạng và các giải pháp công nghệ tại TechStore.</p><a
                     class="red-btn" th:href="@{/products}" href="/products">Khám phá sản phẩm <b>→</b></a>
                 <div class="hero-orb"></div>
             </div>
-            <div class="hero-side"><a class="side-card pink" th:href="@{/products?category=Laptop}" href="/products?category=Laptop">
-                    <div><small>TECH DEMO COLLECTION</small>
+            <div class="hero-side"><a class="side-card pink" th:href="@{/products(category='Laptop')}" href="/products?category=Laptop">
+                    <div><small>TECHSTORE COLLECTION</small>
                         <h2>Khám phá laptop hiện đại</h2>
                         <p>Hiệu năng mạnh mẽ, thiết kế gọn nhẹ</p><b>Khám phá ↗</b>
                     </div><span class="line-icon">▱</span>
-                </a><a class="side-card pale" th:href="@{/products?category=Camera}" href="/products?category=Camera">
-                    <div><small>TECH DEMO COLLECTION</small>
+                </a><a class="side-card pale" th:href="@{/products(category='Camera')}" href="/products?category=Camera">
+                    <div><small>TECHSTORE COLLECTION</small>
                         <h2>Công nghệ cho mọi không gian</h2>
                         <p>Camera, thiết bị mạng và phụ kiện</p><b>Khám phá ↗</b>
                     </div><span class="line-icon">◎</span>
@@ -46,12 +45,12 @@
             <div class="section-heading">
                 <h2>✣ Chọn theo nhu cầu</h2><a th:href="@{/products}" href="/products">Xem tất cả →</a>
             </div>
-            <div class="need-grid"><a th:href="@{/products?need=Văn phòng}" href="/products?need=Văn phòng"><span>▤</span><b>Văn phòng</b></a><a
-                    th:href="@{/products?need=Gaming}" href="/products?need=Gaming"><span>🎮</span><b>Gaming</b></a><a
-                    th:href="@{/products?need=Học tập}" href="/products?need=Học tập"><span>▱</span><b>Học tập</b></a><a
-                    th:href="@{/products?need=Đồ họa}" href="/products?need=Đồ họa"><span>▣</span><b>Đồ họa</b></a><a
-                    th:href="@{/products?category=Camera}" href="/products?category=Camera"><span>◎</span><b>Camera</b></a><a
-                    th:href="@{/products?category=Mạng}" href="/products?category=Mạng"><span>♧</span><b>Mạng Wi-Fi</b></a></div>
+            <div class="need-grid"><a th:href="@{/products}" href="/products"><span>▤</span><b>Văn phòng</b></a><a
+                    th:href="@{/products}" href="/products"><span>🎮</span><b>Gaming</b></a><a
+                    th:href="@{/products}" href="/products"><span>▱</span><b>Học tập</b></a><a
+                    th:href="@{/products}" href="/products"><span>▣</span><b>Đồ họa</b></a><a
+                    th:href="@{/products(category='Camera')}" href="/products?category=Camera"><span>◎</span><b>Camera</b></a><a
+                    th:href="@{/products(category='Mạng')}" href="/products?category=Mạng"><span>♧</span><b>Mạng Wi-Fi</b></a></div>
         </section>
         <div class="service-ribbon">
             <div>▣ <b>Sản phẩm đa dạng</b><small>Lựa chọn phù hợp với nhu cầu</small></div>
@@ -60,42 +59,40 @@
         </div>
         <section class="flash-sale" id="deals">
             <div class="flash-head">
-                <div><small>✦ TECH DEMO SPECIAL</small>
-                    <h2>⚡ FLASH SALE ✧</h2>
-                    <p>+ DEAL CÔNG NGHỆ - KHÁM PHÁ NGAY +</p>
+                <div><small>✦ TECHSTORE COLLECTION</small>
+                    <h2>⚡ SẢN PHẨM MỚI ✧</h2>
+                    <p>KHÁM PHÁ THIẾT BỊ ĐANG KINH DOANH</p>
                 </div>
-                <div class="sale-clock"><small>◷ BẮT ĐẦU
-                        SAU</small><span>02</span><i>:</i><span>18</span><i>:</i><span>45</span><i>:</i><span>22</span><small>NGÀY
-                        &nbsp; GIỜ &nbsp; PHÚT &nbsp; GIÂY</small></div>
+                <a class="white-btn" th:href="@{/products(sort='newest')}">Xem sản phẩm mới →</a>
             </div>
-            <div class="flash-ticker">✦ &nbsp; TECH DEMO - ƯU ĐÃI CÔNG NGHỆ - KHÁM PHÁ MỖI NGÀY &nbsp; ✦</div>
+            <div class="flash-ticker">✦ &nbsp; TECHSTORE - KHÁM PHÁ CÔNG NGHỆ MỖI NGÀY &nbsp; ✦</div>
             <div class="flash-products" id="flashProducts"></div>
             <div class="flash-bottom"><span>✦ Khám phá sản phẩm công nghệ nổi bật</span><a th:href="@{/products}" href="/products">Xem tất
                     cả ↗</a></div>
         </section>
         <section class="collection">
-            <div class="collection-tabs"><button class="active" data-collection="daily">♨ DEAL SỐC MỖI
-                    NGÀY</button><button data-collection="trending">⌁ SẢN PHẨM HOT TREND</button><button
-                    data-collection="new">⚑ HÀNG MỚI VỀ</button></div>
+            <div class="collection-tabs"><button class="active" data-collection="newest">⚑ MỚI NHẤT</button>
+                <button data-collection="price-asc">↗ GIÁ TĂNG DẦN</button>
+                <button data-collection="price-desc">↘ GIÁ GIẢM DẦN</button></div>
             <div class="catalog-pills"><a class="selected" th:href="@{/products}" href="/products">Tất cả</a><a
-                    th:href="@{/products?category=Laptop}" href="/products?category=Laptop">▱ Laptop</a><a th:href="@{/products?category=PC}" href="/products?category=PC">▣ Bộ lưu
-                    điện</a><a th:href="@{/products?category=Màn hình}" href="/products?category=Màn hình">▣ Màn hình</a><a
-                    th:href="@{/products?category=Phụ kiện}" href="/products?category=Phụ kiện">⌘ Phụ kiện</a><span></span><a
-                    th:href="@{/products?need=Văn phòng}" href="/products?need=Văn phòng">Văn phòng</a><a th:href="@{/products?need=Học tập}" href="/products?need=Học tập">Học tập</a><a
-                    th:href="@{/products?need=Gaming}" href="/products?need=Gaming">Gaming</a><a th:href="@{/products?need=Đồ họa}" href="/products?need=Đồ họa">Đồ họa</a><a
-                    th:href="@{/products?need=Sinh viên}" href="/products?need=Sinh viên">Sinh viên</a></div>
+                    th:href="@{/products(category='Laptop')}" href="/products?category=Laptop">▱ Laptop</a><a th:href="@{/products(category='PC')}" href="/products?category=PC">▣ Bộ lưu
+                    điện</a><a th:href="@{/products(category='Màn hình')}" href="/products?category=Màn hình">▣ Màn hình</a><a
+                    th:href="@{/products(category='Phụ kiện')}" href="/products?category=Phụ kiện">⌘ Phụ kiện</a><span></span><a
+                    th:href="@{/products}" href="/products">Văn phòng</a><a th:href="@{/products}" href="/products">Học tập</a><a
+                    th:href="@{/products}" href="/products">Gaming</a><a th:href="@{/products}" href="/products">Đồ họa</a><a
+                    th:href="@{/products}" href="/products">Sinh viên</a></div>
             <div class="product-grid" id="homeProducts"></div>
             <div class="center-link"><a th:href="@{/products}" href="/products">Khám phá tất cả sản phẩm →</a></div>
         </section>
         <section class="news-preview" id="news">
             <div class="section-heading">
-                <div><small class="eyebrow-dark">TECH DEMO MAGAZINE</small>
+                <div><small class="eyebrow-dark">TECHSTORE MAGAZINE</small>
                     <h2>Tin tức & kiến thức công nghệ</h2>
                     <p>Các chủ đề công nghệ, thiết bị và kinh nghiệm lựa chọn sản phẩm.</p>
                 </div><a th:href="@{/news}" href="/news">Xem tất cả ↗</a>
             </div>
             <div class="news-layout"><a class="feature-article" th:href="@{/news}" href="/news">
-                    <div class="news-art big">▦<small>TECH DEMO NEWS</small></div><small>Công nghệ　·　20/10/2026</small>
+                    <div class="news-art big">▦<small>TECHSTORE NEWS</small></div><small>Công nghệ　·　20/10/2026</small>
                     <h3>Xu hướng công nghệ nổi bật năm 2026</h3>
                     <p>Khám phá các xu hướng AI, thiết bị thông minh và công nghệ mới nổi dành cho cá nhân và doanh
                         nghiệp.</p><b>Đọc bài viết ↗</b>
@@ -117,7 +114,7 @@
         </section>
         <section class="payment-preview">
             <div class="section-heading">
-                <div><small class="eyebrow-dark">TECH DEMO PARTNERS</small>
+                <div><small class="eyebrow-dark">TECHSTORE PARTNERS</small>
                     <h2>Ưu đãi & hình thức thanh toán</h2>
                     <p>Khám phá các ưu đãi thanh toán và phương thức linh hoạt.</p>
                 </div><a th:href="@{/offers}" href="/offers">Tìm hiểu thêm ↗</a>

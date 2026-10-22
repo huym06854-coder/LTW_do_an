@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -51,6 +52,9 @@ public class Transfer extends BaseEntity {
 
 	@Column(length = 1000)
 	private String note;
+
+	@Version
+	private long version;
 
 	@OneToMany(mappedBy = "transfer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<TransferItem> items = new ArrayList<>();
