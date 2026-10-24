@@ -37,7 +37,13 @@ public class CartController {
     @PostMapping("/cart/add")
     public String add(@AuthenticationPrincipal CustomerUserDetails user, @RequestParam Long productId,
             @RequestParam(defaultValue = "1") int quantity, RedirectAttributes redirect) {
-        carts.add(user.getId(), productId, quantity);
+        try {
+            carts.add(user.getId(), productId, quantity);
+        } catch (BusinessException error) {
+            redirect.addFlashAttribute("productError", error.getMessage());
+            redirect.addFlashAttribute("requestedQuantity", quantity);
+            return "redirect:/product-detail?id=" + productId;
+        }
         redirect.addFlashAttribute("message", "Đã thêm vào giỏ hàng");
         return "redirect:/cart";
     }

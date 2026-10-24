@@ -18,6 +18,7 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 import vn.iotstar.domain.enums.ProductStatus;
 
 @Getter
@@ -31,9 +32,11 @@ public class Product extends BaseEntity {
 	private String sku;
 
 	@Column(nullable = false, length = 200)
+	@Nationalized
 	private String name;
 
 	@Column(length = 4000)
+	@Nationalized
 	private String description;
 
 	@Column(nullable = false, precision = 19, scale = 2)

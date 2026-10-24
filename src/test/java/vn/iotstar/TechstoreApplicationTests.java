@@ -78,14 +78,9 @@ class TechstoreApplicationTests {
 
 	@Test
 	void authenticatedHeaderShowsProfileAndLogoutInsteadOfLogin() throws Exception {
-		Role role = new Role();
-		role.setName(UserRole.CUSTOMER);
-		User account = new User();
-		account.setId(1L);
-		account.setUsername("member");
-		account.setFullName("Nguyễn Văn Thành viên");
-		account.setPassword("encoded-password");
-		account.setRole(role);
+		String suffix = java.util.UUID.randomUUID().toString();
+		User account = userService.register(new RegisterDto("Nguyễn Văn Thành viên", "member-" + suffix,
+				"member-" + suffix + "@example.com", "secure-pass-123", null));
 
 		mockMvc.perform(get("/login").with(user(new CustomerUserDetails(account))))
 				.andExpect(status().isOk())

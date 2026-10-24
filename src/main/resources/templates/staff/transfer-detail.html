@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chi tiết chuyển kho | TechStore</title>
+    <link rel="stylesheet" th:href="@{/store/css/workspace.css}">
+</head>
+<body class="admin-body ops-page">
+    <a class="ops-skip" href="#workspaceMain">Đến nội dung chính</a>
+    <div th:replace="~{staff/fragments/staff-layout :: staffSidebar('transfers')}"></div>
+    <main class="admin-main" id="workspaceMain">
+        <div th:replace="~{staff/fragments/staff-layout :: staffTopbar}"></div>
+        <div class="page-wrap">
+<div th:replace="~{fragments/transfer-detail :: content}"></div>
+        </div>
+    </main>
+    <script th:src="@{/store/js/workspace.js}" defer></script>
+</body>
+</html>

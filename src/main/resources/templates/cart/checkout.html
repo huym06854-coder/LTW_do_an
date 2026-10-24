@@ -1,98 +1,71 @@
 <!doctype html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Thanh toán | TechStore</title>
-    <link rel="stylesheet" th:href="@{/store/css/style.css}">
-    <link rel="stylesheet" th:href="@{/store/css/site.css}">
-    <link rel="stylesheet" th:href="@{/store/css/commerce-pages.css}">
-    <link rel="stylesheet" th:href="@{/store/css/checkout.css}">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thanh toán | TechStore</title>
+<link rel="stylesheet" th:href="@{/store/css/style.css}"><link rel="stylesheet" th:href="@{/store/css/site.css}"><link rel="stylesheet" th:href="@{/store/css/commerce-pages.css}"><link rel="stylesheet" th:href="@{/store/css/checkout.css}">
 </head>
-<body class="commerce-page">
+<body class="commerce-page ux-page ux-checkout-page">
 <div th:replace="~{fragments/store-layout :: siteHeader}"></div>
-<main class="wrap checkout-workspace">
-    <div class="breadcrumb"><a th:href="@{/cart}">Giỏ hàng</a>　›　Thanh toán</div>
-    <h1>Thông tin đặt hàng</h1><p class="checkout-intro">Kiểm tra địa chỉ, hình thức nhận hàng và tổng thanh toán trước khi xác nhận.</p>
-    <form id="checkoutForm" method="post" th:action="@{/checkout/place-order}" th:object="${checkout}" class="checkout-layout">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-        <input type="hidden" th:field="*{branchId}"><input type="hidden" th:field="*{checkoutToken}">
-        <input type="hidden" name="paymentMethod" value="CASH_ON_DELIVERY">
-        <div class="checkout-form-column">
-            <div class="checkout-alert" role="alert" th:if="${#fields.hasAnyErrors()}">
-                <strong>Vui lòng kiểm tra thông tin đặt hàng.</strong>
-                <p th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p>
-                <p th:if="${#fields.hasErrors('branchId')}" th:errors="*{branchId}"></p>
-                <p th:if="${#fields.hasErrors('checkoutToken')}" th:errors="*{checkoutToken}"></p>
-            </div>
-            <section class="commerce-panel commerce-form">
-                <h2>1. Hình thức nhận hàng</h2>
-                <label for="deliveryMethod">Bạn muốn nhận hàng bằng cách nào?
-                    <select id="deliveryMethod" th:field="*{deliveryMethod}">
-                        <option value="SHIP_TO_ADDRESS">Giao tận nơi</option><option value="PICKUP_AT_BRANCH">Nhận tại cửa hàng</option>
-                    </select>
-                </label><small class="field-error" th:errors="*{deliveryMethod}"></small>
-                <div class="checkout-branch"><strong th:text="${cart.branchName ?: 'Chưa chọn chi nhánh'}">Chi nhánh</strong>
-                    <p th:text="${cart.branchAddress}"></p><a th:href="@{/cart}">Đổi chi nhánh trong giỏ hàng →</a>
-                </div>
-            </section>
-            <section class="commerce-panel commerce-form">
-                <div class="checkout-section-heading"><h2>2. Thông tin nhận hàng</h2><a th:href="@{/profile(section='addresses')}">Sổ địa chỉ</a></div>
-                <div id="savedAddressFields">
-                    <label for="addressId">Chọn địa chỉ đã lưu
-                        <select id="addressId" th:field="*{addressId}">
-                            <option value="">Nhập địa chỉ mới</option>
-                            <option th:each="address : ${addresses}" th:value="${address.id}"
-                                    th:text="${address.recipientName + ' · ' + address.phone + ' · ' + address.fullAddress()}"></option>
-                        </select>
-                    </label><small class="field-error" th:errors="*{addressId}"></small>
-                </div>
-                <div id="manualRecipientFields" class="checkout-field-grid">
-                    <label>Họ tên người nhận<input th:field="*{recipientName}" autocomplete="name" maxlength="160">
-                        <small class="field-error" th:errors="*{recipientName}"></small></label>
-                    <label>Số điện thoại<input th:field="*{recipientPhone}" type="tel" autocomplete="tel" maxlength="30">
-                        <small class="field-error" th:errors="*{recipientPhone}"></small></label>
-                </div>
-                <div id="newAddressFields" class="checkout-field-grid">
-                    <label>Tỉnh / thành phố<input th:field="*{province}" autocomplete="address-level1" maxlength="120">
-                        <small class="field-error" th:errors="*{province}"></small></label>
-                    <label>Quận / huyện<input th:field="*{district}" autocomplete="address-level2" maxlength="120">
-                        <small class="field-error" th:errors="*{district}"></small></label>
-                    <label>Phường / xã<input th:field="*{ward}" autocomplete="address-level3" maxlength="120">
-                        <small class="field-error" th:errors="*{ward}"></small></label>
-                    <label>Số nhà, tên đường<input th:field="*{addressDetail}" autocomplete="street-address" maxlength="500">
-                        <small class="field-error" th:errors="*{addressDetail}"></small></label>
-                    <label class="checkout-checkbox"><input type="checkbox" th:field="*{saveAddress}">Lưu địa chỉ cho lần mua sau</label>
-                </div>
-                <label>Ghi chú cho cửa hàng<textarea th:field="*{note}" maxlength="1000" rows="3"></textarea>
-                    <small class="field-error" th:errors="*{note}"></small></label>
-            </section>
-            <section class="commerce-panel commerce-form"><h2>3. Thanh toán</h2>
-                <p><strong>Thanh toán khi nhận hàng (COD)</strong></p>
-                <p class="commerce-muted">Bạn thanh toán khi nhận hàng hoặc khi đến nhận tại cửa hàng.</p>
-            </section>
-        </div>
-        <aside class="commerce-panel checkout-summary">
-            <h2>Tóm tắt đơn hàng</h2>
-            <div class="checkout-item" th:each="item : ${cart.items}">
-                <img th:if="${item.imageUrl != null}" th:src="${item.imageUrl}" th:alt="${item.name}">
-                <div><strong th:text="${item.name}"></strong><small th:text="${'Số lượng: ' + item.quantity}"></small></div>
-                <b th:text="|${#numbers.formatDecimal(item.subtotal,1,'POINT',0,'COMMA')}₫|"></b>
-            </div>
-            <label class="checkout-coupon">Mã ưu đãi<input th:field="*{couponCode}" maxlength="40" placeholder="Nhập mã nếu có"></label>
-            <small class="field-error" th:errors="*{couponCode}"></small>
-            <button class="checkout-quote-button" type="button" id="refreshQuote">Cập nhật ưu đãi và tổng tiền</button>
-            <p id="quoteMessage" class="checkout-alert" role="status" th:text="${quoteError}" th:hidden="${quoteError == null}"></p>
-            <dl class="checkout-totals">
-                <div><dt>Tạm tính</dt><dd data-quote="subtotal" th:text="|${#numbers.formatDecimal(quote.subtotal,1,'POINT',0,'COMMA')}₫|"></dd></div>
-                <div><dt>Phí giao hàng</dt><dd data-quote="shippingFee" th:text="|${#numbers.formatDecimal(quote.shippingFee,1,'POINT',0,'COMMA')}₫|"></dd></div>
-                <div><dt>Giảm giá</dt><dd data-quote="discountAmount" th:text="|−${#numbers.formatDecimal(quote.discountAmount,1,'POINT',0,'COMMA')}₫|"></dd></div>
-                <div class="checkout-total"><dt>Tổng thanh toán</dt><dd data-quote="totalAmount" th:text="|${#numbers.formatDecimal(quote.totalAmount,1,'POINT',0,'COMMA')}₫|"></dd></div>
-            </dl>
-            <button class="red-btn" id="placeOrder" type="submit" th:disabled="${!cart.checkoutAllowed}">Xác nhận đặt hàng</button>
-            <a class="checkout-back-link" th:href="@{/cart}">← Quay lại giỏ hàng</a>
-        </aside>
-    </form>
-</main>
-<div th:replace="~{fragments/store-layout :: siteFooter}"></div>
-<script th:src="@{/store/js/checkout.js}" defer></script>
+<main class="wrap ux-container">
+<nav aria-label="Đường dẫn" class="ux-breadcrumb"><a th:href="@{/}">Trang chủ</a><span>/</span><a th:href="@{/cart}">Giỏ hàng</a><span>/</span><strong>Thanh toán</strong></nav>
+<div class="ux-page-head"><div><span class="ux-eyebrow">BƯỚC CUỐI CÙNG</span><h1>Hoàn tất đơn hàng</h1><p>Kiểm tra thông tin nhận hàng trước khi xác nhận.</p></div><div class="ux-secure-tag">🔒 Xác nhận an toàn</div></div>
+<div class="ux-checkout-layout">
+<form id="checkoutForm" method="post" th:action="@{/checkout/place-order}" th:object="${checkout}" th:attr="data-branch-url=@{/checkout/branch},data-quote-url=@{/checkout/quote}" class="ux-checkout-main">
+<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"><input type="hidden" th:field="*{branchId}"><input type="hidden" th:field="*{checkoutToken}"><input type="hidden" name="paymentMethod" value="CASH_ON_DELIVERY">
+<input type="hidden" th:if="${buyNow}" th:field="*{buyNowProductId}"><input type="hidden" th:if="${buyNow}" th:field="*{buyNowQuantity}">
+<div class="checkout-alert" role="alert" th:if="${#fields.hasAnyErrors()}"><strong>Vui lòng kiểm tra thông tin đặt hàng.</strong><p th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p><p th:if="${#fields.hasErrors('branchId')}" th:errors="*{branchId}"></p><p th:if="${#fields.hasErrors('checkoutToken')}" th:errors="*{checkoutToken}"></p></div>
+<section class="ux-panel">
+<header class="ux-panel-title"><span class="ux-step">01</span><div><h2>Hình thức nhận hàng</h2><p>Chọn cách nhận phù hợp với bạn</p></div></header>
+<div class="ux-choice-grid" role="radiogroup" aria-label="Hình thức nhận hàng">
+<label class="ux-choice"><input type="radio" th:field="*{deliveryMethod}" value="SHIP_TO_ADDRESS"><span class="ux-choice-icon">🚚</span><span><strong>Giao tận nơi</strong><small>Nhận hàng tại địa chỉ của bạn</small></span></label>
+<label class="ux-choice"><input type="radio" th:field="*{deliveryMethod}" value="PICKUP_AT_BRANCH"><span class="ux-choice-icon">🏬</span><span><strong>Nhận tại cửa hàng</strong><small>Đến nhận khi đơn sẵn sàng</small></span></label>
+</div><small class="field-error" th:errors="*{deliveryMethod}"></small>
+<div class="ux-branch-notice"><span aria-hidden="true">📍</span><div><small>Chi nhánh xử lý đơn</small><strong id="checkoutBranchName" th:text="${cart.branchName ?: 'Chưa chọn chi nhánh'}">Chi nhánh</strong><span id="checkoutBranchAddress" th:text="${cart.branchAddress}"></span></div></div>
+<div class="ux-branch-picker">
+<label for="checkoutBranchSelect">Chọn chi nhánh còn hàng</label>
+<select id="checkoutBranchSelect" aria-describedby="branchFeedback"><option th:each="branch : ${branchChoices}" th:value="${branch.id}" th:text="|${branch.name} — ${branch.stockLabel}|" th:selected="${branch.id == cart.branchId}" th:disabled="${!branch.available and branch.id != cart.branchId}"></option></select>
+<button id="checkoutBranchApply" class="ux-btn ux-btn-outline" type="button" disabled>Xác nhận chọn chi nhánh</button>
+<p id="branchFeedback" role="status" aria-live="polite" th:text="|Đang dùng ${cart.branchName}. Bạn có thể đổi chi nhánh ở đây.|">Chi nhánh hiện tại</p>
+</div>
+</section>
+<section class="ux-panel">
+<header class="ux-panel-title"><span class="ux-step">02</span><div><h2>Thông tin người nhận</h2><p>Giúp cửa hàng liên hệ và bàn giao chính xác</p></div></header>
+<div id="manualRecipientFields" class="ux-form-grid">
+<label class="ux-field"><span>Họ tên người nhận <em>*</em></span><input th:field="*{recipientName}" autocomplete="name" maxlength="160" placeholder="Ví dụ: Nguyễn Văn A"><small class="field-error" th:errors="*{recipientName}"></small></label>
+<label class="ux-field"><span>Số điện thoại <em>*</em></span><input th:field="*{recipientPhone}" type="tel" autocomplete="tel" maxlength="30" placeholder="Ví dụ: 0912 345 678"><small class="field-error" th:errors="*{recipientPhone}"></small></label>
+</div>
+<div class="ux-shipping-fields" id="shippingFields">
+<div class="ux-section-subhead"><h3>Địa chỉ giao hàng</h3><a th:href="@{/profile(section='addresses')}">Quản lý sổ địa chỉ →</a></div>
+<div id="savedAddressFields" class="ux-address-options" th:if="${!addresses.isEmpty()}">
+<label class="ux-address-option" th:each="address : ${addresses}"><input type="radio" th:field="*{addressId}" th:value="${address.id}" th:attr="data-recipient=${address.recipientName},data-phone=${address.phone}"><span><strong th:text="${address.recipientName}"></strong><span class="ux-default-tag" th:if="${address.isDefault()}">Mặc định</span><small th:text="${address.phone}"></small><span th:text="${address.fullAddress()}"></span></span></label>
+</div>
+<label class="ux-address-new"><input type="radio" th:field="*{addressId}" value=""><strong>＋ Nhập địa chỉ khác</strong></label><small class="field-error" th:errors="*{addressId}"></small>
+<div id="newAddressFields" class="ux-form-grid checkout-address-grid">
+<label class="ux-field"><span>Tỉnh / thành phố <em>*</em></span><input th:field="*{province}" autocomplete="address-level1" maxlength="120"><small class="field-error" th:errors="*{province}"></small></label>
+<label class="ux-field"><span>Quận / huyện <em>*</em></span><input th:field="*{district}" autocomplete="address-level2" maxlength="120"><small class="field-error" th:errors="*{district}"></small></label>
+<label class="ux-field"><span>Phường / xã <em>*</em></span><input th:field="*{ward}" autocomplete="address-level3" maxlength="120"><small class="field-error" th:errors="*{ward}"></small></label>
+<label class="ux-field"><span>Số nhà, tên đường <em>*</em></span><input th:field="*{addressDetail}" autocomplete="street-address" maxlength="500"><small class="field-error" th:errors="*{addressDetail}"></small></label>
+<label class="ux-address-checkbox"><input type="checkbox" th:field="*{saveAddress}"> Lưu địa chỉ cho lần mua sau</label>
+</div></div>
+</section>
+<section class="ux-panel">
+<header class="ux-panel-title"><span class="ux-step">03</span><div><h2>Thanh toán và ghi chú</h2><p>Phương thức hỗ trợ ở phiên bản hiện tại</p></div></header>
+<div class="ux-payment-option"><span aria-hidden="true">💵</span><div><strong>Thanh toán khi nhận hàng (COD)</strong><small>Thanh toán khi nhận được hàng hoặc nhận tại cửa hàng</small></div><span class="ux-selected-mark">✓</span></div>
+<div class="ux-form-grid ux-form-grid-stack">
+<div><label class="ux-field" for="couponCode"><span>Mã ưu đãi <small>(nếu có)</small></span><input th:field="*{couponCode}" maxlength="40" placeholder="Nhập mã giảm giá"></label><small class="field-error" th:errors="*{couponCode}"></small><button class="checkout-quote-button" type="button" id="refreshQuote">Cập nhật ưu đãi và tổng tiền</button></div>
+<label class="ux-field"><span>Ghi chú cho cửa hàng <small>(không bắt buộc)</small></span><textarea th:field="*{note}" maxlength="1000" rows="3" placeholder="Thời gian nhận hàng mong muốn hoặc lưu ý khác..."></textarea><small class="field-error" th:errors="*{note}"></small></label>
+</div></section>
+</form>
+<aside class="ux-checkout-summary"><div class="ux-panel ux-summary-sticky">
+<div class="ux-summary-heading"><h2 th:text="${buyNow} ? 'Sản phẩm đặt hàng' : 'Đơn hàng của bạn'">Đơn hàng của bạn</h2><a th:href="${buyNow} ? @{/product-detail(id=${cart.items[0].productId})} : @{/cart}">Chỉnh sửa</a></div>
+<div class="ux-summary-products"><div class="ux-summary-product" th:each="item : ${cart.items}"><span class="ux-mini-art"><img th:if="${item.imageUrl != null}" th:src="${item.imageUrl}" th:alt="${item.name}"><span th:unless="${item.imageUrl != null}">▣</span></span><div><strong th:text="${item.name}"></strong><small th:text="${'Số lượng: ' + item.quantity}"></small></div><b th:text="|${#numbers.formatDecimal(item.subtotal,1,'POINT',0,'COMMA')}₫|"></b></div></div>
+<p id="quoteMessage" class="checkout-alert" role="status" th:text="${quoteError}" th:hidden="${quoteError == null}"></p>
+<div class="ux-summary-rows"><div><span>Tạm tính</span><strong data-quote="subtotal" th:text="|${#numbers.formatDecimal(quote.subtotal,1,'POINT',0,'COMMA')}₫|"></strong></div><div><span>Phí giao hàng</span><strong data-quote="shippingFee" th:text="|${#numbers.formatDecimal(quote.shippingFee,1,'POINT',0,'COMMA')}₫|"></strong></div><div><span>Ưu đãi</span><strong data-quote="discountAmount" th:text="|−${#numbers.formatDecimal(quote.discountAmount,1,'POINT',0,'COMMA')}₫|"></strong></div></div>
+<div class="ux-total"><div><span>Tổng thanh toán</span><strong data-quote="totalAmount" th:text="|${#numbers.formatDecimal(quote.totalAmount,1,'POINT',0,'COMMA')}₫|"></strong></div><p>Tổng tiền được kiểm tra lại khi bạn đặt hàng.</p></div>
+<button class="ux-btn ux-btn-primary ux-btn-wide" id="placeOrder" form="checkoutForm" type="submit" th:disabled="${!cart.checkoutAllowed}">Xác nhận đặt hàng →</button>
+<p class="ux-safe-note">✓ Không yêu cầu thanh toán trực tuyến. Bạn có thể theo dõi đơn hàng trong tài khoản.</p>
+</div></aside>
+</div></main>
+<div th:replace="~{fragments/store-layout :: siteFooter}"></div><script th:src="@{/store/js/checkout.js}" defer></script>
 </body></html>

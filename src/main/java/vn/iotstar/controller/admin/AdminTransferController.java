@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import vn.iotstar.repository.TransferRepository;
 import vn.iotstar.security.CustomerUserDetails;
 import vn.iotstar.service.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import vn.iotstar.exception.BusinessException;
 
 @Controller
 @RequestMapping("/admin/transfers")
@@ -23,19 +25,34 @@ public class AdminTransferController {
 
     @GetMapping
     public String list(Model model) {
-        model.addAttribute("transfers", repository.findAll());
+        model.addAttribute("transfers", repository.findAllByOrderByCreatedAtDesc());
         return "admin/transfers";
     }
 
+    @GetMapping("/{id}")
+    public String detail(@PathVariable Long id, @AuthenticationPrincipal CustomerUserDetails actor, Model model) {
+        var detail = transfers.detail(id, users.profileById(actor.getId()));
+        model.addAttribute("detail", detail);
+        model.addAttribute("transferRows", java.util.List.of(detail.transfer()));
+        model.addAttribute("staffMode", false);
+        return "admin/transfer-detail";
+    }
+
     @PostMapping("/{id}/approve")
-    public String approve(@PathVariable Long id, @AuthenticationPrincipal CustomerUserDetails actor) {
-        transfers.approve(id, users.byId(actor.getId()));
-        return "redirect:/admin";
+    public String approve(@PathVariable Long id, @AuthenticationPrincipal CustomerUserDetails actor, RedirectAttributes redirect) {
+        try {
+            transfers.approve(id, users.byId(actor.getId()));
+            redirect.addFlashAttribute("success", "Đã duyệt phiếu và trừ kho nguồn.");
+        } catch (BusinessException ex) { redirect.addFlashAttribute("error", ex.getMessage()); }
+        return "redirect:/admin/transfers";
     }
 
     @PostMapping("/{id}/cancel")
-    public String cancel(@PathVariable Long id, @AuthenticationPrincipal CustomerUserDetails actor) {
-        transfers.cancel(id, users.byId(actor.getId()));
-        return "redirect:/admin";
+    public String cancel(@PathVariable Long id, @AuthenticationPrincipal CustomerUserDetails actor, RedirectAttributes redirect) {
+        try {
+            transfers.cancel(id, users.byId(actor.getId()));
+            redirect.addFlashAttribute("success", "Đã hủy phiếu chuyển kho.");
+        } catch (BusinessException ex) { redirect.addFlashAttribute("error", ex.getMessage()); }
+        return "redirect:/admin/transfers";
     }
 }

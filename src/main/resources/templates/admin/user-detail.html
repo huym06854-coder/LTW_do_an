@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chi tiết tài khoản | TechStore</title>
+    <link rel="stylesheet" th:href="@{/store/css/workspace.css}">
+</head>
+<body class="admin-body ops-page">
+    <a class="ops-skip" href="#workspaceMain">Đến nội dung chính</a>
+    <div th:replace="~{admin/fragments/admin-layout :: sidebar('users')}"></div>
+    <main class="admin-main" id="workspaceMain">
+        <div th:replace="~{admin/fragments/admin-layout :: topbar}"></div>
+        <div class="page-wrap">
+
+<a class="ops-back" th:href="@{/admin/users}">← Danh sách người dùng</a>
+<header class="ops-heading"><div><span class="ops-eyebrow">Hồ sơ & phân công</span><h1 th:text="${account.fullName}"></h1><p th:text="${account.email}"></p></div><span class="ops-badge" th:text="${account.status.label}"></span></header>
+<div th:replace="~{fragments/workspace :: alerts}"></div>
+<div class="ops-split">
+    <section class="ops-panel"><div class="ops-panel-head"><h2>Phân công công việc</h2></div><div class="ops-panel-body">
+        <dl class="ops-info"><div><dt>Tên đăng nhập</dt><dd th:text="${account.username}"></dd></div><div><dt>Vai trò hiện tại</dt><dd th:text="${account.role.name.label}"></dd></div><div><dt>Chi nhánh hiện tại</dt><dd th:text="${account.branch != null ? account.branch.name : 'Chưa phân công'}"></dd></div></dl>
+        <form class="ops-form" method="post" th:if="${account.role.name.name() == 'STAFF' or account.role.name.name() == 'MANAGER'}" th:action="@{/admin/users/{id}/assignment(id=${account.id})}"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="ops-field"><label for="assignedRole">Vai trò nhân sự</label><select id="assignedRole" name="role" required><option th:each="r : ${employeeRoles}" th:value="${r.name()}" th:selected="${r == account.role.name}" th:text="${r.label}"></option></select></div>
+            <div class="ops-field"><label for="assignedBranch">Chi nhánh được phân công</label><select id="assignedBranch" name="branchId" required><option value="">Chọn chi nhánh đang hoạt động</option><option th:each="b : ${branches}" th:value="${b.id}" th:selected="${account.branch != null and b.id == account.branch.id}" th:text="${b.name}"></option></select></div>
+            <div class="ops-form-footer"><p>Quyền được cập nhật ở lần truy cập tiếp theo, kể cả với phiên đang đăng nhập.</p><button class="ops-btn" type="submit" th:disabled="${#lists.isEmpty(branches)}">Lưu phân công</button></div>
+        </form>
+        <p class="ops-muted" th:unless="${account.role.name.name() == 'STAFF' or account.role.name.name() == 'MANAGER'}">Chỉ nhân viên và quản lý chi nhánh được phân công tại màn hình này.</p>
+    </div></section>
+    <section class="ops-panel"><div class="ops-panel-head"><h2>Trạng thái tài khoản</h2></div><div class="ops-panel-body">
+        <p class="ops-muted">Khóa hoặc ngừng hoạt động sẽ kết thúc phiên sử dụng ở lần truy cập tiếp theo và ngăn tài khoản tiếp tục thao tác.</p>
+        <form class="ops-form" method="post" th:if="${account.id != currentUser.id}" th:action="@{/admin/users/{id}/status(id=${account.id})}"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="ops-field ops-full"><label for="accountStatus">Trạng thái</label><select id="accountStatus" name="status"><option value="ACTIVE" th:selected="${account.status.name() == 'ACTIVE'}">Hoạt động</option><option value="INACTIVE" th:selected="${account.status.name() == 'INACTIVE'}">Ngừng hoạt động</option><option value="LOCKED" th:selected="${account.status.name() == 'LOCKED'}">Đã khóa</option></select></div><button class="ops-btn ops-btn-quiet ops-full" type="submit">Cập nhật trạng thái</button>
+        </form><p th:if="${account.id == currentUser.id}" class="ops-muted">Bạn không thể tự khóa tài khoản đang sử dụng.</p>
+    </div></section>
+</div>
+<section class="ops-panel"><div class="ops-panel-head"><div><h2>Lịch sử phân công & tài khoản</h2><p>50 thay đổi gần nhất. Dữ liệu trước khi triển khai ghi lịch sử có thể chưa được lưu.</p></div></div><div class="ops-panel-body">
+    <ol class="ops-history">
+        <li th:each="e : ${assignmentHistory}">
+            <strong th:text="${e.note}"></strong><time th:text="${#temporals.format(e.createdAt,'dd/MM/yyyy HH:mm')}"></time>
+            <p th:text="${e.changedBy != null ? 'Thực hiện bởi ' + e.changedBy.fullName : 'Không xác định người thực hiện'}"></p>
+            <p th:if="${e.previousRole != e.newRole}" th:text="${'Vai trò: ' + (e.previousRole != null ? e.previousRole.label : 'Chưa có') + ' → ' + e.newRole.label}"></p>
+            <p th:if="${e.previousBranch != e.newBranch}" th:text="${'Chi nhánh: ' + (e.previousBranch != null ? e.previousBranch.name : 'Chưa phân công') + ' → ' + (e.newBranch != null ? e.newBranch.name : 'Chưa phân công')}"></p>
+            <p th:if="${e.previousStatus != e.newStatus}" th:text="${'Trạng thái: ' + (e.previousStatus != null ? e.previousStatus.label : 'Chưa có') + ' → ' + e.newStatus.label}"></p>
+        </li>
+    </ol>
+    <div class="ops-empty" th:if="${#lists.isEmpty(assignmentHistory)}"><b>Chưa có lịch sử thay đổi</b><p>Các lần phân công, đổi vai trò hoặc cập nhật trạng thái tiếp theo sẽ được ghi nhận.</p></div>
+</div></section>
+
+        </div>
+    </main>
+    <script th:src="@{/store/js/workspace.js}" defer></script>
+</body>
+</html>

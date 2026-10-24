@@ -9,6 +9,10 @@ import vn.iotstar.domain.entity.Order;
 import vn.iotstar.domain.enums.*;
 
 public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
+        @Query("select o.branch.id, count(o) from Order o where o.status = :status group by o.branch.id")
+        List<Object[]> countByBranchForStatus(@Param("status") OrderStatus status);
+        boolean existsByBranchIdAndStatusNotIn(Long branchId, Collection<OrderStatus> terminalStatuses);
+        long countByBranchIdAndStatus(Long branchId, OrderStatus status);
         Optional<Order> findByUserIdAndCheckoutToken(Long userId, String checkoutToken);
 
         Page<Order> findByUserIdOrderByCreatedAtDesc(Long userId, Pageable pageable);

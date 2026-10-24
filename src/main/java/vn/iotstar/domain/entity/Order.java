@@ -20,6 +20,7 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 import vn.iotstar.domain.enums.DeliveryMethod;
 import vn.iotstar.domain.enums.OrderStatus;
 
@@ -57,12 +58,14 @@ public class Order extends BaseEntity {
 	private DeliveryMethod deliveryMethod;
 
 	@Column(name = "recipient_name", nullable = false, length = 160)
+	@Nationalized
 	private String recipientName;
 
 	@Column(name = "recipient_phone", nullable = false, length = 30)
 	private String recipientPhone;
 
 	@Column(name = "shipping_address", length = 1000)
+	@Nationalized
 	private String shippingAddress;
 
 	@Column(precision = 19, scale = 2, nullable = false)
@@ -78,6 +81,7 @@ public class Order extends BaseEntity {
 	private BigDecimal totalAmount;
 
 	@Column(length = 1000)
+	@Nationalized
 	private String note;
 
 	@Column(name = "completed_at")

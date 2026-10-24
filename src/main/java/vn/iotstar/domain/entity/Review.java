@@ -11,6 +11,7 @@ import jakarta.persistence.CheckConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 @Getter
 @Setter
@@ -33,5 +34,6 @@ public class Review extends BaseEntity {
 	private int rating;
 
 	@Column(length = 2000)
+	@Nationalized
 	private String comment;
 }

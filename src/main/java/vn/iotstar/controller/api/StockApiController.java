@@ -39,6 +39,9 @@ public class StockApiController {
     }
 
     private void checkScope(User actor, Long branchId) {
+        if (actor.getRole().getName() != UserRole.ADMIN && actor.getBranch() != null
+                && actor.getBranch().getStatus() != vn.iotstar.domain.enums.BranchStatus.ACTIVE)
+            throw new org.springframework.security.access.AccessDeniedException("Chi nhánh đã ngừng hoạt động");
         if (actor.getRole().getName() != UserRole.ADMIN
                 && (actor.getBranch() == null || !actor.getBranch().getId().equals(branchId)))
             throw new org.springframework.security.access.AccessDeniedException(

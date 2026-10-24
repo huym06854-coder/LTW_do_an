@@ -14,6 +14,7 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 @Getter
 @Setter
@@ -23,9 +24,11 @@ import lombok.Setter;
 public class Category extends BaseEntity {
 
 	@Column(nullable = false, length = 120)
+	@Nationalized
 	private String name;
 
 	@Column(length = 1000)
+	@Nationalized
 	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)

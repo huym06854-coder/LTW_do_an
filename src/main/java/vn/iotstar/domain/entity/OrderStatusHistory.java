@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 import vn.iotstar.domain.enums.OrderStatus;
 
 @Getter
@@ -37,5 +38,6 @@ public class OrderStatusHistory extends BaseEntity {
 	private User changedBy;
 
 	@Column(length = 1000)
+	@Nationalized
 	private String note;
 }

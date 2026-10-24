@@ -28,6 +28,9 @@
                     Thông tin đăng nhập không chính xác hoặc tài khoản bị khóa.
                 </div>
                 <div class="auth-message" role="status" th:if="${message}" th:text="${message}"></div>
+                <div class="auth-message auth-message--error" role="alert" th:if="${param.accountDisabled}">
+                    Phiên đăng nhập đã kết thúc vì tài khoản bị khóa hoặc ngừng hoạt động. Vui lòng liên hệ quản trị viên.
+                </div>
                 <label>Email hoặc tên đăng nhập
                     <input name="login" type="text" autocomplete="username" placeholder="name@example.com" required>
                 </label>

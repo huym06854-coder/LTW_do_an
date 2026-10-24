@@ -8,23 +8,23 @@
     </a>
     <div class="admin-profile">
         <div class="avatar avatar-admin">AD</div>
-        <div><b>Quản trị viên</b><small>Quản lý hệ thống</small></div>
+        <div><b th:text="${currentUser != null ? currentUser.fullName : 'Quản trị viên'}">Quản trị viên</b><small>Quản lý hệ thống</small></div>
         <span class="online-dot" aria-label="Đang hoạt động"></span>
     </div>
     <div class="sidebar-label">MENU CHÍNH</div>
     <nav class="side-nav" aria-label="Điều hướng quản trị">
-        <a class="nav-item" th:classappend="${activePage == 'overview' ? 'active' : ''}" th:href="@{/admin}"><span>▦</span>Tổng quan</a>
-        <a class="nav-item" th:classappend="${activePage == 'orders' ? 'active' : ''}" th:href="@{/admin/orders}"><span>▤</span>Đơn hàng</a>
-        <a class="nav-item" th:classappend="${activePage == 'products' ? 'active' : ''}" th:href="@{/admin/products}"><span>▤</span>Sản phẩm</a>
-        <a class="nav-item" th:classappend="${activePage == 'categories' ? 'active' : ''}" th:href="@{/admin/categories}"><span>▧</span>Danh mục</a>
-        <a class="nav-item" th:classappend="${activePage == 'brands' ? 'active' : ''}" th:href="@{/admin/brands}"><span>◇</span>Thương hiệu</a>
-        <a class="nav-item" th:classappend="${activePage == 'branches' ? 'active' : ''}" th:href="@{/admin/branches}"><span>⌖</span>Chi nhánh</a>
-        <a class="nav-item" th:classappend="${activePage == 'stock' ? 'active' : ''}" th:href="@{/admin/stock}"><span>▦</span>Kho hàng</a>
-        <a class="nav-item" th:classappend="${activePage == 'transfers' ? 'active' : ''}" th:href="@{/admin/transfers}"><span>⇄</span>Chuyển kho</a>
-        <a class="nav-item" th:classappend="${activePage == 'users' ? 'active' : ''}" th:href="@{/admin/users}"><span>♙</span>Người dùng</a>
-        <a class="nav-item" th:classappend="${activePage == 'coupons' ? 'active' : ''}" th:href="@{/admin/coupons}"><span>％</span>Mã ưu đãi</a>
-        <a class="nav-item" th:classappend="${activePage == 'reviews' ? 'active' : ''}" th:href="@{/admin/reviews}"><span>☆</span>Đánh giá</a>
-        <a class="nav-item" th:classappend="${activePage == 'reports' ? 'active' : ''}" th:href="@{/admin/reports}"><span>▥</span>Báo cáo</a>
+        <a class="nav-item" th:classappend="${activePage == 'overview' ? 'active' : ''}" th:attr="aria-current=${activePage == 'overview' ? 'page' : null}" th:href="@{/admin}"><svg th:replace="~{fragments/workspace :: icon('grid')}"></svg>Tổng quan</a>
+        <a class="nav-item" th:classappend="${activePage == 'orders' ? 'active' : ''}" th:attr="aria-current=${activePage == 'orders' ? 'page' : null}" th:href="@{/admin/orders}"><svg th:replace="~{fragments/workspace :: icon('orders')}"></svg>Đơn hàng</a>
+        <a class="nav-item" th:classappend="${activePage == 'products' ? 'active' : ''}" th:attr="aria-current=${activePage == 'products' ? 'page' : null}" th:href="@{/admin/products}"><svg th:replace="~{fragments/workspace :: icon('box')}"></svg>Sản phẩm</a>
+        <a class="nav-item" th:classappend="${activePage == 'categories' ? 'active' : ''}" th:attr="aria-current=${activePage == 'categories' ? 'page' : null}" th:href="@{/admin/categories}"><svg th:replace="~{fragments/workspace :: icon('grid')}"></svg>Danh mục</a>
+        <a class="nav-item" th:classappend="${activePage == 'brands' ? 'active' : ''}" th:attr="aria-current=${activePage == 'brands' ? 'page' : null}" th:href="@{/admin/brands}"><svg th:replace="~{fragments/workspace :: icon('box')}"></svg>Thương hiệu</a>
+        <a class="nav-item" th:classappend="${activePage == 'branches' ? 'active' : ''}" th:attr="aria-current=${activePage == 'branches' ? 'page' : null}" th:href="@{/admin/branches}"><svg th:replace="~{fragments/workspace :: icon('branch')}"></svg>Chi nhánh</a>
+        <a class="nav-item" th:classappend="${activePage == 'stock' ? 'active' : ''}" th:attr="aria-current=${activePage == 'stock' ? 'page' : null}" th:href="@{/admin/stock}"><svg th:replace="~{fragments/workspace :: icon('box')}"></svg>Kho hàng</a>
+        <a class="nav-item" th:classappend="${activePage == 'transfers' ? 'active' : ''}" th:attr="aria-current=${activePage == 'transfers' ? 'page' : null}" th:href="@{/admin/transfers}"><svg th:replace="~{fragments/workspace :: icon('transfer')}"></svg>Chuyển kho</a>
+        <a class="nav-item" th:classappend="${activePage == 'users' ? 'active' : ''}" th:attr="aria-current=${activePage == 'users' ? 'page' : null}" th:href="@{/admin/users}"><svg th:replace="~{fragments/workspace :: icon('users')}"></svg>Người dùng</a>
+        <a class="nav-item" th:classappend="${activePage == 'coupons' ? 'active' : ''}" th:attr="aria-current=${activePage == 'coupons' ? 'page' : null}" th:href="@{/admin/coupons}"><svg th:replace="~{fragments/workspace :: icon('orders')}"></svg>Mã ưu đãi</a>
+        <a class="nav-item" th:classappend="${activePage == 'reviews' ? 'active' : ''}" th:attr="aria-current=${activePage == 'reviews' ? 'page' : null}" th:href="@{/admin/reviews}"><svg th:replace="~{fragments/workspace :: icon('orders')}"></svg>Đánh giá</a>
+        <a class="nav-item" th:classappend="${activePage == 'reports' ? 'active' : ''}" th:attr="aria-current=${activePage == 'reports' ? 'page' : null}" th:href="@{/admin/reports}"><svg th:replace="~{fragments/workspace :: icon('grid')}"></svg>Báo cáo</a>
     </nav>
     <div class="sidebar-bottom">
         <div class="support-icon">?</div>
@@ -37,7 +37,7 @@
 
 <header class="admin-topbar" th:fragment="topbar">
     <div class="top-left">
-        <button id="adminSidebarToggle" class="icon-button mobile-only" type="button" aria-label="Mở menu" aria-expanded="false">☰</button>
+        <button id="adminSidebarToggle" class="icon-button mobile-only" type="button" aria-label="Mở menu" aria-controls="adminSidebar" aria-expanded="false">☰</button>
         <div class="crumb"><span>TechStore</span><b>/</b><strong>Admin Console</strong></div>
     </div>
     <div class="top-actions">
@@ -46,7 +46,7 @@
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <button class="user-menu" type="submit" aria-label="Đăng xuất">
                 <span class="avatar avatar-small">AD</span>
-                <span><b>Quản trị viên</b><small>Đăng xuất</small></span>
+                <span><b th:text="${currentUser != null ? currentUser.fullName : 'Quản trị viên'}">Quản trị viên</b><small>Đăng xuất</small></span>
                 <span>↗</span>
             </button>
         </form>

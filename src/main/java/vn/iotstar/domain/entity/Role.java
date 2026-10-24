@@ -14,6 +14,7 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 import vn.iotstar.domain.enums.UserRole;
 
 @Getter
@@ -28,6 +29,7 @@ public class Role extends BaseEntity {
 	private UserRole name;
 
 	@Column(length = 500)
+	@Nationalized
 	private String description;
 
 	@OneToMany(mappedBy = "role", cascade = CascadeType.PERSIST)

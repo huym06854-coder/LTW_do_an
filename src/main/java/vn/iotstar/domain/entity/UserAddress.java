@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 @Getter
 @Setter
@@ -23,21 +24,26 @@ public class UserAddress extends BaseEntity {
 	private User user;
 
 	@Column(name = "recipient_name", nullable = false, length = 160)
+	@Nationalized
 	private String recipientName;
 
 	@Column(nullable = false, length = 30)
 	private String phone;
 
 	@Column(nullable = false, length = 120)
+	@Nationalized
 	private String province;
 
 	@Column(nullable = false, length = 120)
+	@Nationalized
 	private String district;
 
 	@Column(nullable = false, length = 120)
+	@Nationalized
 	private String ward;
 
 	@Column(name = "address_detail", nullable = false, length = 500)
+	@Nationalized
 	private String addressDetail;
 
 	@Column(name = "is_default", nullable = false)

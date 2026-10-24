@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"><body>
+<svg th:fragment="icon(name)" class="ops-icon" xmlns="http://www.w3.org/2000/svg" xmlns:th="http://www.thymeleaf.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<g th:switch="${name}">
+<path th:case="'grid'" d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/>
+<path th:case="'box'" d="m12 3 9 5-9 5-9-5 9-5ZM3 8v9l9 5 9-5V8M12 13v9M7.5 5.5l9 5"/>
+<path th:case="'orders'" d="M8 4H5v17h14V4h-3M9 2h6v4H9zM8 11h8M8 15h5"/>
+<path th:case="'transfer'" d="M3 7h17m-4-4 4 4-4 4M21 17H4m4-4-4 4 4 4"/>
+<path th:case="'branch'" d="M3 10h18L19 3H5l-2 7Zm2 0v11h14V10M9 21v-7h6v7M2 10v2a3 3 0 0 0 5 2 3 3 0 0 0 5 0 3 3 0 0 0 5 0 3 3 0 0 0 5-2v-2"/>
+<path th:case="'users'" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm9 1a4 4 0 0 1 0 8m4 9v-2a4 4 0 0 0-3-3.87"/>
+<path th:case="'arrow'" d="M5 12h14m-5-5 5 5-5 5"/>
+<path th:case="'plus'" d="M12 5v14M5 12h14"/>
+<path th:case="'search'" d="M21 21l-5-5M10 3a7 7 0 1 0 0 14 7 7 0 0 0 0-14Z"/>
+<path th:case="'alert'" d="m12 3 10 18H2L12 3Zm0 6v4m0 4h.01"/>
+<path th:case="*" d="M5 12h14m-5-5 5 5-5 5"/>
+</g></svg>
+<div th:fragment="alerts">
+    <p class="ops-alert ops-alert-success" role="status" th:if="${success}" th:text="${success}"></p>
+    <p class="ops-alert ops-alert-error" role="alert" th:if="${error}" th:text="${error}"></p>
+</div>
+
+<div class="ops-table-scroll" th:fragment="transferTable(items, staffMode)">
+<table class="ops-table"><thead><tr><th>Phiếu chuyển</th><th>Hành trình</th><th>Sản phẩm</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+<tbody><tr th:each="t : ${items}" th:with="sourceSide=${!staffMode or (staffBranch != null and t.sourceBranch.id == staffBranch.id)}, destinationSide=${staffMode and staffBranch != null and t.destinationBranch.id == staffBranch.id}, canApprove=${!staffMode or staffRole == 'MANAGER' or staffRole == 'ADMIN'}">
+<td><strong><a class="ops-link" th:href="@{${(staffMode ? '/staff/transfers/' : '/admin/transfers/') + t.id}}" th:text="${t.code}"></a></strong><small th:text="${#temporals.format(t.createdAt, 'dd/MM/yyyy HH:mm')}"></small><small th:text="${'Người yêu cầu: ' + t.createdBy.fullName}"></small></td>
+<td><span th:text="${t.sourceBranch.name}"></span><small>↓</small><span th:text="${t.destinationBranch.name}"></span></td>
+<td><div class="ops-transfer-item" th:each="i : ${t.items}"><span th:text="${i.product.name}"></span><b th:text="${'×' + i.quantity}"></b></div></td>
+<td><span class="ops-badge" th:classappend="${'state-' + t.status.name()}" th:text="${t.status.label}"></span></td>
+<td><div class="ops-actions">
+<form method="post" th:if="${sourceSide and canApprove and t.status.name() == 'PENDING'}" th:action="@{${(staffMode ? '/staff/transfers/' : '/admin/transfers/') + t.id + '/approve'}}"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"><button class="ops-btn ops-btn-small" type="submit">Duyệt phiếu</button></form>
+<form method="post" th:if="${staffMode and sourceSide and t.status.name() == 'APPROVED'}" th:action="@{/staff/transfers/{id}/ship(id=${t.id})}"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"><button class="ops-btn ops-btn-small" type="submit">Xuất hàng</button></form>
+<form method="post" th:if="${destinationSide and t.status.name() == 'IN_TRANSIT'}" th:action="@{/staff/transfers/{id}/complete(id=${t.id})}"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"><button class="ops-btn ops-btn-small" type="submit">Xác nhận nhận hàng</button></form>
+<form method="post" th:if="${sourceSide and (t.status.name() == 'PENDING' or t.status.name() == 'APPROVED' or t.status.name() == 'DRAFT')}" th:action="@{${(staffMode ? '/staff/transfers/' : '/admin/transfers/') + t.id + '/cancel'}}" data-confirm="Hủy phiếu chuyển kho này? Hàng đã trừ sẽ được hoàn lại kho nguồn."><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"><button class="ops-btn ops-btn-small ops-btn-danger" type="submit">Hủy phiếu</button></form>
+<span class="ops-muted" th:if="${t.status.name() == 'COMPLETED' or t.status.name() == 'CANCELLED'}">Đã kết thúc</span>
+<span class="ops-muted" th:if="${staffMode and !sourceSide and t.status.name() != 'IN_TRANSIT' and t.status.name() != 'COMPLETED' and t.status.name() != 'CANCELLED'}">Chờ chi nhánh gửi</span>
+<span class="ops-muted" th:if="${sourceSide and t.status.name() == 'IN_TRANSIT'}">Chờ xác nhận nhận hàng</span>
+</div></td></tr>
+<tr th:if="${#lists.isEmpty(items)}"><td colspan="5"><div class="ops-empty"><b>Chưa có phiếu chuyển kho</b><p>Các yêu cầu và trạng thái vận chuyển sẽ được hiển thị tại đây.</p></div></td></tr>
+</tbody></table></div>
+</body></html>

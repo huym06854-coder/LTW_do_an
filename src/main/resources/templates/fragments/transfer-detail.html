@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"><body>
+<section th:fragment="content">
+    <a class="ops-back" th:href="@{${staffMode ? '/staff/transfers' : '/admin/transfers'}}">← Danh sách chuyển kho</a>
+    <header class="ops-heading"><div><span class="ops-eyebrow">Chi tiết chuyển kho</span><h1 th:text="${detail.transfer.code}"></h1><p th:text="${'Người yêu cầu: ' + detail.transfer.createdBy.fullName}"></p></div><span class="ops-badge" th:classappend="${'state-' + detail.transfer.status.name()}" th:text="${detail.transfer.status.label}"></span></header>
+    <div th:replace="~{fragments/workspace :: alerts}"></div>
+    <section class="ops-panel"><div class="ops-panel-head"><h2>Hàng hóa & hành trình</h2></div><div th:replace="~{fragments/workspace :: transferTable(${transferRows},${staffMode})}"></div></section>
+    <section class="ops-panel"><div class="ops-panel-head"><div><h2>Lịch sử xử lý</h2><p>Mỗi thay đổi được ghi nhận cùng thao tác và người thực hiện.</p></div></div><div class="ops-panel-body">
+        <ol class="ops-history"><li th:each="e : ${detail.history}"><strong th:text="${e.newStatus.label}"></strong><time th:text="${#temporals.format(e.createdAt,'dd/MM/yyyy HH:mm')}"></time><p th:text="${e.note}"></p><p class="ops-muted" th:text="${e.changedBy != null ? 'Thực hiện bởi ' + e.changedBy.fullName : 'Không xác định người thực hiện'}"></p></li></ol>
+        <div class="ops-empty" th:if="${#lists.isEmpty(detail.history)}"><b>Phiếu chưa có lịch sử ghi nhận</b><p>Với phiếu cũ, các thay đổi trước đây có thể chưa được lưu. Các thao tác tiếp theo sẽ được ghi nhận.</p></div>
+    </div></section>
+</section></body></html>

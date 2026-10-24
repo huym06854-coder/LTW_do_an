@@ -18,6 +18,7 @@ import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 import vn.iotstar.domain.enums.TransferStatus;
 
 @Getter
@@ -51,6 +52,7 @@ public class Transfer extends BaseEntity {
 	private User approvedBy;
 
 	@Column(length = 1000)
+	@Nationalized
 	private String note;
 
 	@Version

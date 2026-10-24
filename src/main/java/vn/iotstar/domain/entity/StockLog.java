@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 import vn.iotstar.domain.enums.StockMovementType;
 
 @Getter
@@ -43,5 +44,6 @@ public class StockLog extends BaseEntity {
 	private String referenceCode;
 
 	@Column(length = 1000)
+	@Nationalized
 	private String note;
 }

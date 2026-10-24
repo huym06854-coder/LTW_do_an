@@ -1,20 +1,6 @@
 <!doctype html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Đơn hàng chi nhánh | TechStore</title>
-    <link rel="stylesheet" th:href="@{/store/css/style.css}">
-    <link rel="stylesheet" th:href="@{/store/css/site.css}">
-    <link rel="stylesheet" th:href="@{/store/css/order-pages.css}">
-</head>
-<body>
-    <div th:replace="~{fragments/store-layout :: siteHeader}"></div>
-    <main class="wrap">
-        <div class="order-alert" id="orderLiveNotice" role="status" aria-live="polite" hidden></div>
-        <div th:replace="~{orders/fragments :: list}"></div>
-    </main>
-    <div th:replace="~{fragments/store-layout :: siteFooter}"></div>
-    <script th:src="@{/store/js/order-notifications.js}" defer></script>
-</body>
-</html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Đơn hàng chi nhánh | TechStore</title><link rel="stylesheet" th:href="@{/store/css/order-pages.css}"><link rel="stylesheet" th:href="@{/store/css/workspace.css}"></head>
+<body class="admin-body ops-page"><a class="ops-skip" href="#workspaceMain">Đến nội dung chính</a>
+<div th:replace="~{staff/fragments/staff-layout :: staffSidebar('orders')}"></div>
+<main class="admin-main" id="workspaceMain"><div th:replace="~{staff/fragments/staff-layout :: staffTopbar}"></div><div class="page-wrap"><div class="order-alert" id="orderLiveNotice" role="status" aria-live="polite" hidden></div><div th:replace="~{orders/fragments :: list}"></div><script th:src="@{/store/js/order-notifications.js}" defer></script></div></main>
+<script th:src="@{/store/js/workspace.js}" defer></script></body></html>

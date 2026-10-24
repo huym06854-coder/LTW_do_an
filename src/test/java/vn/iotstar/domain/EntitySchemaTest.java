@@ -51,8 +51,10 @@ class EntitySchemaTest {
 	@Test
 	void allEntitiesMapToTheMigratedSchema() {
 		var metamodel = entityManagerFactory.getMetamodel();
+        assertThat(metamodel.entity(vn.iotstar.domain.entity.TransferStatusHistory.class)).isNotNull();
+        assertThat(metamodel.entity(vn.iotstar.domain.entity.EmployeeAssignmentHistory.class)).isNotNull();
 
-		assertThat(metamodel.getEntities()).hasSize(23);
+		assertThat(metamodel.getEntities()).hasSize(25);
 		assertThat(metamodel.entity(User.class)).isNotNull();
 		assertThat(metamodel.entity(Role.class)).isNotNull();
 		assertThat(metamodel.entity(Branch.class)).isNotNull();

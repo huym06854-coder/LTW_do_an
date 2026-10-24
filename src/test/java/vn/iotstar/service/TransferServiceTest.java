@@ -44,7 +44,11 @@ class TransferServiceTest {
         manager.setRole(managerRole);
         manager.setBranch(managerBranch);
 
-        TransferService service = new TransferService(transfers, items, products, branches, inventory);
+        UserService users = mock(UserService.class);
+        manager.setId(1L);
+        when(users.profileById(1L)).thenReturn(manager);
+        TransferService service = new TransferService(transfers, products, branches, inventory,
+                mock(vn.iotstar.repository.TransferStatusHistoryRepository.class), users);
         assertThrows(org.springframework.security.access.AccessDeniedException.class,
                 () -> service.approve(5L, manager));
         verifyNoInteractions(inventory);

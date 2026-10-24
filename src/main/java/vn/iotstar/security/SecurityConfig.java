@@ -29,8 +29,13 @@ public class SecurityConfig {
         return http.build();
     }
     @Bean @Order(2)
-    SecurityFilterChain webSecurity(HttpSecurity http,CustomerAuthenticationSuccessHandler onSuccess) throws Exception {
+    SecurityFilterChain webSecurity(HttpSecurity http,CustomerAuthenticationSuccessHandler onSuccess,
+            vn.iotstar.service.UserService accounts) throws Exception {
+        var contexts = new org.springframework.security.web.context.HttpSessionSecurityContextRepository();
+        http.securityContext(c -> c.securityContextRepository(contexts))
+            .addFilterBefore(new SessionAccountValidationFilter(accounts, contexts), org.springframework.security.web.csrf.CsrfFilter.class);
         http.authorizeHttpRequests(auth->auth
+            .requestMatchers(org.springframework.http.HttpMethod.GET,"/admin/css/**","/admin/js/**").permitAll()
             .requestMatchers("/admin/**","/admin").hasRole("ADMIN")
             .requestMatchers("/staff/**","/staff").hasAnyRole("ADMIN","MANAGER","STAFF")
             .requestMatchers("/cart/**","/cart","/checkout/**","/checkout","/profile/**","/profile","/orders/**","/orders").authenticated()

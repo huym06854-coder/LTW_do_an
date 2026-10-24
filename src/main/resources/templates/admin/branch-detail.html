@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chi tiết chi nhánh | TechStore</title>
+    <link rel="stylesheet" th:href="@{/store/css/workspace.css}">
+</head>
+<body class="admin-body ops-page">
+    <a class="ops-skip" href="#workspaceMain">Đến nội dung chính</a>
+    <div th:replace="~{admin/fragments/admin-layout :: sidebar('branches')}"></div>
+    <main class="admin-main" id="workspaceMain">
+        <div th:replace="~{admin/fragments/admin-layout :: topbar}"></div>
+        <div class="page-wrap">
+
+<a class="ops-back" th:href="@{/admin/branches}">← Danh sách chi nhánh</a>
+<header class="ops-heading">
+    <div><span class="ops-eyebrow" th:text="${branch.code}"></span><h1 th:text="${branch.name}"></h1><p th:text="${branch.address}"></p></div>
+    <span class="ops-badge" th:classappend="${branch.status.name() == 'ACTIVE' ? 'ops-badge-good' : 'ops-badge-danger'}" th:text="${branch.status.name() == 'ACTIVE' ? 'Đang hoạt động' : 'Ngừng hoạt động'}"></span>
+</header>
+<div th:replace="~{fragments/workspace :: alerts}"></div>
+<nav class="ops-tabs" aria-label="Thông tin chi nhánh">
+    <a th:classappend="${activeTab == 'overview' ? 'active' : ''}" th:attr="aria-current=${activeTab == 'overview' ? 'page' : null}" th:href="@{/admin/branches/{id}(id=${branch.id},tab='overview')}">Tổng quan</a>
+    <a th:classappend="${activeTab == 'employees' ? 'active' : ''}" th:attr="aria-current=${activeTab == 'employees' ? 'page' : null}" th:href="@{/admin/branches/{id}(id=${branch.id},tab='employees')}">Nhân sự</a>
+    <a th:classappend="${activeTab == 'orders' ? 'active' : ''}" th:attr="aria-current=${activeTab == 'orders' ? 'page' : null}" th:href="@{/admin/branches/{id}(id=${branch.id},tab='orders')}">Đơn hàng</a>
+    <a th:classappend="${activeTab == 'stock' ? 'active' : ''}" th:attr="aria-current=${activeTab == 'stock' ? 'page' : null}" th:href="@{/admin/branches/{id}(id=${branch.id},tab='stock')}">Tồn kho</a>
+    <a th:classappend="${activeTab == 'transfers' ? 'active' : ''}" th:attr="aria-current=${activeTab == 'transfers' ? 'page' : null}" th:href="@{/admin/branches/{id}(id=${branch.id},tab='transfers')}">Chuyển kho</a>
+</nav>
+<section th:if="${activeTab == 'overview'}">
+    <div class="ops-stats">
+        <div class="ops-stat"><div><small>Quản lý chi nhánh</small><strong th:text="${summary.managerCount}"></strong></div><svg th:replace="~{fragments/workspace :: icon('users')}"></svg></div>
+        <div class="ops-stat"><div><small>Nhân viên</small><strong th:text="${summary.staffCount}"></strong></div><svg th:replace="~{fragments/workspace :: icon('users')}"></svg></div>
+        <div class="ops-stat"><div><small>Đơn chờ xác nhận</small><strong th:text="${summary.pendingOrders}"></strong></div><svg th:replace="~{fragments/workspace :: icon('orders')}"></svg></div>
+        <div class="ops-stat"><div><small>Phiếu chờ duyệt</small><strong th:text="${summary.pendingTransfers}"></strong></div><svg th:replace="~{fragments/workspace :: icon('transfer')}"></svg></div>
+    </div>
+    <div class="ops-split">
+        <section class="ops-panel">
+            <div class="ops-panel-head"><h2>Thông tin cửa hàng</h2></div>
+            <form class="ops-panel-body ops-form" method="post" th:action="@{/admin/branches/{id}(id=${branch.id})}"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <div class="ops-field ops-full"><label for="branchName">Tên chi nhánh</label><input id="branchName" name="name" th:value="${branch.name}" maxlength="160" required></div>
+                <div class="ops-field ops-full"><label for="branchAddress">Địa chỉ</label><textarea id="branchAddress" name="address" th:text="${branch.address}" maxlength="500" required></textarea></div>
+                <div class="ops-form-footer"><p>Mã chi nhánh: <b th:text="${branch.code}"></b></p><button class="ops-btn" type="submit">Lưu thông tin</button></div>
+            </form>
+        </section>
+        <div>
+            <section class="ops-panel"><div class="ops-panel-head"><h2>Doanh thu 30 ngày gần nhất</h2></div><div class="ops-panel-body"><strong class="ops-revenue" th:text="${#numbers.formatDecimal(recentRevenue,0,'POINT',0,'COMMA') + ' ₫'}"></strong><p class="ops-muted">Tính theo ngày hoàn tất của các đơn hàng đã hoàn tất.</p></div></section>
+            <section class="ops-panel"><div class="ops-panel-head"><h2>Trạng thái chi nhánh</h2></div><div class="ops-panel-body">
+                <p class="ops-muted">Chỉ ngừng hoạt động khi không còn đơn hàng hoặc phiếu chuyển kho đang mở. Nhân sự vẫn giữ phân công để admin có thể quản lý hoặc điều chuyển.</p>
+                <form method="post" th:action="@{/admin/branches/{id}/status(id=${branch.id})}" data-confirm="Xác nhận thay đổi trạng thái hoạt động của chi nhánh?"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <input type="hidden" name="status" th:value="${branch.status.name() == 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'}">
+                    <button class="ops-btn ops-btn-quiet" type="submit" th:text="${branch.status.name() == 'ACTIVE' ? 'Ngừng hoạt động chi nhánh' : 'Kích hoạt lại chi nhánh'}"></button>
+                </form>
+            </div></section>
+        </div>
+    </div>
+</section>
+<section class="ops-panel" th:if="${activeTab == 'employees'}">
+    <div class="ops-panel-head"><div><h2>Nhân sự của chi nhánh</h2><p th:text="${members.totalElements + ' quản lý / nhân viên được phân công'}"></p></div><a class="ops-btn ops-btn-quiet" th:href="@{/admin/users(group='employees',branchId=${branch.id})}">Quản lý nhân sự →</a></div>
+    <div class="ops-table-scroll"><table class="ops-table"><thead><tr><th>Nhân sự</th><th>Vai trò</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody>
+        <tr th:each="u : ${members.content}"><td><strong th:text="${u.fullName}"></strong><small th:text="${u.email}"></small></td><td th:text="${u.role.name.label}"></td><td><span class="ops-badge" th:text="${u.status.label}"></span></td><td><a class="ops-link" th:href="@{/admin/users/{id}(id=${u.id})}">Xem & phân công →</a></td></tr>
+        <tr th:if="${members.empty}"><td colspan="4"><div class="ops-empty"><b>Chưa có nhân sự</b><p>Tạo tài khoản hoặc chuyển nhân sự từ chi nhánh khác tại trang Người dùng.</p></div></td></tr>
+    </tbody></table></div><nav class="ops-pagination" aria-label="Phân trang" th:if="${members.totalPages > 1}">
+<a class="ops-btn ops-btn-small ops-btn-quiet" th:if="${members.hasPrevious()}" th:href="@{/admin/branches/{id}(id=${branch.id},tab=${activeTab},page=${members.number - 1})}">← Trang trước</a>
+<span th:text="${'Trang ' + (members.number + 1) + ' / ' + members.totalPages}"></span>
+<a class="ops-btn ops-btn-small ops-btn-quiet" th:if="${members.hasNext()}" th:href="@{/admin/branches/{id}(id=${branch.id},tab=${activeTab},page=${members.number + 1})}">Trang sau →</a></nav>
+</section>
+<section class="ops-panel" th:if="${activeTab == 'orders'}">
+    <div class="ops-panel-head"><div><h2>Đơn hàng tại chi nhánh</h2><p th:text="${branchOrders.totalElements + ' đơn hàng'}"></p></div></div>
+    <div class="ops-table-scroll"><table class="ops-table"><thead><tr><th>Mã đơn hàng</th><th>Sản phẩm</th><th>Tổng tiền</th><th>Trạng thái</th></tr></thead><tbody>
+        <tr th:each="o : ${branchOrders.content}"><td><a class="ops-link" th:href="@{/admin/orders/{id}(id=${o.id})}" th:text="${o.orderNumber}"></a></td><td th:text="${o.items.size() + ' dòng sản phẩm'}"></td><td th:text="${#numbers.formatDecimal(o.totalAmount,0,'POINT',0,'COMMA') + ' ₫'}"></td><td><span class="ops-badge" th:text="${o.statusLabel}"></span></td></tr>
+        <tr th:if="${branchOrders.empty}"><td colspan="4"><div class="ops-empty"><b>Chi nhánh chưa có đơn hàng</b></div></td></tr>
+    </tbody></table></div><nav class="ops-pagination" aria-label="Phân trang" th:if="${branchOrders.totalPages > 1}">
+<a class="ops-btn ops-btn-small ops-btn-quiet" th:if="${branchOrders.hasPrevious()}" th:href="@{/admin/branches/{id}(id=${branch.id},tab=${activeTab},page=${branchOrders.number - 1})}">← Trang trước</a>
+<span th:text="${'Trang ' + (branchOrders.number + 1) + ' / ' + branchOrders.totalPages}"></span>
+<a class="ops-btn ops-btn-small ops-btn-quiet" th:if="${branchOrders.hasNext()}" th:href="@{/admin/branches/{id}(id=${branch.id},tab=${activeTab},page=${branchOrders.number + 1})}">Trang sau →</a></nav>
+</section>
+<section class="ops-panel" id="branchStockTable" th:if="${activeTab == 'stock'}">
+    <div class="ops-panel-head"><h2>Tồn kho tại chi nhánh</h2><a class="ops-btn ops-btn-quiet" th:href="@{/admin/stock(branchId=${branch.id})}">Điều chỉnh kho →</a></div>
+    <div class="ops-table-scroll"><table class="ops-table"><thead><tr><th>Sản phẩm</th><th>Tồn kho</th><th>Trạng thái</th></tr></thead><tbody>
+        <tr th:each="s : ${stocks}"><td><strong th:text="${s.productName}"></strong><small th:text="${s.sku}"></small></td><td class="ops-number" th:text="${s.quantity}"></td><td><span class="ops-badge" th:classappend="${s.quantity == 0 ? 'ops-badge-danger' : (s.quantity &lt;= 5 ? 'ops-badge-warn' : 'ops-badge-good')}" th:text="${s.quantity == 0 ? 'Hết hàng' : (s.quantity &lt;= 5 ? 'Sắp hết hàng' : 'Còn hàng')}"></span></td></tr>
+        <tr th:if="${#lists.isEmpty(stocks)}"><td colspan="3"><div class="ops-empty"><b>Kho chưa có sản phẩm</b></div></td></tr>
+    </tbody></table></div>
+</section>
+<section class="ops-panel" th:if="${activeTab == 'transfers'}">
+    <div class="ops-panel-head"><div><h2>Chuyển kho gửi & nhận</h2><p>Chỉ hiển thị phiếu có chi nhánh này là nguồn hoặc nơi nhận.</p></div></div>
+    <div th:replace="~{fragments/workspace :: transferTable(${transfers},false)}"></div>
+</section>
+
+        </div>
+    </main>
+    <script th:src="@{/store/js/workspace.js}" defer></script>
+</body>
+</html>

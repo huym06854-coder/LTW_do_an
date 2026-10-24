@@ -11,7 +11,7 @@ public class CustomerAuthenticationSuccessHandler implements AuthenticationSucce
             throws IOException,ServletException {
         if(auth.getAuthorities().stream().anyMatch(a->a.getAuthority().equals("ROLE_ADMIN")))resp.sendRedirect(req.getContextPath()+"/admin");
         else if(auth.getAuthorities().stream().anyMatch(a->a.getAuthority().equals("ROLE_STAFF")||a.getAuthority().equals("ROLE_MANAGER")))
-            resp.sendRedirect(req.getContextPath()+"/staff/orders");
+            resp.sendRedirect(req.getContextPath()+"/staff");
         else resp.sendRedirect(req.getContextPath()+"/");
     }
 }

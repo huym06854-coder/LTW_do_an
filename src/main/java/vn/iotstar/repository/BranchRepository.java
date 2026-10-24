@@ -9,5 +9,10 @@ import vn.iotstar.domain.entity.Branch;
 import vn.iotstar.domain.enums.*;
 
 public interface BranchRepository extends JpaRepository<Branch, Long> {
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select b from Branch b where b.id = :id")
+    Optional<Branch> lockById(@Param("id") Long id);
+    List<Branch> findAllByOrderByNameAsc();
+    boolean existsByCodeIgnoreCase(String code);
     List<Branch> findByStatusOrderByNameAsc(BranchStatus status);
 }

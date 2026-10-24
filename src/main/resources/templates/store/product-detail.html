@@ -38,17 +38,19 @@
                         <span th:if="${product.brand != null}" th:text="${product.brand}">Thương hiệu</span>
                     </div>
                 </div>
-                <div class="stock-line">● Đang kinh doanh <span>🚚 Chọn chi nhánh tại giỏ hàng</span></div>
+                <div class="stock-line">● Đang kinh doanh <span>🚚 Chọn chi nhánh khi đặt hàng</span></div>
+                <p class="detail-purchase-error" role="alert" th:if="${productError}" th:text="${productError}"></p>
                 <form class="detail-cart-form" method="post" th:action="@{/cart/add}">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                     <input type="hidden" name="productId" th:value="${product.id}">
                     <div class="quantity-row"><label for="quantity"><b>Số lượng</b></label>
-                        <input id="quantity" class="detail-quantity" type="number" name="quantity" min="1" max="99" value="1" required>
+                        <input id="quantity" class="detail-quantity" type="number" name="quantity" min="1" max="99" th:value="${requestedQuantity ?: 1}" required>
                     </div>
                     <div class="detail-actions">
                         <button class="outline-btn" type="submit">＋ Thêm vào giỏ hàng</button>
-                        <a class="red-btn" th:href="@{/cart}" href="/cart">Xem giỏ hàng →</a>
+                        <button class="red-btn" type="submit" th:formaction="@{/checkout/buy-now}">Đặt hàng →</button>
                     </div>
+                    <p class="detail-purchase-hint">Đặt hàng chỉ thanh toán sản phẩm này. Thêm vào giỏ để mua cùng các sản phẩm khác.</p>
                 </form>
                 <div class="detail-benefits"><span>♧ Bảo hành chính hãng</span><span>↻ Hỗ trợ đổi trả</span><span>▣ Thanh toán an toàn</span></div>
             </div>

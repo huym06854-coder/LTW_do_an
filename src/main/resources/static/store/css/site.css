@@ -142,10 +142,6 @@ body {
     font-size: 12px
 }
 
-.nav a:first-child {
-    color: #c33652
-}
-
 .mobile-menu {
     display: none;
     color: white;
@@ -1189,6 +1185,11 @@ body {
     background: #fff1f4;
     color: #c60f39
 }
+
+.detail-actions button { cursor: pointer; }
+.detail-purchase-hint { margin: 4px 0 14px; color: #687386; font-size: 12px; line-height: 1.5; }
+.detail-purchase-error { margin: 12px 0; padding: 11px 13px; border: 1px solid #f0c8ce; border-radius: 8px; background: #fff2f3; color: #a62c40; font-size: 13px; }
+@media (max-width: 520px) { .detail-actions { flex-direction: column; } }
 
 .detail-benefits {
     display: flex;

@@ -11,6 +11,7 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 @Getter
 @Setter
@@ -25,8 +26,10 @@ public class ProductSpecification extends BaseEntity {
 	private Product product;
 
 	@Column(name = "spec_name", nullable = false, length = 120)
+	@Nationalized
 	private String specName;
 
 	@Column(name = "spec_value", nullable = false, length = 500)
+	@Nationalized
 	private String specValue;
 }

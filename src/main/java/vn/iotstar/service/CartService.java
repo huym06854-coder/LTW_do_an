@@ -61,6 +61,20 @@ public class CartService {
                 cart.getBranch() == null ? null : cart.getBranch().getAddress());
     }
 
+    @Transactional(readOnly = true)
+    public CartDto previewPurchase(Long productId, int quantity, Long branchId) {
+        if (quantity < 1 || quantity > 99)
+            throw new BusinessException("Số lượng phải từ 1 đến 99");
+        var product = products.detail(productId);
+        var subtotal = product.price().multiply(BigDecimal.valueOf(quantity));
+        var branch = branchId == null ? null : branches.getActive(branchId);
+        Integer available = branch == null ? null : inventory.available(branchId, productId);
+        var line = new CartItemDto(productId, product.name(), quantity, product.price(), subtotal,
+                product.imageUrl(), available);
+        return new CartDto(branchId, List.of(line), subtotal,
+                branch == null ? null : branch.getName(), branch == null ? null : branch.getAddress());
+    }
+
     @Transactional
     public void chooseBranch(Long userId, Long branchId) {
         Cart cart = getOrCreate(userId);

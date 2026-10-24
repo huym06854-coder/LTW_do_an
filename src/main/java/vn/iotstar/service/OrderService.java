@@ -29,11 +29,12 @@ public class OrderService {
     private final NotificationService notifications;
     private final AddressService addresses;
     private final ShippingFeeService shipping;
+    private final ProductService products;
 
     public OrderService(OrderRepository orders, CartRepository carts, CartItemRepository cartItems,
             InventoryService inventory, UserService users, BranchService branches, CouponService coupons,
             PaymentRepository payments, OrderStatusHistoryRepository histories, NotificationService notifications,
-            AddressService addresses, ShippingFeeService shipping) {
+            AddressService addresses, ShippingFeeService shipping, ProductService products) {
         this.orders = orders;
         this.carts = carts;
         this.cartItems = cartItems;
@@ -46,12 +47,12 @@ public class OrderService {
         this.notifications = notifications;
         this.addresses = addresses;
         this.shipping = shipping;
+        this.products = products;
     }
 
     @Transactional
     public OrderDto checkout(Long userId, CheckoutDto dto) {
         users.lockForCheckout(userId);
-        Cart cart = carts.lockByUserId(userId).orElseThrow(() -> new BusinessException("Giỏ hàng trống"));
         if (dto.checkoutToken() != null && !dto.checkoutToken().isBlank()) {
             if (!dto.checkoutToken().matches("[A-Za-z0-9-]{16,64}"))
                 throw new BusinessException("Phiên đặt hàng không hợp lệ");
@@ -64,16 +65,18 @@ public class OrderService {
         if (dto.paymentMethod() != PaymentMethod.CASH_ON_DELIVERY)
             throw new BusinessException("Hiện chỉ hỗ trợ thanh toán khi nhận hàng");
         Recipient recipient = recipient(userId, dto);
-        if (cart.getBranch() == null || !cart.getBranch().getId().equals(dto.branchId()))
+        Cart cart = dto.buyNowProductId() == null ? carts.lockByUserId(userId)
+                .orElseThrow(() -> new BusinessException("Giỏ hàng trống")) : null;
+        if (cart != null && (cart.getBranch() == null || !cart.getBranch().getId().equals(dto.branchId())))
             throw new BusinessException("Vui lòng chọn chi nhánh cho giỏ hàng");
-        Branch branch = branches.getActive(dto.branchId());
-        List<CartItem> lines = cartItems.findByCartIdOrderByIdAsc(cart.getId());
-        if (lines.isEmpty())
-            throw new BusinessException("Giỏ hàng trống");
+        if (dto.branchId() == null)
+            throw new BusinessException("Vui lòng chọn chi nhánh");
+        Branch branch = branches.lockActive(dto.branchId());
+        List<PurchaseLine> lines = purchaseLines(cart, dto);
         // Stable lock ordering reduces the risk of deadlocks across simultaneous
         // checkouts.
-        lines = lines.stream().sorted(Comparator.comparing(i -> i.getProduct().getId())).toList();
-        BigDecimal subtotal = subtotal(cart, lines);
+        lines = lines.stream().sorted(Comparator.comparing(i -> i.product().getId())).toList();
+        BigDecimal subtotal = subtotal(branch.getId(), lines);
         Coupon coupon = coupons.reserve(dto.couponCode(), subtotal);
         BigDecimal discount = coupons.discount(coupon, subtotal);
         BigDecimal shippingFee = shipping.calculate(dto.deliveryMethod(), subtotal);
@@ -93,18 +96,18 @@ public class OrderService {
         o.setDiscountAmount(discount);
         o.setTotalAmount(subtotal.add(shippingFee).subtract(discount));
         // Reserve stock and write logs in the same transaction as the order.
-        for (CartItem line : lines) {
-            Product p = line.getProduct();
-            inventory.move(branch.getId(), p.getId(), -line.getQuantity(), StockMovementType.SALE, o.getUser(),
+        for (PurchaseLine line : lines) {
+            Product p = line.product();
+            inventory.move(branch.getId(), p.getId(), -line.quantity(), StockMovementType.SALE, o.getUser(),
                     o.getOrderNumber(), "Đặt hàng");
             OrderItem item = new OrderItem();
             item.setOrder(o);
             item.setProduct(p);
             item.setProductNameSnapshot(p.getName());
             item.setSkuSnapshot(p.getSku());
-            item.setQuantity(line.getQuantity());
+            item.setQuantity(line.quantity());
             item.setUnitPrice(p.getPrice());
-            item.setSubtotal(p.getPrice().multiply(BigDecimal.valueOf(line.getQuantity())));
+            item.setSubtotal(p.getPrice().multiply(BigDecimal.valueOf(line.quantity())));
             o.getItems().add(item);
         }
         Order saved = orders.saveAndFlush(o);
@@ -115,7 +118,8 @@ public class OrderService {
         payment.setStatus(PaymentStatus.PENDING);
         payments.save(payment);
         addHistory(saved, null, OrderStatus.PENDING, o.getUser(), "Khách đặt hàng");
-        cartItems.deleteByCartId(cart.getId());
+        if (cart != null)
+            cartItems.deleteByCartId(cart.getId());
         notifications.create(saved.getUser(), "Đặt hàng thành công", "Đã tiếp nhận đơn " + saved.getOrderNumber(),
                 "ORDER");
         notifications.newBranchOrder(branch.getId(), saved.getOrderNumber());
@@ -124,34 +128,50 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public CheckoutQuoteDto quote(Long userId, CheckoutDto dto) {
-        Cart cart = carts.findByUserId(userId).orElseThrow(() -> new BusinessException("Giỏ hàng trống"));
-        if (cart.getBranch() == null || !cart.getBranch().getId().equals(dto.branchId()))
+        Cart cart = dto.buyNowProductId() == null ? carts.findByUserId(userId)
+                .orElseThrow(() -> new BusinessException("Giỏ hàng trống")) : null;
+        if (cart != null && (cart.getBranch() == null || !cart.getBranch().getId().equals(dto.branchId())))
             throw new BusinessException("Vui lòng chọn chi nhánh trong giỏ hàng");
-        branches.getActive(cart.getBranch().getId());
+        if (dto.branchId() == null)
+            throw new BusinessException("Vui lòng chọn chi nhánh");
+        branches.getActive(dto.branchId());
         if (dto.deliveryMethod() == null)
             throw new BusinessException("Vui lòng chọn hình thức nhận hàng");
-        List<CartItem> lines = cartItems.findByCartIdOrderByIdAsc(cart.getId());
-        BigDecimal subtotal = subtotal(cart, lines);
+        BigDecimal subtotal = subtotal(dto.branchId(), purchaseLines(cart, dto));
         BigDecimal discount = coupons.discount(coupons.preview(dto.couponCode(), subtotal), subtotal);
         BigDecimal fee = shipping.calculate(dto.deliveryMethod(), subtotal);
         return new CheckoutQuoteDto(subtotal, fee, discount, subtotal.add(fee).subtract(discount));
     }
 
-    private BigDecimal subtotal(Cart cart, List<CartItem> lines) {
+    private List<PurchaseLine> purchaseLines(Cart cart, CheckoutDto dto) {
+        if (cart == null) {
+            if (dto.buyNowQuantity() == null || dto.buyNowQuantity() < 1 || dto.buyNowQuantity() > 99)
+                throw new BusinessException("Số lượng phải từ 1 đến 99");
+            return List.of(new PurchaseLine(products.findActive(dto.buyNowProductId()), dto.buyNowQuantity()));
+        }
+        var lines = cartItems.findByCartIdOrderByIdAsc(cart.getId());
+        if (lines.isEmpty())
+            throw new BusinessException("Giỏ hàng trống");
+        return lines.stream().map(line -> new PurchaseLine(line.getProduct(), line.getQuantity())).toList();
+    }
+
+    private record PurchaseLine(Product product, int quantity) {}
+
+    private BigDecimal subtotal(Long branchId, List<PurchaseLine> lines) {
         if (lines.isEmpty())
             throw new BusinessException("Giỏ hàng trống");
         BigDecimal subtotal = BigDecimal.ZERO;
-        for (CartItem line : lines) {
-            Product p = line.getProduct();
+        for (PurchaseLine line : lines) {
+            Product p = line.product();
             if (p.getStatus() != ProductStatus.ACTIVE)
                 throw new BusinessException("Sản phẩm đã ngừng kinh doanh: " + p.getName());
-            if (line.getQuantity() < 1 || line.getQuantity() > 99)
+            if (line.quantity() < 1 || line.quantity() > 99)
                 throw new BusinessException("Số lượng không hợp lệ: " + p.getName());
-            int available = inventory.available(cart.getBranch().getId(), p.getId());
-            if (available < line.getQuantity())
-                throw new BusinessException(p.getName() + " còn " + available + ", bạn đang chọn " + line.getQuantity()
+            int available = inventory.available(branchId, p.getId());
+            if (available < line.quantity())
+                throw new BusinessException(p.getName() + " còn " + available + ", bạn đang chọn " + line.quantity()
                         + ". Vui lòng cập nhật giỏ hàng.");
-            subtotal = subtotal.add(p.getPrice().multiply(BigDecimal.valueOf(line.getQuantity())));
+            subtotal = subtotal.add(p.getPrice().multiply(BigDecimal.valueOf(line.quantity())));
         }
         return subtotal;
     }
@@ -188,7 +208,7 @@ public class OrderService {
                 address = dto.shippingAddress();
             if (blank(address) || address.length() > 1000)
                 throw new CheckoutValidationException("addressDetail", "Vui lòng nhập địa chỉ giao hàng đầy đủ");
-            if (dto.saveAddress()) {
+            if (Boolean.TRUE.equals(dto.saveAddress())) {
                 if (blank(dto.province()) || blank(dto.district()) || blank(dto.ward()) || blank(dto.addressDetail()))
                     throw new CheckoutValidationException("addressDetail",
                             "Điền địa chỉ có cấu trúc để lưu vào sổ địa chỉ");
@@ -211,6 +231,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public OrderDto branchOrder(Long id, User actor) {
         actor = users.profileById(actor.getId());
+        checkOperator(actor);
         Order order = orders.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đơn hàng"));
         if (actor.getRole().getName() != UserRole.ADMIN
                 && (actor.getBranch() == null || !actor.getBranch().getId().equals(order.getBranch().getId())))
@@ -405,8 +426,20 @@ public class OrderService {
     }
 
     private void checkOperator(User actor) {
-        if (actor.getRole().getName() == UserRole.CUSTOMER)
+        if (actor.getStatus() != UserStatus.ACTIVE || actor.getRole().getName() == UserRole.CUSTOMER)
             throw new org.springframework.security.access.AccessDeniedException("Không có quyền xử lý đơn hàng");
+        if (actor.getRole().getName() != UserRole.ADMIN && actor.getBranch() != null
+                && actor.getBranch().getStatus() != BranchStatus.ACTIVE)
+            throw new org.springframework.security.access.AccessDeniedException("Chi nhánh đã ngừng hoạt động");
+    }
+
+    @Transactional(readOnly = true)
+    public Page<OrderDto> adminOrdersAtBranch(Long branchId, User actor, Pageable pageable) {
+        actor = users.profileById(actor.getId());
+        checkOperator(actor);
+        if (actor.getRole().getName() != UserRole.ADMIN)
+            throw new org.springframework.security.access.AccessDeniedException("Chỉ quản trị viên được xem chi nhánh khác");
+        return filteredOrders(null, branchId, null, null, null, pageable).map(this::toDto);
     }
 
     private void checkScope(Order order, User actor) {

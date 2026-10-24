@@ -149,7 +149,10 @@ class OrderPagesMvcIntegrationTest {
         verify(orders, never()).confirmRefund(anyLong(), any(User.class), anyString());
     }
 
-    private CustomerUserDetails principal(UserRole role) { return new CustomerUserDetails(account(role)); }
+    private CustomerUserDetails principal(UserRole role) {
+        account.setRole(account(role).getRole());
+        return new CustomerUserDetails(account);
+    }
 
     private User account(UserRole role) {
         Role permission = new Role(); permission.setName(role);

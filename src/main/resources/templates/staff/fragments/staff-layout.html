@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"><body>
+<aside class="sidebar" id="adminSidebar" th:fragment="staffSidebar(activePage)">
+    <a class="admin-brand" th:href="@{/staff}"><span class="brand-mark">T</span><span>Tech<span class="brand-red">Store</span><small>CHI NHÁNH · VẬN HÀNH</small></span></a>
+    <div class="admin-profile"><div class="avatar avatar-admin">TS</div><div><b th:text="${currentUser.fullName}">Nhân viên</b><small th:text="${staffRole == 'MANAGER' ? 'Quản lý chi nhánh' : (staffRole == 'ADMIN' ? 'Quản trị viên' : 'Nhân viên chi nhánh')}"></small></div><span class="online-dot"></span></div>
+    <div class="sidebar-label">KHÔNG GIAN LÀM VIỆC</div>
+    <nav class="side-nav" aria-label="Điều hướng chi nhánh">
+        <a class="nav-item" th:classappend="${activePage == 'overview' ? 'active' : ''}" th:attr="aria-current=${activePage == 'overview' ? 'page' : null}" th:href="@{/staff}"><svg th:replace="~{fragments/workspace :: icon('grid')}"></svg>Tổng quan</a>
+        <a class="nav-item" th:classappend="${activePage == 'orders' ? 'active' : ''}" th:attr="aria-current=${activePage == 'orders' ? 'page' : null}" th:href="@{/staff/orders}"><svg th:replace="~{fragments/workspace :: icon('orders')}"></svg>Đơn hàng</a>
+        <a class="nav-item" th:classappend="${activePage == 'stock' ? 'active' : ''}" th:attr="aria-current=${activePage == 'stock' ? 'page' : null}" th:href="@{/staff/stock}"><svg th:replace="~{fragments/workspace :: icon('box')}"></svg>Kho chi nhánh</a>
+        <a class="nav-item" th:classappend="${activePage == 'transfers' ? 'active' : ''}" th:attr="aria-current=${activePage == 'transfers' ? 'page' : null}" th:href="@{/staff/transfers}"><svg th:replace="~{fragments/workspace :: icon('transfer')}"></svg>Chuyển kho</a>
+    </nav>
+    <div class="ops-sidebar-note"><span class="ops-dot"></span><div><b th:text="${staffBranch != null ? staffBranch.name : 'Chưa phân công chi nhánh'}"></b><small th:if="${staffBranch != null}" th:text="${staffBranch.code}"></small></div></div>
+    <div class="sidebar-bottom"><a th:href="@{/}">← Về cửa hàng</a></div><div class="sidebar-foot">TechStore · Không gian chi nhánh</div>
+</aside>
+
+<header class="admin-topbar" th:fragment="staffTopbar">
+    <div class="top-left"><button id="adminSidebarToggle" class="icon-button mobile-only" type="button" aria-label="Mở menu" aria-controls="adminSidebar" aria-expanded="false">☰</button><div class="crumb"><span>Vận hành</span><b>/</b><strong th:text="${staffBranch != null ? staffBranch.name : 'Chi nhánh'}"></strong></div></div>
+    <div class="top-actions"><span class="today-label" id="adminToday"></span><form method="post" th:action="@{/logout}"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"><button class="ops-btn ops-btn-quiet" type="submit">Đăng xuất ↗</button></form></div>
+    <script th:src="@{/admin/js/admin-shell.js}" defer></script>
+</header>
+
+</body></html>

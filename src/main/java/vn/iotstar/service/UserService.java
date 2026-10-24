@@ -28,12 +28,26 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User byId(Long id) {
-        return users.findById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tài khoản"));
+        return users.findWithRoleById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tài khoản"));
     }
 
     @Transactional(readOnly = true)
     public User profileById(Long id) {
         return users.findWithRoleById(id).orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tài khoản"));
+    }
+
+    @Transactional(readOnly = true)
+    public User branchOperator(Long id) {
+        var user = byId(id);
+        var role = user.getRole().getName();
+        if (user.getStatus() != UserStatus.ACTIVE
+                || (role != UserRole.ADMIN && role != UserRole.MANAGER && role != UserRole.STAFF))
+            throw new org.springframework.security.access.AccessDeniedException("Tài khoản không được vận hành chi nhánh");
+        if (user.getBranch() == null)
+            throw new BusinessException("Chưa được phân công chi nhánh. Vui lòng liên hệ quản trị viên.");
+        if (user.getBranch().getStatus() != BranchStatus.ACTIVE)
+            throw new BusinessException("Chi nhánh được phân công đã ngừng hoạt động");
+        return user;
     }
 
     @Transactional

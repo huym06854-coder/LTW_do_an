@@ -4,5 +4,14 @@ public enum UserRole {
 	ADMIN,
 	MANAGER,
 	STAFF,
-	CUSTOMER
+	CUSTOMER;
+
+    public String getLabel() {
+        return switch (this) {
+            case ADMIN -> "Quản trị viên";
+            case MANAGER -> "Quản lý chi nhánh";
+            case STAFF -> "Nhân viên";
+            case CUSTOMER -> "Khách hàng";
+        };
+    }
 }

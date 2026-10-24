@@ -13,6 +13,7 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 import vn.iotstar.domain.enums.BranchStatus;
 
 @Getter
@@ -26,9 +27,11 @@ public class Branch extends BaseEntity {
 	private String code;
 
 	@Column(nullable = false, length = 160)
+	@Nationalized
 	private String name;
 
 	@Column(nullable = false, length = 500)
+	@Nationalized
 	private String address;
 
 	@Column(length = 30)

@@ -16,6 +16,7 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 import vn.iotstar.domain.enums.UserStatus;
 
 @Getter
@@ -29,6 +30,7 @@ import vn.iotstar.domain.enums.UserStatus;
 public class User extends BaseEntity {
 
 	@Column(name = "full_name", nullable = false, length = 160)
+	@Nationalized
 	private String fullName;
 
 	@Column(nullable = false, length = 254)

@@ -56,11 +56,14 @@
                     </div>
                 </div>
             </div>
-            <nav class="wrap nav" id="mainNav"><a th:href="@{/}" href="/">Trang chủ</a><a
-                    th:href="@{/products}" href="/products">Sản phẩm</a><a th:href="@{/about}" href="/about">Giới
-                    thiệu</a><a th:href="@{/news}" href="/news">Tin tức</a><a th:href="@{/offers}" href="/offers">Dự án
-                    & ưu
-                    đãi</a><a th:href="@{/contact}" href="/contact">Liên hệ</a></nav>
+            <nav class="wrap nav" id="mainNav" aria-label="Điều hướng chính">
+                <a th:href="@{/}" href="/" th:attr="aria-current=${activeNav == 'home' ? 'page' : null}">Trang chủ</a>
+                <a th:href="@{/products}" href="/products" th:attr="aria-current=${activeNav == 'products' ? 'page' : null}">Sản phẩm</a>
+                <a th:href="@{/about}" href="/about" th:attr="aria-current=${activeNav == 'about' ? 'page' : null}">Giới thiệu</a>
+                <a th:href="@{/news}" href="/news" th:attr="aria-current=${activeNav == 'news' ? 'page' : null}">Tin tức</a>
+                <a th:href="@{/offers}" href="/offers" th:attr="aria-current=${activeNav == 'offers' ? 'page' : null}">Dự án &amp; ưu đãi</a>
+                <a th:href="@{/contact}" href="/contact" th:attr="aria-current=${activeNav == 'contact' ? 'page' : null}">Liên hệ</a>
+            </nav>
         </header>
     </th:block>
     <th:block th:fragment="siteFooter">

@@ -57,6 +57,7 @@ import vn.iotstar.repository.CartItemRepository;
 import vn.iotstar.repository.CartRepository;
 import vn.iotstar.repository.CategoryRepository;
 import vn.iotstar.repository.OrderRepository;
+import vn.iotstar.repository.OrderItemRepository;
 import vn.iotstar.repository.OrderStatusHistoryRepository;
 import vn.iotstar.repository.PaymentRepository;
 import vn.iotstar.repository.ProductRepository;
@@ -92,6 +93,7 @@ class OrderWorkflowIntegrationTest {
     @Autowired private CartRepository carts;
     @Autowired private CartItemRepository cartItems;
     @Autowired private OrderRepository orders;
+    @Autowired private OrderItemRepository orderItems;
     @Autowired private PaymentRepository payments;
     @Autowired private StockLogRepository logs;
     @Autowired private OrderStatusHistoryRepository histories;
@@ -123,6 +125,54 @@ class OrderWorkflowIntegrationTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/cart"));
         assertThat(orderCount(shopper)).isZero();
+    }
+
+    @Test
+    void buyNowOrdersOnlySelectedQuantityAndLeavesCartForLaterCheckout() throws Exception {
+        Fixture f = fixture(10, 2);
+        var principal = user(new CustomerUserDetails(f.customer()));
+        mvc.perform(post("/checkout/buy-now").with(principal).with(csrf())
+                        .param("productId", f.product().getId().toString()).param("quantity", "1"))
+                .andExpect(status().is3xxRedirection());
+        mvc.perform(get("/checkout/buy-now").with(principal)
+                        .param("productId", f.product().getId().toString()).param("quantity", "1"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("buyNow", true))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("name=\"buyNowProductId\"")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Sản phẩm đặt hàng")));
+        mvc.perform(post("/checkout/branch").with(principal).with(csrf())
+                        .param("branchId", f.branch().getId().toString())
+                        .param("buyNowProductId", f.product().getId().toString())
+                        .param("buyNowQuantity", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.checkoutAllowed").value(true));
+        assertThat(cartService.view(f.customer().getId()).branchId()).isEqualTo(f.branch().getId());
+
+        var direct = new CheckoutDto(f.branch().getId(), "Khách hàng", "0901234567", null,
+                DeliveryMethod.PICKUP_AT_BRANCH, PaymentMethod.CASH_ON_DELIVERY, null, null,
+                null, false, null, null, null, null, token(), f.product().getId(), 1);
+        assertThat(workflow.quote(f.customer().getId(), direct).subtotal()).isEqualByComparingTo("1200000");
+        mvc.perform(post("/checkout/place-order").with(principal).with(csrf())
+                        .param("branchId", f.branch().getId().toString())
+                        .param("recipientName", "Khách hàng").param("recipientPhone", "0901234567")
+                        .param("deliveryMethod", "PICKUP_AT_BRANCH")
+                        .param("paymentMethod", "CASH_ON_DELIVERY")
+                        .param("checkoutToken", direct.checkoutToken())
+                        .param("buyNowProductId", f.product().getId().toString())
+                        .param("buyNowQuantity", "1"))
+                .andExpect(status().is3xxRedirection());
+        Order purchased = orders.findByUserIdOrderByCreatedAtDesc(f.customer().getId(), Pageable.unpaged())
+                .getContent().get(0);
+        assertThat(orderItems.findByOrderId(purchased.getId())).hasSize(1)
+                .first().extracting(item -> item.getQuantity()).isEqualTo(1);
+        assertThat(stock(f)).isEqualTo(9);
+        assertThat(cartItems.findByCartIdOrderByIdAsc(f.cart().getId()).get(0).getQuantity()).isEqualTo(2);
+
+        OrderDto cartOrder = workflow.checkout(f.customer().getId(),
+                checkout(f, DeliveryMethod.PICKUP_AT_BRANCH, null, token()));
+        assertThat(cartOrder.items().get(0).quantity()).isEqualTo(2);
+        assertThat(stock(f)).isEqualTo(7);
+        assertThat(cartItems.findByCartIdOrderByIdAsc(f.cart().getId())).isEmpty();
     }
 
     @Test

@@ -18,13 +18,15 @@ public class InventoryService {
     private final StockLogRepository logs;
     private final BranchRepository branches;
     private final ProductRepository products;
+    private final UserService users;
 
     public InventoryService(BranchStockRepository stocks, StockLogRepository logs, BranchRepository branches,
-            ProductRepository products) {
+            ProductRepository products, UserService users) {
         this.stocks = stocks;
         this.logs = logs;
         this.branches = branches;
         this.products = products;
+        this.users = users;
     }
 
     @Transactional(readOnly = true)
@@ -36,6 +38,11 @@ public class InventoryService {
     @Transactional(readOnly = true)
     public int available(Long branchId, Long productId) {
         return stocks.findByBranchIdAndProductId(branchId, productId).map(BranchStock::getQuantity).orElse(0);
+    }
+
+    @Transactional(readOnly = true)
+    public List<vn.iotstar.dto.stock.StockRowDto> rowsAtBranch(Long branchId) {
+        return stocks.findRowsByBranchId(branchId);
     }
 
     // All mutations go through this method and require a transaction.
@@ -79,8 +86,24 @@ public class InventoryService {
 
     @Transactional
     public void adminAdjust(Long branchId, Long productId, int delta, String reason, User actor) {
+        if (actor == null) throw new org.springframework.security.access.AccessDeniedException("Tài khoản không còn hiệu lực");
+        actor = users.profileById(actor.getId());
+        if (actor == null || actor.getStatus() != UserStatus.ACTIVE
+                || (actor.getRole().getName() != UserRole.ADMIN && actor.getRole().getName() != UserRole.MANAGER
+                    && actor.getRole().getName() != UserRole.STAFF))
+            throw new org.springframework.security.access.AccessDeniedException("Không được điều chỉnh kho");
+        if (actor.getRole().getName() != UserRole.ADMIN
+                && (actor.getBranch() == null || !actor.getBranch().getId().equals(branchId)))
+            throw new org.springframework.security.access.AccessDeniedException("Không được điều chỉnh kho chi nhánh khác");
+        var branch = branches.lockById(branchId)
+                .orElseThrow(() -> new ResourceNotFoundException("Chi nhánh không tồn tại"));
+        entityManager.refresh(branch, jakarta.persistence.LockModeType.PESSIMISTIC_WRITE);
+        if (branch.getStatus() != BranchStatus.ACTIVE)
+            throw new BusinessException("Chi nhánh đã ngừng hoạt động");
         if (reason == null || reason.isBlank())
             throw new BusinessException("Phải ghi lý do điều chỉnh kho");
-        move(branchId, productId, delta, StockMovementType.ADJUSTMENT, actor, null, reason);
+        if (reason.trim().length() > 500)
+            throw new BusinessException("Lý do điều chỉnh không được quá 500 ký tự");
+        move(branchId, productId, delta, StockMovementType.ADJUSTMENT, actor, null, reason.trim());
     }
 }
